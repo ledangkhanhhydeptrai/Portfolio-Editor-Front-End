@@ -1,16 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import {
-  useEffect,
-  useRef,
-  useState,
-  type CSSProperties,
-  type RefObject
-} from "react";
 
 import Header from "../layouts/Header";
 import Footer from "../layouts/Footer";
+import React from "react";
 
 /* =========================================================
    TYPES
@@ -41,11 +35,11 @@ interface Offset {
 ========================================================= */
 function useInView<T extends HTMLElement>(
   threshold = 0.35
-): [RefObject<T | null>, boolean] {
-  const ref = useRef<T | null>(null);
-  const [inView, setInView] = useState<boolean>(false);
+): [React.RefObject<T | null>, boolean] {
+  const ref = React.useRef<T | null>(null);
+  const [inView, setInView] = React.useState<boolean>(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
@@ -75,9 +69,9 @@ function useInView<T extends HTMLElement>(
    HOOK: scroll progress (0 → 1) for the top progress bar
 ========================================================= */
 function useScrollProgress(): number {
-  const [progress, setProgress] = useState<number>(0);
+  const [progress, setProgress] = React.useState<number>(0);
 
-  useEffect(() => {
+  React.useEffect(() => {
     let ticking = false;
 
     const update = () => {
@@ -201,8 +195,8 @@ const TimelineItem = ({ item, index, isLast }: TimelineItemProps) => {
    MAGNETIC CTA BUTTON
 ========================================================= */
 const MagneticLink = ({ href }: MagneticLinkProps) => {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [offset, setOffset] = useState<Offset>({ x: 0, y: 0 });
+  const ref = React.useRef<HTMLDivElement | null>(null);
+  const [offset, setOffset] = React.useState<Offset>({ x: 0, y: 0 });
 
   const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = ref.current;
@@ -237,13 +231,13 @@ const MagneticLink = ({ href }: MagneticLinkProps) => {
 };
 
 const About = () => {
-  const [mounted, setMounted] = useState<boolean>(false);
-  const heroRef = useRef<HTMLDivElement | null>(null);
+  const [mounted, setMounted] = React.useState<boolean>(false);
+  const heroRef = React.useRef<HTMLDivElement | null>(null);
   const [quoteRef, quoteInView] = useInView<HTMLDivElement>(0.6);
   const [marqueeRef, marqueeInView] = useInView<HTMLDivElement>(0.2);
   const progress = useScrollProgress();
 
-  useEffect(() => {
+  React.useEffect(() => {
     const id = requestAnimationFrame(() => setMounted(true));
     return () => cancelAnimationFrame(id);
   }, []);
@@ -256,10 +250,11 @@ const About = () => {
     el.style.setProperty("--my", `${e.clientY - rect.top}px`);
   };
 
-  const heroStyle: CSSProperties & { "--mx"?: string; "--my"?: string } = {
-    "--mx": "50%",
-    "--my": "20%"
-  };
+  const heroStyle: React.CSSProperties & { "--mx"?: string; "--my"?: string } =
+    {
+      "--mx": "50%",
+      "--my": "20%"
+    };
 
   return (
     <div className="min-h-screen bg-[#0B0B0D] text-[#EDECE8]">
