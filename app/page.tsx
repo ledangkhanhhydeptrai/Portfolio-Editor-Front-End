@@ -2,6 +2,7 @@
 
 import Footer from "@/components/layouts/Footer";
 import Header from "@/components/layouts/Header";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -71,20 +72,30 @@ export default function Home() {
 
             {/* BUTTONS */}
             <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href="#projects"
+              <Link
+                href="/project"
                 className="group flex items-center gap-2 rounded-lg bg-[#5B7CFA] px-5 py-2.5 text-xs font-medium text-white transition duration-300 hover:bg-[#6B88FF]"
               >
                 Xem dự án
                 <span className="transition group-hover:translate-x-1">→</span>
-              </a>
+              </Link>
 
-              <a
-                href="#about"
+              <Link
+                href="/hero"
+                className="group flex items-center gap-2 rounded-lg border border-[#5B7CFA]/20 bg-[#5B7CFA]/5 px-5 py-2.5 text-xs font-medium text-[#9BAEFF] transition duration-300 hover:border-[#5B7CFA]/40 hover:bg-[#5B7CFA]/10"
+              >
+                Xem hồ sơ
+                <span className="transition duration-300 group-hover:translate-x-1">
+                  →
+                </span>
+              </Link>
+
+              <Link
+                href="/about"
                 className="rounded-lg border border-white/10 bg-white/2 px-5 py-2.5 text-xs font-medium transition hover:border-white/20 hover:bg-white/4"
               >
                 Về tôi
-              </a>
+              </Link>
             </div>
 
             {/* MINI INFO */}

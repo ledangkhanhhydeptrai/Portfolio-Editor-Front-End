@@ -11,7 +11,7 @@ import { AxiosError } from "axios";
 
 function* getProfileAPI() {
   try {
-    const response: ApiResponse<ProfileProps> = yield call(getAllProfileAPI);
+    const response: ApiResponse<ProfileProps[]> = yield call(getAllProfileAPI);
     yield put(getProfileSuccess(response.data));
   } catch (error) {
     const errors = error as AxiosError<ApiResponse<string>>;

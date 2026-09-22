@@ -5,10 +5,10 @@ import { API_CONFIG } from "@/config/api";
 import { AxiosError } from "axios";
 
 export const getAllProfileAPI = async (): Promise<
-  ApiResponse<ProfileProps>
+  ApiResponse<ProfileProps[]>
 > => {
   try {
-    const response = await fetchBaseResponse<ApiResponse<ProfileProps>>(
+    const response = await fetchBaseResponse<ApiResponse<ProfileProps[]>>(
       `${API_CONFIG.ENDPOINTS.PROFILE}`,
       {
         method: "GET",
@@ -17,6 +17,11 @@ export const getAllProfileAPI = async (): Promise<
         }
       }
     );
+    console.log("===== PROFILE DEBUG =====");
+    console.log("FULL RESPONSE:", response);
+    console.log("RESPONSE STATUS:", response.status);
+    console.log("RESPONSE DATA:", response.data);
+    console.log("=========================");
     if (response.status !== 200) {
       throw new Error(`HTTP Status:${response.status}`);
     }
