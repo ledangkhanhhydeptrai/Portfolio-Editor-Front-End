@@ -4,12 +4,12 @@ import { ProfileProps } from "./profileTypes";
 interface ProfileState {
   loading: boolean;
   error: string | null;
-  data: ProfileProps | null;
+  data: ProfileProps[];
 }
 const initialState: ProfileState = {
   loading: false,
   error: null,
-  data: null
+  data: []
 };
 const ProfileSlice = createSlice({
   name: "profile",
@@ -19,7 +19,7 @@ const ProfileSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    getProfileSuccess(state, action: PayloadAction<ProfileProps>) {
+    getProfileSuccess(state, action: PayloadAction<ProfileProps[]>) {
       state.loading = false;
       state.error = null;
       state.data = action.payload;

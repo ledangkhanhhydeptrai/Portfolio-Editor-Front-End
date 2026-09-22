@@ -1,10 +1,14 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import Image from "next/image";
 
 import { getProfileRequest } from "../../features/profile/profileSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+
+import Header from "../layouts/Header";
+import Footer from "../layouts/Footer";
+import { ProfileProps } from "@/features/profile/profileTypes";
 
 export default function Hero() {
   const dispatch = useAppDispatch();
@@ -14,17 +18,32 @@ export default function Hero() {
     dispatch(getProfileRequest());
   }, [dispatch]);
 
+  // Trích xuất profile an toàn, tuân thủ đúng ProfileProps interface
+  const profile = useMemo<ProfileProps | null>(() => {
+    if (!data) return null;
+    if (Array.isArray(data)) {
+      if (data.length === 0) return null;
+      return (data as ProfileProps[]).at(0) ?? null;
+    }
+    return data as ProfileProps;
+  }, [data]);
+
+  const contactItems = useMemo<string[]>(() => {
+    if (!profile) return [];
+    return [profile.email, profile.phone, profile.location].filter(Boolean);
+  }, [profile]);
+
   if (loading) {
     return (
-      <section className="flex min-h-[70vh] items-center justify-center bg-[#101114]">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#8F8B84] border-t-[#C77B3D]" />
+      <section className="flex min-h-screen items-center justify-center bg-[#101114]">
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-[#3A3833] border-t-[#C77B3D]" />
       </section>
     );
   }
 
   if (error) {
     return (
-      <section className="flex min-h-[70vh] flex-col items-center justify-center gap-2 bg-[#101114] px-6 text-center">
+      <section className="flex min-h-screen flex-col items-center justify-center gap-2 bg-[#101114] px-6 text-center">
         <p className="font-['Space_Grotesk'] text-sm text-[#8F8B84]">
           Không tải được thông tin
         </p>
@@ -33,81 +52,124 @@ export default function Hero() {
     );
   }
 
-  if (!data) return null;
-
-  const contactItems = [data.email, data.phone, data.location].filter(Boolean);
+  if (!profile) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#101114]">
+        <p className="font-['Space_Grotesk'] text-sm text-[#8F8B84]">
+          Không có dữ liệu hồ sơ
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <section className="relative overflow-hidden bg-[#101114] text-[#EDEAE3]">
-      {/* lưới nền mảnh, chỉ trang trí nhẹ */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.06]"
-        style={{
-          backgroundImage:
-            "linear-gradient(#EDEAE3 1px, transparent 1px), linear-gradient(90deg, #EDEAE3 1px, transparent 1px)",
-          backgroundSize: "64px 64px"
-        }}
-      />
+    <div className="bg-[#101114]">
+      <Header />
 
-      <div className="relative mx-auto grid max-w-6xl grid-cols-1 gap-12 px-6 py-20 md:grid-cols-[1.3fr_1fr] md:items-end md:gap-8 md:py-0 md:pl-6">
-        {/* Cột chữ */}
-        <div className="order-2 flex flex-col justify-center md:order-1 md:min-h-screen md:py-24">
-          <p className="font-['Space_Grotesk'] text-sm tracking-tight text-[#C77B3D]">
-            {data.jobTitle}
-          </p>
+      <section className="relative overflow-hidden text-[#EDEAE3]">
+        {/* Lưới nền kỹ thuật */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-3"
+          style={{
+            backgroundImage:
+              "linear-gradient(#EDEAE3 1px, transparent 1px), linear-gradient(90deg, #EDEAE3 1px, transparent 1px)",
+            backgroundSize: "64px 64px"
+          }}
+        />
 
-          <h1 className="mt-3 font-['Fraunces'] text-[15vw] font-light leading-[0.92] tracking-tight md:text-[5.2vw]">
-            {data.fullName}
-          </h1>
+        {/* Ambient Glow tạo chiều sâu cho typography */}
+        <div className="pointer-events-none absolute -left-20 top-1/4 h-125 w-125 rounded-full bg-[#C77B3D]/10 blur-[130px]" />
 
-          <p className="mt-8 max-w-[42ch] font-['Space_Grotesk'] text-lg leading-relaxed text-[#C4C0B8]">
-            {data.shortDescription}
-          </p>
+        <div className="relative mx-auto grid max-w-7xl grid-cols-1 md:grid-cols-[1.35fr_1fr] md:items-stretch">
+          {/* CỘT TRÁI: Nội dung giới thiệu */}
+          <div className="relative order-2 px-6 py-20 md:order-1 md:py-32 md:pl-10 md:pr-12">
+            {/* Chữ số nghệ thuật nền mờ */}
+            <span className="pointer-events-none absolute -left-6 top-8 select-none font-['Fraunces'] text-[18vw] font-black leading-none text-white/1.5 md:text-[9vw]">
+              01
+            </span>
 
-          {data.aboutMe && (
-            <p className="mt-4 max-w-[48ch] font-['Space_Grotesk'] text-sm leading-relaxed text-[#8F8B84]">
-              {data.aboutMe}
-            </p>
-          )}
-
-          <div className="mt-10 flex flex-wrap items-center gap-6">
-            {data.cvUrl && (
-              <a
-                href={data.cvUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 border border-[#EDEAE3] px-5 py-2.5 font-['Space_Grotesk'] text-sm text-[#EDEAE3] transition-colors hover:border-[#C77B3D] hover:text-[#C77B3D]"
-              >
-                Tải CV
-              </a>
+            {profile.jobTitle && (
+              <div className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/3 px-3.5 py-1 backdrop-blur-sm">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#C77B3D]" />
+                <p className="font-['Space_Grotesk'] text-xs uppercase tracking-[0.2em] text-[#C77B3D]">
+                  {profile.jobTitle}
+                </p>
+              </div>
             )}
 
-            <div className="flex flex-wrap items-center font-['Space_Grotesk'] text-sm text-[#8F8B84]">
-              {contactItems.map((item, i) => (
-                <span key={item} className="flex items-center">
-                  {i > 0 && <span className="mx-3 h-3 w-px bg-[#3A3833]" />}
-                  {item}
-                </span>
-              ))}
+            <h1 className="mt-6 font-['Fraunces'] text-[13vw] font-light leading-[0.92] tracking-tight text-[#EDEAE3] md:text-[5.2vw]">
+              {profile.fullName}
+            </h1>
+
+            {profile.shortDescription && (
+              <p className="mt-8 max-w-[42ch] font-['Space_Grotesk'] text-lg leading-relaxed text-[#C4C0B8] md:text-xl">
+                {profile.shortDescription}
+              </p>
+            )}
+
+            {profile.aboutMe && (
+              <p className="mt-4 max-w-[50ch] font-['Space_Grotesk'] text-sm leading-relaxed text-[#8F8B84]">
+                {profile.aboutMe}
+              </p>
+            )}
+
+            <div className="mt-12 flex flex-col gap-8 sm:flex-row sm:items-center">
+              {profile.cvUrl && (
+                <a
+                  href={profile.cvUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center justify-center gap-2.5 rounded-md border border-[#EDEAE3]/20 bg-[#16171a] px-6 py-3 font-['Space_Grotesk'] text-sm font-medium text-[#EDEAE3] transition-all duration-300 hover:border-[#C77B3D] hover:bg-[#C77B3D] hover:text-[#101114]"
+                >
+                  <span>Xem CV</span>
+                </a>
+              )}
+
+              {contactItems.length > 0 && (
+                <div className="flex flex-wrap items-center gap-y-2 font-['Space_Grotesk'] text-sm text-[#8F8B84]">
+                  {contactItems.map((item, index) => (
+                    <span key={item} className="flex items-center">
+                      {index > 0 && (
+                        <span className="mx-3.5 h-3 w-px bg-[#3A3833]" />
+                      )}
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* CỘT PHẢI: Hình ảnh avatar/showcase */}
+          <div className="order-1 md:order-2 md:relative">
+            <div className="relative h-[55vh] w-full overflow-hidden bg-[#111114] md:absolute md:inset-0 md:h-full md:[clip-path:polygon(14%_0,100%_0,100%_100%,0_100%)]">
+              {profile.avatarUrl && profile.avatarUrl.trim() !== "" ? (
+                <Image
+                  src={profile.avatarUrl}
+                  alt={profile.fullName || "Profile Photo"}
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 100vw, 45vw"
+                  className="object-cover object-center transition-transform duration-700 hover:scale-105"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-[#151619]">
+                  <span className="font-['Fraunces'] text-8xl font-light text-white/5">
+                    {profile.fullName ? profile.fullName.charAt(0) : "P"}
+                  </span>
+                </div>
+              )}
+
+              {/* Gradient che mờ các mép ảnh cho liền mạch với nền */}
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-[#101114] via-[#101114]/40 to-transparent md:hidden" />
+              <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/3 bg-linear-to-r from-[#101114]/90 via-[#101114]/20 to-transparent md:block" />
+              <div className="pointer-events-none absolute inset-0 bg-[#C77B3D]/3 mix-blend-color" />
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Cột ảnh — tràn cạnh phải */}
-        <div className="order-1 md:order-2 md:sticky md:top-0 md:h-screen">
-          <div className="relative h-[50vh] w-full overflow-hidden md:h-screen md:[clip-path:polygon(12%_0,100%_0,100%_100%,0_100%)]">
-            <Image
-              src={data.avatarUrl}
-              alt={data.fullName}
-              fill
-              priority
-              className="object-cover grayscale-15"
-              sizes="(min-width: 768px) 40vw, 100vw"
-            />
-            <div className="absolute inset-0 bg-linear-to-t from-[#101114]/40 via-transparent to-transparent md:bg-linear-to-r md:from-[#101114]/50 md:via-transparent md:to-transparent" />
-          </div>
-        </div>
-      </div>
-    </section>
+      <Footer />
+    </div>
   );
 }
