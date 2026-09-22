@@ -1,33 +1,24 @@
 "use client";
 
-import { motion } from "motion/react";
 export default function MarqueeSection() {
+  const items = [
+    "VIDEO EDITING",
+    "NEXT.JS",
+    "SPRING BOOT",
+    "STORYTELLING",
+    "POSTGRESQL",
+    "MOTION"
+  ];
   return (
-    <section className="relative overflow-hidden border-y border-white/7 bg-[#0E0E11] py-4">
-      <motion.div
-        className="flex w-max items-center whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.3em] text-[#817E77]"
-        animate={{ x: [0, -900] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-      >
-        {[0, 1, 2].map((loop) => (
-          <div key={loop} className="flex items-center">
-            {[
-              "VIDEO EDITING",
-              "NEXT.JS",
-              "SPRING BOOT",
-              "STORYTELLING",
-              "POSTGRESQL",
-              "CREATIVE",
-              "MOTION"
-            ].map((item) => (
-              <span key={`${loop}-${item}`} className="flex items-center">
-                <span className="mx-6 text-[#9BAEFF]">✦</span>
-                {item}
-              </span>
-            ))}
-          </div>
+    <section className="border-y border-white/7 bg-[#0E0E11] px-6 py-4 lg:px-10 xl:px-14">
+      <div className="mx-auto flex w-full max-w-375 flex-wrap items-center justify-center gap-x-7 gap-y-2 font-mono text-[9px] uppercase tracking-[0.24em] text-[#6F6C65]">
+        {items.map((item, i) => (
+          <span key={item} className="flex items-center gap-7">
+            {i > 0 && <span className="text-white/15">/</span>}
+            {item}
+          </span>
         ))}
-      </motion.div>
+      </div>
     </section>
   );
 }
