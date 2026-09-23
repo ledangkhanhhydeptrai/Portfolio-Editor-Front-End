@@ -1,9 +1,6 @@
 "use client";
-
 import Link from "next/link";
 
-import Header from "../layouts/Header";
-import Footer from "../layouts/Footer";
 import React from "react";
 
 /* =========================================================
@@ -265,8 +262,6 @@ const About = () => {
           style={{ width: `${progress * 100}%` }}
         />
       </div>
-
-      <Header />
 
       <main className="overflow-hidden">
         {/* =========================================================
@@ -801,8 +796,6 @@ const About = () => {
           </div>
         </section>
       </main>
-
-      <Footer />
 
       <style jsx>{`
         .marquee-track {

@@ -1,9 +1,10 @@
-import React from 'react'
+import MainLayouts from "@/components/layouts/MainLayout";
+import SkillContainer from "@/features/skill/components/SkillContainer";
 
 export default function SkillPage() {
   return (
-    <div>
-      
-    </div>
-  )
+    <MainLayouts>
+      <SkillContainer />
+    </MainLayouts>
+  );
 }
