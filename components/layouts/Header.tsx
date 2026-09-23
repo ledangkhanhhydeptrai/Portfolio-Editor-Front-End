@@ -19,8 +19,7 @@ const navItems = [
   },
   {
     label: "Dự án",
-    href: "/projects",
-    count: "03"
+    href: "/projects"
   },
   {
     label: "Kinh nghiệm",
@@ -275,18 +274,6 @@ const HeaderContent = ({ pathname }: { pathname: string }) => {
 
                   {/* PROJECT COUNT */}
 
-                  {item.count && (
-                    <span
-                      className={`relative rounded px-1.5 py-0.5 font-mono text-[7px] transition-colors duration-300 ${
-                        active
-                          ? "bg-[#5B7CFA]/20 text-[#8EA5FF]"
-                          : "bg-[#5B7CFA]/10 text-[#8EA5FF] group-hover:bg-[#5B7CFA]/20"
-                      }`}
-                    >
-                      {item.count}
-                    </span>
-                  )}
-
                   {/* ACTIVE */}
 
                   <span
@@ -432,13 +419,6 @@ const HeaderContent = ({ pathname }: { pathname: string }) => {
                         <span className="text-[13px] font-medium">
                           {item.label}
                         </span>
-
-                        {/* PROJECT COUNT */}
-                        {item.count && (
-                          <span className="rounded bg-[#5B7CFA]/10 px-1.5 py-0.5 font-mono text-[7px] text-[#8EA5FF]">
-                            {item.count}
-                          </span>
-                        )}
                       </div>
 
                       <span
