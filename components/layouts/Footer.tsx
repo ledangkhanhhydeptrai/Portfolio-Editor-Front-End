@@ -1,21 +1,22 @@
 import Link from "next/link";
 
 export default function Footer() {
-  const particles = Array.from({ length: 12 }, (_, i) => ({
+  const particles = Array.from({ length: 16 }, (_, i) => ({
     id: i,
-    left: (i * 41) % 100,
-    top: (i * 29) % 100,
-    size: 2 + (i % 2),
-    delay: (i % 5) * 0.8,
-    duration: 7 + (i % 4) * 1.3
+    left: (i * 37) % 100,
+    top: (i * 23) % 100,
+    size: 2 + (i % 3),
+    delay: (i % 6) * 0.7,
+    duration: 6 + (i % 5) * 1.2,
+    tone: i % 3 === 0 ? "#8EA5FF" : "#5B7CFA"
   }));
 
   return (
     <footer className="relative overflow-hidden border-t border-white/[0.07] bg-[#08080A]">
       <style>{`
         @keyframes footerFloat {
-          0%, 100% { transform: translateY(0); opacity: 0.15; }
-          50% { transform: translateY(-14px); opacity: 0.45; }
+          0%, 100% { transform: translateY(0) translateX(0); opacity: 0.15; }
+          50% { transform: translateY(-16px) translateX(4px); opacity: 0.5; }
         }
         @keyframes footerShimmer {
           0% { transform: translateX(-100%); }
@@ -23,7 +24,19 @@ export default function Footer() {
         }
         @keyframes footerGlowPulse {
           0%, 100% { opacity: 0.06; }
-          50% { opacity: 0.14; }
+          50% { opacity: 0.16; }
+        }
+        @keyframes footerGradientDrift {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        .footer-brand-gradient {
+          background: linear-gradient(90deg, #EDECE8, #8EA5FF, #EDECE8);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          animation: footerGradientDrift 7s ease-in-out infinite;
         }
       `}</style>
 
@@ -39,12 +52,16 @@ export default function Footer() {
 
       {/* BACKGROUND GLOW đôi màu */}
       <div
-        className="pointer-events-none absolute -bottom-40 left-1/2 h-64 w-150 -translate-x-1/2 rounded-full bg-[#5B7CFA]/6 blur-[130px]"
+        className="pointer-events-none absolute -bottom-40 left-1/2 h-64 w-150 -translate-x-1/2 rounded-full bg-[#5B7CFA]/8 blur-[130px]"
         style={{ animation: "footerGlowPulse 9s ease-in-out infinite" }}
       />
       <div
-        className="pointer-events-none absolute -top-20 right-0 h-56 w-56 rounded-full bg-[#8EA5FF]/5 blur-[110px]"
+        className="pointer-events-none absolute -top-20 right-0 h-56 w-56 rounded-full bg-[#8EA5FF]/6 blur-[110px]"
         style={{ animation: "footerGlowPulse 11s ease-in-out infinite 2s" }}
+      />
+      <div
+        className="pointer-events-none absolute -top-16 left-10 h-40 w-40 rounded-full bg-[#5B7CFA]/5 blur-[100px]"
+        style={{ animation: "footerGlowPulse 10s ease-in-out infinite 4s" }}
       />
 
       {/* Particles trôi nổi trang trí */}
@@ -52,12 +69,14 @@ export default function Footer() {
         {particles.map((p) => (
           <span
             key={p.id}
-            className="absolute rounded-full bg-[#5B7CFA]"
+            className="absolute rounded-full"
             style={{
               left: `${p.left}%`,
               top: `${p.top}%`,
               width: p.size,
               height: p.size,
+              backgroundColor: p.tone,
+              boxShadow: `0 0 6px ${p.tone}`,
               animation: `footerFloat ${p.duration}s ease-in-out ${p.delay}s infinite`
             }}
           />
@@ -74,13 +93,13 @@ export default function Footer() {
           {/* BRAND */}
           <div>
             <Link href="#home" className="group inline-flex items-center gap-3">
-              <div className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/3 text-[11px] font-bold text-[#EDECE8] transition group-hover:rotate-[8deg] group-hover:border-[#5B7CFA]/40 group-hover:bg-[#5B7CFA]/10">
+              <div className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/3 text-[11px] font-bold text-[#EDECE8] transition duration-300 group-hover:rotate-[8deg] group-hover:border-[#5B7CFA]/40 group-hover:bg-[#5B7CFA]/10">
                 <span className="relative z-10">KH</span>
                 <div className="absolute -bottom-4 -right-4 h-8 w-8 rounded-full bg-[#5B7CFA]/25 blur-lg transition duration-300 group-hover:bg-[#5B7CFA]/45" />
               </div>
 
               <div>
-                <p className="font-['Fraunces'] text-base text-[#EDECE8]">
+                <p className="font-['Fraunces'] text-base footer-brand-gradient">
                   Khánh Hỷ
                 </p>
 
@@ -95,7 +114,7 @@ export default function Footer() {
             </p>
 
             {/* STATUS */}
-            <div className="mt-4 flex items-center gap-2 rounded-full border border-white/6 bg-white/2 px-3 py-1.5 w-fit">
+            <div className="mt-4 flex w-fit items-center gap-2 rounded-full border border-white/6 bg-white/2 px-3 py-1.5 transition-colors duration-300 hover:border-emerald-400/30 hover:bg-emerald-400/5">
               <span className="relative flex h-1.5 w-1.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-30" />
                 <span className="relative h-1.5 w-1.5 rounded-full bg-emerald-400" />
@@ -117,33 +136,33 @@ export default function Footer() {
             <div className="mt-5 grid gap-2.5">
               <a
                 href="#about"
-                className="group flex w-fit items-center gap-1.5 text-xs text-[#8A887F] transition hover:translate-x-1 hover:text-[#EDECE8]"
+                className="group flex w-fit items-center gap-1.5 text-xs text-[#8A887F] transition-all duration-300 hover:translate-x-1 hover:text-[#EDECE8]"
               >
-                <span className="h-px w-0 bg-[#5B7CFA] transition-all duration-300 group-hover:w-2.5" />
+                <span className="h-px w-0 bg-[#5B7CFA] shadow-[0_0_6px_#5B7CFA] transition-all duration-300 group-hover:w-2.5" />
                 Giới thiệu
               </a>
 
               <a
                 href="#skills"
-                className="group flex w-fit items-center gap-1.5 text-xs text-[#8A887F] transition hover:translate-x-1 hover:text-[#EDECE8]"
+                className="group flex w-fit items-center gap-1.5 text-xs text-[#8A887F] transition-all duration-300 hover:translate-x-1 hover:text-[#EDECE8]"
               >
-                <span className="h-px w-0 bg-[#5B7CFA] transition-all duration-300 group-hover:w-2.5" />
+                <span className="h-px w-0 bg-[#5B7CFA] shadow-[0_0_6px_#5B7CFA] transition-all duration-300 group-hover:w-2.5" />
                 Kỹ năng
               </a>
 
               <a
                 href="#projects"
-                className="group flex w-fit items-center gap-1.5 text-xs text-[#8A887F] transition hover:translate-x-1 hover:text-[#EDECE8]"
+                className="group flex w-fit items-center gap-1.5 text-xs text-[#8A887F] transition-all duration-300 hover:translate-x-1 hover:text-[#EDECE8]"
               >
-                <span className="h-px w-0 bg-[#5B7CFA] transition-all duration-300 group-hover:w-2.5" />
+                <span className="h-px w-0 bg-[#5B7CFA] shadow-[0_0_6px_#5B7CFA] transition-all duration-300 group-hover:w-2.5" />
                 Dự án
               </a>
 
               <a
                 href="#experience"
-                className="group flex w-fit items-center gap-1.5 text-xs text-[#8A887F] transition hover:translate-x-1 hover:text-[#EDECE8]"
+                className="group flex w-fit items-center gap-1.5 text-xs text-[#8A887F] transition-all duration-300 hover:translate-x-1 hover:text-[#EDECE8]"
               >
-                <span className="h-px w-0 bg-[#5B7CFA] transition-all duration-300 group-hover:w-2.5" />
+                <span className="h-px w-0 bg-[#5B7CFA] shadow-[0_0_6px_#5B7CFA] transition-all duration-300 group-hover:w-2.5" />
                 Kinh nghiệm
               </a>
             </div>
@@ -161,10 +180,10 @@ export default function Footer() {
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex w-fit items-center gap-2 text-xs text-[#8A887F] transition hover:text-[#EDECE8]"
+                className="group flex w-fit items-center gap-2 text-xs text-[#8A887F] transition-colors duration-300 hover:text-[#EDECE8]"
               >
                 GitHub
-                <span className="text-[9px] transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                <span className="text-[9px] text-[#5B7CFA] transition duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
                   ↗
                 </span>
               </a>
@@ -173,20 +192,20 @@ export default function Footer() {
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex w-fit items-center gap-2 text-xs text-[#8A887F] transition hover:text-[#EDECE8]"
+                className="group flex w-fit items-center gap-2 text-xs text-[#8A887F] transition-colors duration-300 hover:text-[#EDECE8]"
               >
                 LinkedIn
-                <span className="text-[9px] transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                <span className="text-[9px] text-[#5B7CFA] transition duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
                   ↗
                 </span>
               </a>
 
               <a
                 href="mailto:your@email.com"
-                className="group flex w-fit items-center gap-2 text-xs text-[#8A887F] transition hover:text-[#EDECE8]"
+                className="group flex w-fit items-center gap-2 text-xs text-[#8A887F] transition-colors duration-300 hover:text-[#EDECE8]"
               >
                 Email
-                <span className="text-[9px] transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                <span className="text-[9px] text-[#5B7CFA] transition duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
                   ↗
                 </span>
               </a>
@@ -199,7 +218,7 @@ export default function Footer() {
           {/* tia sáng chạy dọc theo đường viền trên */}
           <div className="pointer-events-none absolute inset-x-0 top-0 h-px overflow-hidden">
             <div
-              className="h-full w-1/4 bg-linear-to-r from-transparent via-[#5B7CFA]/70 to-transparent"
+              className="h-full w-1/4 bg-linear-to-r from-transparent via-[#8EA5FF]/80 to-transparent"
               style={{ animation: "footerShimmer 6s linear infinite" }}
             />
           </div>
@@ -215,10 +234,12 @@ export default function Footer() {
 
             <a
               href="#home"
-              className="group flex items-center gap-2 rounded-full border border-white/[0.07] px-3 py-1.5 text-[11px] text-[#77756F] transition hover:border-[#5B7CFA]/40 hover:text-[#EDECE8]"
+              className="group flex items-center gap-2 rounded-full border border-white/[0.07] px-3 py-1.5 text-[11px] text-[#77756F] transition-all duration-300 hover:border-[#5B7CFA]/40 hover:bg-[#5B7CFA]/5 hover:text-[#EDECE8]"
             >
               Lên đầu
-              <span className="transition group-hover:-translate-y-1">↑</span>
+              <span className="transition duration-300 group-hover:-translate-y-1">
+                ↑
+              </span>
             </a>
           </div>
         </div>

@@ -106,67 +106,63 @@ const HeaderContent = ({ pathname }: { pathname: string }) => {
       <header
         className={`fixed left-0 top-0 z-50 w-full border-b backdrop-blur-2xl transition-all duration-500 ${
           scrolled
-            ? "border-white/9 bg-[#0B0B0D]/95 shadow-[0_8px_30px_rgba(0,0,0,0.35)]"
-            : "border-white/7 bg-[#0B0B0D]/80"
+            ? "border-white/9 bg-[#0B0B0D]/95 shadow-[0_8px_30px_rgba(0,0,0,0.4)]"
+            : "border-white/7 bg-[#0B0B0D]/75"
         }`}
       >
         <style>{`
           @keyframes shimmerLine {
-            0% {
-              transform: translateX(-100%);
-            }
-
-            100% {
-              transform: translateX(100%);
-            }
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
           }
 
           @keyframes floatDot {
-            0%,
-            100% {
-              transform: translateY(0);
-              opacity: 0.2;
-            }
-
-            50% {
-              transform: translateY(-4px);
-              opacity: 0.6;
-            }
+            0%, 100% { transform: translateY(0); opacity: 0.2; }
+            50% { transform: translateY(-4px); opacity: 0.6; }
           }
 
           @keyframes logoGlowPulse {
-            0%,
-            100% {
-              opacity: 0.35;
-              transform: scale(1);
-            }
+            0%, 100% { opacity: 0.35; transform: scale(1); }
+            50% { opacity: 0.65; transform: scale(1.18); }
+          }
 
-            50% {
-              opacity: 0.6;
-              transform: scale(1.15);
-            }
+          @keyframes logoRingSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+
+          @keyframes gradientDrift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
           }
 
           @keyframes mobileMenuIn {
-            from {
-              opacity: 0;
-              transform: translateY(-10px) scale(0.98);
-            }
+            from { opacity: 0; transform: translateY(-10px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+          }
 
-            to {
-              opacity: 1;
-              transform: translateY(0) scale(1);
-            }
+          @keyframes mobileItemIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+          }
+
+          .brand-gradient-text {
+            background: linear-gradient(90deg, #EDECE8, #8EA5FF, #EDECE8);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradientDrift 6s ease-in-out infinite;
           }
         `}</style>
 
         {/* =====================================================
-            TOP LIGHT
+            TOP LIGHT — multi-tone shimmer
         ===================================================== */}
 
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px overflow-hidden bg-linear-to-r from-transparent via-[#5B7CFA]/60 to-transparent">
           <div
-            className="h-full w-1/3 bg-linear-to-r from-transparent via-[#8EA5FF] to-transparent"
+            className="h-full w-1/3 bg-linear-to-r from-transparent via-[#8EA5FF] to-[#B9C6FF]"
             style={{
               animation: "shimmerLine 5s linear infinite"
             }}
@@ -185,7 +181,7 @@ const HeaderContent = ({ pathname }: { pathname: string }) => {
         />
 
         <div
-          className="pointer-events-none absolute right-[6%] top-1/2 hidden h-1 w-1 -translate-y-1/2 rounded-full bg-[#5B7CFA] xl:block"
+          className="pointer-events-none absolute right-[6%] top-1/2 hidden h-1 w-1 -translate-y-1/2 rounded-full bg-[#8EA5FF] xl:block"
           style={{
             animation: "floatDot 4s ease-in-out infinite 1.5s"
           }}
@@ -207,24 +203,36 @@ const HeaderContent = ({ pathname }: { pathname: string }) => {
           >
             {/* LOGO */}
 
-            <div className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/4 transition duration-300 group-hover:rotate-[8deg] group-hover:border-[#5B7CFA]/40 group-hover:bg-[#5B7CFA]/10">
-              <span className="relative z-10 text-[11px] font-bold tracking-tight text-[#EDECE8]">
-                KH
-              </span>
-
+            <div className="relative flex h-9 w-9 items-center justify-center">
+              {/* spinning gradient ring */}
               <div
-                className="absolute -bottom-5 -right-5 h-10 w-10 rounded-full bg-[#5B7CFA]/20 blur-xl transition duration-300 group-hover:bg-[#5B7CFA]/40"
+                className="absolute -inset-0.5 rounded-xl opacity-60 transition-opacity duration-300 group-hover:opacity-100"
                 style={{
-                  animation: "logoGlowPulse 3s ease-in-out infinite"
+                  background:
+                    "conic-gradient(from 0deg, #5B7CFA, transparent 30%, transparent 70%, #8EA5FF, #5B7CFA)",
+                  animation: "logoRingSpin 5s linear infinite"
                 }}
               />
+
+              <div className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-[#0B0B0D] transition duration-300 group-hover:rotate-[8deg] group-hover:border-[#5B7CFA]/40">
+                <span className="relative z-10 text-[11px] font-bold tracking-tight text-[#EDECE8]">
+                  KH
+                </span>
+
+                <div
+                  className="absolute -bottom-5 -right-5 h-10 w-10 rounded-full bg-[#5B7CFA]/25 blur-xl transition duration-300 group-hover:bg-[#5B7CFA]/45"
+                  style={{
+                    animation: "logoGlowPulse 3s ease-in-out infinite"
+                  }}
+                />
+              </div>
             </div>
 
             {/* NAME */}
 
             <div className="hidden sm:block">
               <div className="flex items-center gap-2">
-                <p className="font-['Fraunces'] text-sm text-[#EDECE8]">
+                <p className="font-['Fraunces'] text-sm brand-gradient-text">
                   Khánh Hỷ
                 </p>
 
@@ -253,15 +261,15 @@ const HeaderContent = ({ pathname }: { pathname: string }) => {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`group relative flex items-center gap-2 overflow-hidden rounded-lg px-3.5 py-2 text-[11px] font-medium transition duration-300 ${
+                  className={`group relative flex items-center gap-2 overflow-hidden rounded-lg px-3.5 py-2 text-[11px] font-medium transition-all duration-300 ${
                     active
-                      ? "bg-white/2.5 text-[#EDECE8]"
-                      : "text-[#8A887F] hover:bg-white/4 hover:text-[#EDECE8]"
+                      ? "bg-linear-to-r from-[#5B7CFA]/20 to-[#8EA5FF]/10 text-[#EDECE8] shadow-[inset_0_0_0_1px_rgba(91,124,250,0.25)]"
+                      : "text-[#8A887F] hover:bg-white/5 hover:text-[#EDECE8]"
                   }`}
                 >
                   {/* SWEEP */}
 
-                  <span className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/5 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
+                  <span className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/6 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
 
                   <span className="relative">{item.label}</span>
 
@@ -269,10 +277,10 @@ const HeaderContent = ({ pathname }: { pathname: string }) => {
 
                   {item.count && (
                     <span
-                      className={`relative rounded px-1.5 py-0.5 font-mono text-[7px] ${
+                      className={`relative rounded px-1.5 py-0.5 font-mono text-[7px] transition-colors duration-300 ${
                         active
-                          ? "bg-[#5B7CFA]/15 text-[#8EA5FF]"
-                          : "bg-[#5B7CFA]/10 text-[#8EA5FF]"
+                          ? "bg-[#5B7CFA]/20 text-[#8EA5FF]"
+                          : "bg-[#5B7CFA]/10 text-[#8EA5FF] group-hover:bg-[#5B7CFA]/20"
                       }`}
                     >
                       {item.count}
@@ -283,7 +291,7 @@ const HeaderContent = ({ pathname }: { pathname: string }) => {
 
                   <span
                     className={`absolute bottom-1 left-1/2 h-0.5 -translate-x-1/2 rounded-full bg-[#5B7CFA] shadow-[0_0_8px_#5B7CFA] transition-all duration-300 ${
-                      active ? "w-1 opacity-100" : "w-0 opacity-0"
+                      active ? "w-3 opacity-100" : "w-0 opacity-0"
                     }`}
                   />
                 </Link>
@@ -298,7 +306,7 @@ const HeaderContent = ({ pathname }: { pathname: string }) => {
           <div className="flex items-center gap-3">
             {/* STATUS - DESKTOP */}
 
-            <div className="hidden items-center gap-2 lg:flex">
+            <div className="hidden items-center gap-2 rounded-full border border-white/6 bg-white/2 px-3 py-1.5 lg:flex">
               <span className="relative flex h-1.5 w-1.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-40" />
 
@@ -318,13 +326,13 @@ const HeaderContent = ({ pathname }: { pathname: string }) => {
 
             {/* DIVIDER */}
 
-            <div className="hidden h-7 w-px bg-white/8 lg:block" />
+            <div className="hidden h-7 w-px bg-linear-to-b from-transparent via-white/12 to-transparent lg:block" />
 
             {/* CONTACT - TABLET / DESKTOP */}
 
             <Link
               href="/contact"
-              className="group relative hidden items-center gap-2 overflow-hidden rounded-lg bg-[#EDECE8] px-4 py-2 text-[11px] font-semibold text-[#0B0B0D] transition duration-300 hover:scale-[1.03] hover:bg-white sm:flex"
+              className="group relative hidden items-center gap-2 overflow-hidden rounded-lg bg-[#EDECE8] px-4 py-2 text-[11px] font-semibold text-[#0B0B0D] shadow-[0_0_0_0_rgba(91,124,250,0)] transition-all duration-300 hover:scale-[1.03] hover:bg-white hover:shadow-[0_4px_20px_-2px_rgba(91,124,250,0.5)] sm:flex"
             >
               <span className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-[#5B7CFA]/25 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
 
@@ -344,7 +352,11 @@ const HeaderContent = ({ pathname }: { pathname: string }) => {
               aria-label={mobileMenuOpen ? "Đóng menu" : "Mở menu"}
               aria-expanded={mobileMenuOpen}
               onClick={() => setMobileMenuOpen((previous) => !previous)}
-              className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/3 transition hover:border-white/20 hover:bg-white/6 md:hidden"
+              className={`relative flex h-10 w-10 items-center justify-center rounded-xl border transition duration-300 md:hidden ${
+                mobileMenuOpen
+                  ? "border-[#5B7CFA]/40 bg-[#5B7CFA]/10"
+                  : "border-white/10 bg-white/3 hover:border-white/20 hover:bg-white/6"
+              }`}
             >
               <div className="relative h-4 w-5">
                 {/* TOP */}
@@ -397,9 +409,12 @@ const HeaderContent = ({ pathname }: { pathname: string }) => {
                       key={item.href}
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
+                      style={{
+                        animation: `mobileItemIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) ${index * 0.05}s both`
+                      }}
                       className={`group flex w-full items-center justify-between rounded-xl px-4 py-4 transition duration-300 ${
                         active
-                          ? "bg-white/6 text-[#EDECE8]"
+                          ? "bg-linear-to-r from-[#5B7CFA]/15 to-transparent text-[#EDECE8] shadow-[inset_0_0_0_1px_rgba(91,124,250,0.2)]"
                           : "text-[#8A887F] hover:bg-white/[0.035] hover:text-[#EDECE8]"
                       }`}
                     >
@@ -443,10 +458,11 @@ const HeaderContent = ({ pathname }: { pathname: string }) => {
                 <Link
                   href="/contact"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex w-full items-center justify-between rounded-xl bg-[#EDECE8] px-5 py-4 text-[12px] font-semibold text-[#0B0B0D] transition active:scale-[0.99]"
+                  className="group relative flex w-full items-center justify-between overflow-hidden rounded-xl bg-[#EDECE8] px-5 py-4 text-[12px] font-semibold text-[#0B0B0D] transition active:scale-[0.99]"
                 >
-                  <span>Liên hệ</span>
-                  <span>↗</span>
+                  <span className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-[#5B7CFA]/25 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
+                  <span className="relative z-10">Liên hệ</span>
+                  <span className="relative z-10">↗</span>
                 </Link>
 
                 {/* STATUS */}
