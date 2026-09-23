@@ -7,4 +7,5 @@ export interface ProjectProps {
   id: string;
   thumbnailUrl: string;
   title: string;
+  category: string;
 }
