@@ -1,9 +1,10 @@
-import React from 'react'
+import MainLayouts from "@/components/layouts/MainLayout";
+import ProjectContainer from "@/features/project/components/projectContainer";
 
 export default function ProjectPage() {
   return (
-    <div>
-      
-    </div>
-  )
+    <MainLayouts>
+      <ProjectContainer />
+    </MainLayouts>
+  );
 }
