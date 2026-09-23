@@ -230,6 +230,7 @@ export default function HeroPopup({ isOpen, onClose }: HeroPopupProps) {
                   Available soon
                 </p>
               </div>
+              {/* <Hero/> */}
             </div>
           </div>
         </div>
