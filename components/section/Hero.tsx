@@ -6,6 +6,8 @@ import { getProfileRequest } from "../../features/profile/profileSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 
 import { ProfileProps } from "@/features/profile/profileTypes";
+import Loading from "../ui/Loading";
+import ErrorMessage from "../ui/ErrorMessage";
 
 export default function Hero() {
   const dispatch = useAppDispatch();
@@ -45,22 +47,11 @@ export default function Hero() {
   );
 
   if (loading) {
-    return (
-      <section className="flex min-h-screen items-center justify-center bg-[#101114]">
-        <div className="h-10 w-10 animate-spin rounded-full border-2 border-[#3A3833] border-t-[#C77B3D]" />
-      </section>
-    );
+    return <Loading />;
   }
 
   if (error) {
-    return (
-      <section className="flex min-h-screen flex-col items-center justify-center gap-2 bg-[#101114] px-6 text-center">
-        <p className="font-['Space_Grotesk'] text-sm text-[#8F8B84]">
-          Không tải được thông tin
-        </p>
-        <p className="font-['Space_Grotesk'] text-[#EDEAE3]">{error}</p>
-      </section>
-    );
+    return <ErrorMessage />;
   }
 
   if (!profile) {
