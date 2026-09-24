@@ -17,6 +17,8 @@ const ProjectLinks: React.FC<ProjectLinksProps> = ({
         featured ? "mt-10 pt-6" : "mt-6 pt-5"
       }`}
     >
+      {/* DEMO */}
+
       {demoUrl && (
         <a
           href={demoUrl}
@@ -28,12 +30,14 @@ const ProjectLinks: React.FC<ProjectLinksProps> = ({
               : "group/link inline-flex items-center gap-2 text-[11px] text-slate-400 transition-colors hover:text-white"
           }
         >
-          Live Demo
+          Xem Demo
           <span className="transition-transform duration-300 group-hover/demo:translate-x-0.5 group-hover/demo:-translate-y-0.5 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5">
             ↗
           </span>
         </a>
       )}
+
+      {/* GITHUB */}
 
       {githubUrl && (
         <a
@@ -60,10 +64,12 @@ const ProjectLinks: React.FC<ProjectLinksProps> = ({
         </a>
       )}
 
+      {/* NO LINKS */}
+
       {!demoUrl && !githubUrl && (
         <span className="inline-flex items-center gap-2 rounded-xl border border-white/7 bg-white/3 px-4 py-2.5 font-mono text-[8px] uppercase tracking-[0.15em] text-slate-600">
           <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-          Coming Soon
+          Sắp ra mắt
         </span>
       )}
     </div>

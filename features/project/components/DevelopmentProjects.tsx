@@ -32,14 +32,14 @@ const DevelopmentProjects: React.FC<DevelopmentProjectsProps> = ({
         <div>
           <div className="flex items-center gap-3">
             <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-indigo-300">
-              01 / Development
+              01 / Phát triển
             </span>
 
             <span className="h-px w-10 bg-indigo-400/40" />
           </div>
 
           <h2 className="mt-3 text-2xl font-semibold tracking-[-0.03em] text-[#F0EFEA]">
-            Code Projects
+            Dự án lập trình
           </h2>
 
           <p className="mt-2 text-xs leading-6 text-slate-500">
@@ -70,20 +70,10 @@ const DevelopmentProjects: React.FC<DevelopmentProjectsProps> = ({
             >
               {/* =========================================
                     GRID
-
-                    OLD:
-                    lg:grid-cols-[1.15fr_0.85fr]
-                    min-h-115
-
-                    NEW:
-                    image   = smaller
-                    content = larger
                 ========================================= */}
 
               <div className="grid min-h-100 grid-cols-1 lg:grid-cols-[0.85fr_1.15fr]">
-                {/* =====================================
-                      IMAGE
-                  ===================================== */}
+                {/* IMAGE */}
 
                 <div className="relative min-h-65 overflow-hidden bg-[#0B0B10] lg:min-h-full">
                   {project.thumbnailUrl ? (
@@ -118,15 +108,13 @@ const DevelopmentProjects: React.FC<DevelopmentProjectsProps> = ({
                       <span className="h-1.5 w-1.5 rounded-full bg-indigo-400" />
 
                       <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-white/70">
-                        Featured
+                        Nổi bật
                       </span>
                     </span>
                   </div>
                 </div>
 
-                {/* =====================================
-                      CONTENT
-                  ===================================== */}
+                {/* CONTENT */}
 
                 <div className="relative flex flex-col justify-between p-7 sm:p-9 lg:p-10">
                   {/* GLOW */}
@@ -138,7 +126,7 @@ const DevelopmentProjects: React.FC<DevelopmentProjectsProps> = ({
                   <div className="relative">
                     <div className="flex items-center justify-between">
                       <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-slate-600">
-                        Development /
+                        Phát triển /{" "}
                         {String(project.displayOrder).padStart(2, "0")}
                       </p>
 
@@ -178,7 +166,7 @@ const DevelopmentProjects: React.FC<DevelopmentProjectsProps> = ({
 
           <div className="mb-7 flex items-center justify-between">
             <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-slate-600">
-              More Development Work
+              Các dự án khác
             </p>
 
             <span className="font-mono text-[9px] text-slate-700">
@@ -199,9 +187,7 @@ const DevelopmentProjects: React.FC<DevelopmentProjectsProps> = ({
                 }}
                 className="group overflow-hidden rounded-2xl border border-white/7 bg-white/3 transition-all duration-500 hover:-translate-y-1 hover:border-white/15 hover:bg-white/4"
               >
-                {/* =====================================
-                      IMAGE
-                  ===================================== */}
+                {/* IMAGE */}
 
                 <div className="relative aspect-video overflow-hidden bg-[#0B0B10]">
                   {project.thumbnailUrl ? (
@@ -225,13 +211,11 @@ const DevelopmentProjects: React.FC<DevelopmentProjectsProps> = ({
                   </span>
                 </div>
 
-                {/* =====================================
-                      CONTENT
-                  ===================================== */}
+                {/* CONTENT */}
 
                 <div className="p-6">
                   <p className="font-mono text-[8px] uppercase tracking-[0.18em] text-indigo-300/70">
-                    Development
+                    Phát triển
                   </p>
 
                   <h3 className="mt-3 text-lg font-semibold tracking-[-0.02em] text-slate-200 transition-colors duration-300 group-hover:text-white">
@@ -241,8 +225,6 @@ const DevelopmentProjects: React.FC<DevelopmentProjectsProps> = ({
                   <p className="mt-3 line-clamp-3 text-xs leading-6 text-slate-500">
                     {project.description}
                   </p>
-
-                  {/* LINKS */}
 
                   <ProjectLinks
                     demoUrl={project.demoUrl}
@@ -261,8 +243,8 @@ const DevelopmentProjects: React.FC<DevelopmentProjectsProps> = ({
 
       {projects.length === 0 && (
         <EmptyCategory
-          title="No development projects yet."
-          description="Development projects sẽ xuất hiện tại đây khi API có dữ liệu."
+          title="Chưa có dự án phát triển."
+          description="Các dự án phát triển sẽ xuất hiện tại đây khi có dữ liệu."
           accent="indigo"
         />
       )}

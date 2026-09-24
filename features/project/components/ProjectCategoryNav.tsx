@@ -20,30 +20,36 @@ const ProjectCategoryNav: React.FC<ProjectCategoryNavProps> = ({
 
   return (
     <div className="mb-28 grid grid-cols-1 gap-4 md:grid-cols-3">
+      {/* DEVELOPMENT */}
+
       <CategoryButton
         number="01"
-        title="Development"
-        description="Web applications, tools và software projects."
+        title="Phát triển"
+        description="Ứng dụng web, công cụ và các dự án phần mềm."
         count={developmentCount}
         sectionId="development-projects"
         accent="indigo"
         onClick={scrollToSection}
       />
 
+      {/* VIDEO EDITING */}
+
       <CategoryButton
         number="02"
-        title="Video Editing"
-        description="Short-form, product video và visual storytelling."
+        title="Dựng video"
+        description="Video ngắn, video sản phẩm và kể chuyện bằng hình ảnh."
         count={videoCount}
         sectionId="video-projects"
         accent="violet"
         onClick={scrollToSection}
       />
 
+      {/* DRIVING */}
+
       <CategoryButton
         number="03"
-        title="Driving"
-        description="Licensed · Practice next."
+        title="Lái xe"
+        description="Đã có bằng · Đang bổ túc tay lái."
         count={drivingCount}
         sectionId="driving-projects"
         accent="emerald"
@@ -109,11 +115,15 @@ const CategoryButton: React.FC<CategoryButtonProps> = ({
       onClick={() => onClick(sectionId)}
       className={`group relative overflow-hidden rounded-2xl border p-6 text-left transition-all duration-500 hover:-translate-y-1 ${styles.button}`}
     >
+      {/* GLOW */}
+
       <div
         className={`pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full blur-[80px] ${styles.glow}`}
       />
 
       <div className="relative">
+        {/* TOP */}
+
         <div className="flex items-center justify-between">
           <span
             className={`font-mono text-[9px] uppercase tracking-[0.2em] ${styles.text}`}
@@ -125,6 +135,8 @@ const CategoryButton: React.FC<CategoryButtonProps> = ({
             {String(count).padStart(2, "0")}
           </span>
         </div>
+
+        {/* CONTENT */}
 
         <div className="mt-10 flex items-end justify-between">
           <div>
