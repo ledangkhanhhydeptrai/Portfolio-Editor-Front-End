@@ -1,14 +1,17 @@
 "use client";
 
 import React from "react";
+import { useSearchParams } from "next/navigation";
 
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "@/hooks/redux";
 
 import Loading from "@/components/ui/Loading";
 import ErrorMessage from "@/components/ui/ErrorMessage";
 
 import { getSkillRequest } from "../skillSlice";
-
 import type { SkillProps } from "../skillTypes";
 
 import SkillBackground from "../components/SkillBackground";
@@ -16,24 +19,90 @@ import SkillSidebar from "../components/SkillSidebar";
 import SkillCategoryCard from "../components/SkillCategoryCard";
 import SkillEmpty from "../components/SkillEmpty";
 
-import { groupByCategory } from "../utils/skillUtils";
+import {
+  groupByCategory,
+} from "../utils/skillUtils";
+
+// =====================================================
+// SKILL CATEGORIES
+// =====================================================
+
+const SKILL_CATEGORIES = [
+  "VIDEO_EDITING",
+  "DEVELOPMENT",
+  "DRIVING",
+] as const;
+
+type SkillCategory =
+  (typeof SKILL_CATEGORIES)[number];
+
+// =====================================================
+// VALIDATE CATEGORY
+// =====================================================
+
+const isValidCategory = (
+  category: string | null
+): category is SkillCategory => {
+  if (!category) {
+    return false;
+  }
+
+  return SKILL_CATEGORIES.some(
+    (item) =>
+      item === category
+  );
+};
+
+// =====================================================
+// SKILL CONTAINER
+// =====================================================
 
 const SkillContainer: React.FC = () => {
-  const dispatch = useAppDispatch();
+  const dispatch =
+    useAppDispatch();
 
-  const { data, loading, error } = useAppSelector((state) => state.skill);
+  const searchParams =
+    useSearchParams();
 
-  /* =====================================================
-       API
-    ===================================================== */
+  const {
+    data,
+    loading,
+    error,
+  } = useAppSelector(
+    (state) => state.skill
+  );
+
+  // =====================================================
+  // CATEGORY FROM URL
+  // =====================================================
+
+  const categoryParam =
+    searchParams.get(
+      "category"
+    );
+
+  const selectedCategory:
+    | SkillCategory
+    | null =
+    isValidCategory(
+      categoryParam
+    )
+      ? categoryParam
+      : null;
+
+  // =====================================================
+  // API
+  // =====================================================
 
   React.useEffect(() => {
-    dispatch(getSkillRequest());
+    dispatch(
+      getSkillRequest()
+    );
   }, [dispatch]);
 
-  /* =====================================================
-       STATE
-    ===================================================== */
+  // =====================================================
+  // STATE
+  // =====================================================
 
   if (loading) {
     return <Loading />;
@@ -43,20 +112,59 @@ const SkillContainer: React.FC = () => {
     return <ErrorMessage />;
   }
 
-  /* =====================================================
-       DATA
-    ===================================================== */
+  // =====================================================
+  // DATA
+  // =====================================================
 
-  const skills: SkillProps[] = data ?? [];
+  const skills: SkillProps[] =
+    data ?? [];
 
-  const grouped = groupByCategory(skills);
+  // =====================================================
+  // FILTER
+  //
+  // /skills
+  // -> selectedCategory = null
+  // -> hiển thị tất cả
+  //
+  // /skills?category=DEVELOPMENT
+  // -> chỉ DEVELOPMENT
+  //
+  // /skills?category=VIDEO_EDITING
+  // -> chỉ VIDEO_EDITING
+  //
+  // /skills?category=DRIVING
+  // -> chỉ DRIVING
+  // =====================================================
 
-  /* =====================================================
-       SCROLL
-    ===================================================== */
+  const filteredSkills =
+    selectedCategory
+      ? skills.filter(
+          (skill) =>
+            skill.category ===
+            selectedCategory
+        )
+      : skills;
 
-  const scrollToCategory = (category: string) => {
-    const element = document.getElementById(`skill-${category}`);
+  // =====================================================
+  // GROUP
+  // =====================================================
+
+  const grouped =
+    groupByCategory(
+      filteredSkills
+    );
+
+  // =====================================================
+  // SCROLL
+  // =====================================================
+
+  const scrollToCategory = (
+    category: string
+  ) => {
+    const element =
+      document.getElementById(
+        `skill-${category}`
+      );
 
     if (!element) {
       return;
@@ -64,115 +172,143 @@ const SkillContainer: React.FC = () => {
 
     element.scrollIntoView({
       behavior: "smooth",
-      block: "center"
+      block: "center",
     });
   };
 
-  /* =====================================================
-       UI
-    ===================================================== */
+  // =====================================================
+  // UI
+  // =====================================================
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-[#11131B] px-6 py-20 lg:px-10">
-      {/* ANIMATIONS */}
+      {/* =================================================
+          ANIMATIONS
+      ================================================= */}
 
       <style>
         {`
-            @keyframes skillFadeUp {
-              from {
-                opacity: 0;
-                transform: translateY(14px);
-              }
-
-              to {
-                opacity: 1;
-                transform: translateY(0);
-              }
+          @keyframes skillFadeUp {
+            from {
+              opacity: 0;
+              transform:
+                translateY(14px);
             }
 
-            @keyframes skillFadeLeft {
-              from {
-                opacity: 0;
-                transform: translateX(-14px);
-              }
+            to {
+              opacity: 1;
+              transform:
+                translateY(0);
+            }
+          }
 
-              to {
-                opacity: 1;
-                transform: translateX(0);
-              }
+          @keyframes skillFadeLeft {
+            from {
+              opacity: 0;
+              transform:
+                translateX(-14px);
             }
 
-            @keyframes skillBlobDrift {
-              0%,
-              100% {
-                transform:
-                  translate(0, 0)
-                  scale(1);
-              }
+            to {
+              opacity: 1;
+              transform:
+                translateX(0);
+            }
+          }
 
-              50% {
-                transform:
-                  translate(
-                    10px,
-                    12px
-                  )
-                  scale(1.06);
-              }
+          @keyframes skillBlobDrift {
+            0%,
+            100% {
+              transform:
+                translate(
+                  0,
+                  0
+                )
+                scale(1);
             }
 
-            @keyframes skillBlobDriftSide {
-              0%,
-              100% {
-                transform:
-                  translate(0, 0)
-                  scale(1);
+            50% {
+              transform:
+                translate(
+                  10px,
+                  12px
+                )
+                scale(1.06);
+            }
+          }
 
-                opacity: 0.5;
-              }
+          @keyframes skillBlobDriftSide {
+            0%,
+            100% {
+              transform:
+                translate(
+                  0,
+                  0
+                )
+                scale(1);
 
-              50% {
-                transform:
-                  translate(
-                    10px,
-                    -14px
-                  )
-                  scale(1.1);
-
-                opacity: 0.8;
-              }
+              opacity: 0.5;
             }
 
-            @keyframes skillDashTravel {
-              to {
-                stroke-dashoffset:
-                  -200;
-              }
+            50% {
+              transform:
+                translate(
+                  10px,
+                  -14px
+                )
+                scale(1.1);
+
+              opacity: 0.8;
             }
-          `}
+          }
+
+          @keyframes skillDashTravel {
+            to {
+              stroke-dashoffset:
+                -200;
+            }
+          }
+        `}
       </style>
 
-      {/* BACKGROUND */}
+      {/* =================================================
+          BACKGROUND
+      ================================================= */}
 
       <SkillBackground />
 
-      {/* CORNERS */}
+      {/* =================================================
+          CORNERS
+      ================================================= */}
 
       <div className="pointer-events-none absolute left-6 top-6 hidden h-8 w-8 border-l border-t border-white/15 lg:block" />
 
       <div className="pointer-events-none absolute bottom-6 right-6 hidden h-8 w-8 border-b border-r border-white/15 lg:block" />
 
-      {/* CONTENT */}
+      {/* =================================================
+          CONTENT
+      ================================================= */}
 
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-14 lg:grid-cols-[380px_1fr] lg:gap-12">
-        {/* LEFT */}
+        {/* ===============================================
+            LEFT
+        =============================================== */}
 
         <SkillSidebar
-          skills={skills}
-          grouped={grouped}
-          onCategoryClick={scrollToCategory}
+          skills={
+            filteredSkills
+          }
+          grouped={
+            grouped
+          }
+          onCategoryClick={
+            scrollToCategory
+          }
         />
 
-        {/* DIVIDER */}
+        {/* ===============================================
+            DIVIDER
+        =============================================== */}
 
         <svg
           className="pointer-events-none absolute inset-y-0 left-95 ml-6 hidden h-full w-6 xl:block"
@@ -188,24 +324,46 @@ const SkillContainer: React.FC = () => {
             strokeWidth="1"
             strokeDasharray="3 9"
             style={{
-              animation: "skillDashTravel 8s linear infinite"
+              animation:
+                "skillDashTravel 8s linear infinite",
             }}
           />
         </svg>
 
-        {/* RIGHT */}
+        {/* ===============================================
+            RIGHT
+        =============================================== */}
 
-        <div className="columns-1 gap-5 sm:columns-2">
-          {grouped.map(([category, items], index) => (
-            <SkillCategoryCard
-              key={category}
-              category={category}
-              items={items}
-              index={index}
-            />
-          ))}
+        <div className="grid grid-cols-1 items-stretch gap-5 sm:grid-cols-2">
+          {grouped.map(
+            (
+              [
+                category,
+                items,
+              ],
+              index
+            ) => (
+              <SkillCategoryCard
+                key={
+                  category
+                }
+                category={
+                  category
+                }
+                items={
+                  items
+                }
+                index={
+                  index
+                }
+              />
+            )
+          )}
 
-          {grouped.length === 0 && <SkillEmpty />}
+          {grouped.length ===
+            0 && (
+            <SkillEmpty />
+          )}
         </div>
       </div>
     </section>
