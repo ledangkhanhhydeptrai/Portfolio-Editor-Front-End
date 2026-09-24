@@ -20,14 +20,14 @@ const DrivingProjects: React.FC<DrivingProjectsProps> = ({ projects }) => {
         <div>
           <div className="flex items-center gap-3">
             <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-emerald-300">
-              03 / Driving
+              03 / Lái xe
             </span>
 
             <span className="h-px w-10 bg-emerald-400/40" />
           </div>
 
           <h2 className="mt-3 text-2xl font-semibold tracking-[-0.03em] text-[#F0EFEA]">
-            Driving
+            Lái xe
           </h2>
 
           <p className="mt-2 text-xs leading-6 text-slate-500">
@@ -74,7 +74,7 @@ const DrivingProjects: React.FC<DrivingProjectsProps> = ({ projects }) => {
 
               <div className="p-6">
                 <p className="font-mono text-[8px] uppercase tracking-[0.18em] text-emerald-300/70">
-                  Driving
+                  Lái xe
                 </p>
 
                 <h3 className="mt-3 text-lg font-semibold text-[#F0EFEA]">
@@ -99,7 +99,11 @@ const DrivingProjects: React.FC<DrivingProjectsProps> = ({ projects }) => {
         ===================================== */
 
         <div className="relative overflow-hidden rounded-3xl border border-emerald-400/10 bg-emerald-400/3 p-8 sm:p-10">
+          {/* GLOW */}
+
           <div className="pointer-events-none absolute -right-20 -top-20 h-70 w-70 rounded-full bg-emerald-500/7 blur-[110px]" />
+
+          {/* NUMBER */}
 
           <div className="pointer-events-none absolute bottom-0 right-10 font-mono text-[150px] font-bold leading-none text-white/2">
             03
@@ -113,12 +117,12 @@ const DrivingProjects: React.FC<DrivingProjectsProps> = ({ projects }) => {
                 <span className="h-2 w-2 rounded-full bg-emerald-400" />
 
                 <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-emerald-300">
-                  Licensed
+                  Đã có bằng
                 </span>
               </div>
 
               <h3 className="mt-6 text-2xl font-semibold tracking-[-0.03em] text-[#F0EFEA] sm:text-3xl">
-                Driving experience
+                Kinh nghiệm lái xe
               </h3>
 
               <p className="mt-5 text-sm leading-7 text-slate-500">
@@ -136,7 +140,7 @@ const DrivingProjects: React.FC<DrivingProjectsProps> = ({ projects }) => {
 
                 <div className="rounded-xl border border-emerald-400/15 bg-emerald-400/5 p-4">
                   <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-emerald-300">
-                    01 · Done
+                    01 · Hoàn thành
                   </span>
 
                   <p className="mt-2 text-xs text-slate-300">
@@ -148,7 +152,7 @@ const DrivingProjects: React.FC<DrivingProjectsProps> = ({ projects }) => {
 
                 <div className="rounded-xl border border-amber-400/15 bg-amber-400/4 p-4">
                   <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-amber-300">
-                    02 · Current
+                    02 · Hiện tại
                   </span>
 
                   <p className="mt-2 text-xs text-slate-300">Bổ túc tay lái</p>
@@ -158,7 +162,7 @@ const DrivingProjects: React.FC<DrivingProjectsProps> = ({ projects }) => {
 
                 <div className="rounded-xl border border-white/7 bg-white/3 p-4">
                   <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-slate-600">
-                    03 · Next
+                    03 · Tiếp theo
                   </span>
 
                   <p className="mt-2 text-xs text-slate-500">
@@ -179,7 +183,7 @@ const DrivingProjects: React.FC<DrivingProjectsProps> = ({ projects }) => {
               />
 
               <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-emerald-200">
-                Licensed · Practice next
+                Đã có bằng · Đang bổ túc
               </span>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import MainLayouts from "@/components/layouts/MainLayout";
-import SkillContainer from "@/features/skill/components/SkillContainer";
+import SkillContainer from "@/features/skill/container/SkillContainer";
 
 export default function SkillPage() {
   return (

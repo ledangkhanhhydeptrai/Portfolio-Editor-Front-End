@@ -21,19 +21,19 @@ const VideoProjects: React.FC<VideoProjectsProps> = ({ projects }) => {
         <div>
           <div className="flex items-center gap-3">
             <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-violet-300">
-              02 / Video Editing
+              02 / Dựng video
             </span>
 
             <span className="h-px w-10 bg-violet-400/40" />
           </div>
 
           <h2 className="mt-3 text-2xl font-semibold tracking-[-0.03em] text-[#F0EFEA]">
-            Video Projects
+            Dự án dựng video
           </h2>
 
           <p className="mt-2 text-xs leading-6 text-slate-500">
-            Short-form content, product video và những sản phẩm tập trung vào
-            visual storytelling.
+            Nội dung video ngắn, video sản phẩm và những sản phẩm tập trung vào
+            kể chuyện bằng hình ảnh.
           </p>
         </div>
 
@@ -80,7 +80,7 @@ const VideoProjects: React.FC<VideoProjectsProps> = ({ projects }) => {
                     <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
 
                     <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-violet-200">
-                      Featured
+                      Nổi bật
                     </span>
                   </span>
                 )}
@@ -90,7 +90,7 @@ const VideoProjects: React.FC<VideoProjectsProps> = ({ projects }) => {
 
               <div className="p-6">
                 <p className="font-mono text-[8px] uppercase tracking-[0.18em] text-violet-300/70">
-                  Video Editing
+                  Dựng video
                 </p>
 
                 <h3 className="mt-3 text-lg font-semibold text-[#F0EFEA]">
@@ -131,25 +131,25 @@ const VideoProjects: React.FC<VideoProjectsProps> = ({ projects }) => {
               />
 
               <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-violet-300">
-                Portfolio in progress
+                Portfolio đang được cập nhật
               </span>
             </div>
 
             <h3 className="mt-6 text-2xl font-semibold tracking-[-0.03em] text-[#F0EFEA] sm:text-3xl">
-              Video work coming soon.
+              Sản phẩm video sắp được cập nhật.
             </h3>
 
             <p className="mt-5 text-sm leading-7 text-slate-500">
-              Các sản phẩm Video Editing sẽ được cập nhật tại đây, bao gồm
-              short-form content, product video và các bài dựng tập trung vào
-              visual storytelling.
+              Các sản phẩm dựng video sẽ được cập nhật tại đây, bao gồm video
+              ngắn, video sản phẩm và các bài dựng tập trung vào kể chuyện bằng
+              hình ảnh.
             </p>
 
             <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-violet-400/15 bg-violet-400/5 px-4 py-2">
               <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
 
               <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-violet-200">
-                Coming Soon
+                Sắp ra mắt
               </span>
             </div>
           </div>
