@@ -3,19 +3,16 @@ import { SkillProps } from "./skillTypes";
 import { fetchBaseResponse } from "@/config/fetchBaseResponse";
 import { API_CONFIG } from "@/config/api";
 import { AxiosError } from "axios";
+import { HTTP_STATUS } from "@/constants/api";
+import { requestConfig } from "@/config/requestConfig";
 
 export const getSkillAPI = async (): Promise<ApiResponse<SkillProps[]>> => {
   try {
     const response = await fetchBaseResponse<ApiResponse<SkillProps[]>>(
       `${API_CONFIG.ENDPOINTS.SKILLS}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        }
-      }
+      requestConfig("GET")
     );
-    if (response.status !== 200) {
+    if (response.status !== HTTP_STATUS.OK) {
       throw new Error(`HTTP Status:${response.status}`);
     }
     return response.data;

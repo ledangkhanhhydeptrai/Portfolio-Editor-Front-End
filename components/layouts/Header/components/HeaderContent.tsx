@@ -2,7 +2,6 @@
 
 import React from "react";
 import Link from "next/link";
-
 import { useSearchParams } from "next/navigation";
 
 import HeaderAnimations from "./HeaderAnimations";
@@ -18,15 +17,33 @@ interface HeaderContentProps {
 const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
   const searchParams = useSearchParams();
 
+  // =====================================================
+  // STATE
+  // =====================================================
+
   const [scrolled, setScrolled] = React.useState(false);
 
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   const [mobileSkillsOpen, setMobileSkillsOpen] = React.useState(false);
 
+  const [mobileProjectsOpen, setMobileProjectsOpen] = React.useState(false);
+
   const [desktopSkillsOpen, setDesktopSkillsOpen] = React.useState(false);
 
+  const [desktopProjectsOpen, setDesktopProjectsOpen] = React.useState(false);
+
+  // =====================================================
+  // REFS
+  // =====================================================
+
   const desktopSkillsRef = React.useRef<HTMLDivElement>(null);
+
+  const desktopProjectsRef = React.useRef<HTMLDivElement>(null);
+
+  // =====================================================
+  // QUERY
+  // =====================================================
 
   const currentCategory = searchParams.get("category");
 
@@ -79,7 +96,11 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
 
         setMobileSkillsOpen(false);
 
+        setMobileProjectsOpen(false);
+
         setDesktopSkillsOpen(false);
+
+        setDesktopProjectsOpen(false);
       }
     };
 
@@ -96,11 +117,20 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+
       if (
         desktopSkillsRef.current &&
-        !desktopSkillsRef.current.contains(event.target as Node)
+        !desktopSkillsRef.current.contains(target)
       ) {
         setDesktopSkillsOpen(false);
+      }
+
+      if (
+        desktopProjectsRef.current &&
+        !desktopProjectsRef.current.contains(target)
+      ) {
+        setDesktopProjectsOpen(false);
       }
     };
 
@@ -119,7 +149,73 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
     setMobileMenuOpen(false);
 
     setMobileSkillsOpen(false);
+
+    setMobileProjectsOpen(false);
   };
+
+  // =====================================================
+  // DESKTOP SKILLS
+  // =====================================================
+
+  const handleSkillsOpen = () => {
+    setDesktopProjectsOpen(false);
+
+    setDesktopSkillsOpen(true);
+  };
+
+  const handleSkillsClose = () => {
+    setDesktopSkillsOpen(false);
+  };
+
+  const handleSkillsToggle = () => {
+    setDesktopProjectsOpen(false);
+
+    setDesktopSkillsOpen((previous) => !previous);
+  };
+
+  // =====================================================
+  // DESKTOP PROJECTS
+  // =====================================================
+
+  const handleProjectsOpen = () => {
+    setDesktopSkillsOpen(false);
+
+    setDesktopProjectsOpen(true);
+  };
+
+  const handleProjectsClose = () => {
+    setDesktopProjectsOpen(false);
+  };
+
+  const handleProjectsToggle = () => {
+    setDesktopSkillsOpen(false);
+
+    setDesktopProjectsOpen((previous) => !previous);
+  };
+
+  // =====================================================
+  // MOBILE SKILLS
+  // =====================================================
+
+  const handleMobileSkillsToggle = () => {
+    setMobileProjectsOpen(false);
+
+    setMobileSkillsOpen((previous) => !previous);
+  };
+
+  // =====================================================
+  // MOBILE PROJECTS
+  // =====================================================
+
+  const handleMobileProjectsToggle = () => {
+    setMobileSkillsOpen(false);
+
+    setMobileProjectsOpen((previous) => !previous);
+  };
+
+  // =====================================================
+  // UI
+  // =====================================================
 
   return (
     <>
@@ -132,7 +228,9 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
       >
         <HeaderAnimations />
 
-        {/* TOP LIGHT */}
+        {/* =================================================
+            TOP LIGHT
+        ================================================= */}
 
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px overflow-hidden bg-linear-to-r from-transparent via-[#5B7CFA]/60 to-transparent">
           <div
@@ -143,7 +241,9 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
           />
         </div>
 
-        {/* DOTS */}
+        {/* =================================================
+            DOTS
+        ================================================= */}
 
         <div
           className="pointer-events-none absolute left-[6%] top-1/2 hidden h-1 w-1 -translate-y-1/2 rounded-full bg-[#5B7CFA] xl:block"
@@ -159,27 +259,42 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
           }}
         />
 
-        {/* CONTENT */}
+        {/* =================================================
+            CONTENT
+        ================================================= */}
 
         <div className="mx-auto flex h-18 w-full max-w-375 items-center justify-between px-4 sm:px-6 lg:px-10 xl:px-14">
+          {/* BRAND */}
+
           <HeaderBrand onClick={closeMobileMenu} />
+
+          {/* DESKTOP NAVIGATION */}
 
           <DesktopNavigation
             pathname={pathname}
             currentCategory={currentCategory}
             skillsOpen={desktopSkillsOpen}
             skillsRef={desktopSkillsRef}
-            onSkillsOpen={() => setDesktopSkillsOpen(true)}
-            onSkillsClose={() => setDesktopSkillsOpen(false)}
-            onSkillsToggle={() => setDesktopSkillsOpen((previous) => !previous)}
+            onSkillsOpen={handleSkillsOpen}
+            onSkillsClose={handleSkillsClose}
+            onSkillsToggle={handleSkillsToggle}
+            projectsOpen={desktopProjectsOpen}
+            projectsRef={desktopProjectsRef}
+            onProjectsOpen={handleProjectsOpen}
+            onProjectsClose={handleProjectsClose}
+            onProjectsToggle={handleProjectsToggle}
           />
 
-          {/* RIGHT */}
+          {/* =================================================
+              RIGHT
+          ================================================= */}
 
           <div className="flex items-center gap-3">
             <HeaderStatus />
 
             <div className="hidden h-7 w-px bg-linear-to-b from-transparent via-white/12 to-transparent lg:block" />
+
+            {/* CONTACT */}
 
             <Link
               href="/contact"
@@ -194,7 +309,9 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
               </span>
             </Link>
 
-            {/* HAMBURGER */}
+            {/* =================================================
+                HAMBURGER
+            ================================================= */}
 
             <button
               type="button"
@@ -230,20 +347,26 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
           </div>
         </div>
 
-        {/* MOBILE */}
+        {/* =================================================
+            MOBILE
+        ================================================= */}
 
         {mobileMenuOpen && (
           <MobileMenu
             pathname={pathname}
             currentCategory={currentCategory}
             skillsOpen={mobileSkillsOpen}
-            onSkillsToggle={() => setMobileSkillsOpen((previous) => !previous)}
+            onSkillsToggle={handleMobileSkillsToggle}
+            projectsOpen={mobileProjectsOpen}
+            onProjectsToggle={handleMobileProjectsToggle}
             onClose={closeMobileMenu}
           />
         )}
       </header>
 
-      {/* MOBILE BACKDROP */}
+      {/* =====================================================
+          MOBILE BACKDROP
+      ===================================================== */}
 
       {mobileMenuOpen && (
         <button

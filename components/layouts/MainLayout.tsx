@@ -1,13 +1,23 @@
+"use client";
+
 import React from "react";
 
 import Header from "@/components/layouts/Header/Header";
 import Footer from "@/components/layouts/Footer/Footer";
+import HeroPopup from "../popup/HeroPopup";
 
 interface MainLayoutsProps {
   children: React.ReactNode;
 }
 
-export default function MainLayouts({ children }: MainLayoutsProps) {
+export default function MainLayouts({
+  children,
+}: MainLayoutsProps) {
+  const [
+    showHeroPopup,
+    setShowHeroPopup,
+  ] = React.useState<boolean>(false);
+
   return (
     <div className="relative min-h-screen bg-[#111218] text-[#F0EFEA]">
       {/* ================================================
@@ -58,13 +68,40 @@ export default function MainLayouts({ children }: MainLayoutsProps) {
           PAGE
       ================================================= */}
 
-      <main className="relative min-h-screen overflow-hidden">{children}</main>
+      <main className="relative min-h-screen overflow-hidden">
+        {children}
+      </main>
 
       {/* ================================================
           FOOTER
       ================================================= */}
 
       <Footer />
+
+      {/* ================================================
+          PROFILE BUTTON
+      ================================================= */}
+
+      <button
+        type="button"
+        onClick={() =>
+          setShowHeroPopup(true)
+        }
+        className="fixed bottom-6 right-6 z-50 rounded-lg bg-[#6F8CFF] px-5 py-3 text-sm font-medium text-white shadow-[0_10px_35px_rgba(91,124,250,0.25)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#7D97FF]"
+      >
+        Mở Profile
+      </button>
+
+      {/* ================================================
+          HERO POPUP
+      ================================================= */}
+
+      <HeroPopup
+        open={showHeroPopup}
+        onClose={() =>
+          setShowHeroPopup(false)
+        }
+      />
     </div>
   );
 }
