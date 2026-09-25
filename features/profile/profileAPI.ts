@@ -3,6 +3,8 @@ import { ProfileProps } from "./profileTypes";
 import { fetchBaseResponse } from "@/config/fetchBaseResponse";
 import { API_CONFIG } from "@/config/api";
 import { AxiosError } from "axios";
+import { HTTP_STATUS } from "@/constants/api";
+import { requestConfig } from "@/config/requestConfig";
 
 export const getAllProfileAPI = async (): Promise<
   ApiResponse<ProfileProps[]>
@@ -10,19 +12,14 @@ export const getAllProfileAPI = async (): Promise<
   try {
     const response = await fetchBaseResponse<ApiResponse<ProfileProps[]>>(
       `${API_CONFIG.ENDPOINTS.PROFILE}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        }
-      }
+      requestConfig("GET")
     );
     console.log("===== PROFILE DEBUG =====");
     console.log("FULL RESPONSE:", response);
     console.log("RESPONSE STATUS:", response.status);
     console.log("RESPONSE DATA:", response.data);
     console.log("=========================");
-    if (response.status !== 200) {
+    if (response.status !== HTTP_STATUS.OK) {
       throw new Error(`HTTP Status:${response.status}`);
     }
     return response.data;

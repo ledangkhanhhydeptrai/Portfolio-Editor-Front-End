@@ -1,29 +1,52 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 
 import { skillItems } from "./headerData";
 
 import MobileNavLink from "./MobileNavLink";
+import MobileProjectsMenu from "./MobileProjectsMenu";
+
+// =====================================================
+// TYPES
+// =====================================================
 
 interface MobileMenuProps {
   pathname: string;
-
   currentCategory: string | null;
 
+  // SKILLS
   skillsOpen: boolean;
-
   onSkillsToggle: () => void;
+
+  // PROJECTS
+  projectsOpen: boolean;
+  onProjectsToggle: () => void;
 
   onClose: () => void;
 }
 
+// =====================================================
+// COMPONENT
+// =====================================================
+
 const MobileMenu: React.FC<MobileMenuProps> = ({
   pathname,
   currentCategory,
+
   skillsOpen,
   onSkillsToggle,
+
+  projectsOpen,
+  onProjectsToggle,
+
   onClose
 }) => {
+  // =====================================================
+  // ACTIVE
+  // =====================================================
+
   const isActive = (href: string) => {
     if (href === "/") {
       return pathname === "/";
@@ -35,6 +58,10 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   const skillsActive =
     pathname === "/skills" || pathname.startsWith("/skills/");
 
+  // =====================================================
+  // UI
+  // =====================================================
+
   return (
     <div
       className="absolute left-0 top-full w-full border-t border-white/6 bg-[#0B0B0D]/98 backdrop-blur-2xl md:hidden"
@@ -44,6 +71,10 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
     >
       <nav className="max-h-[calc(100vh-72px)] w-full overflow-y-auto px-4 py-4 sm:px-6">
         <div className="space-y-1">
+          {/* =================================================
+              HOME
+          ================================================= */}
+
           <MobileNavLink
             number="01"
             label="Trang chủ"
@@ -52,6 +83,10 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
             onClick={onClose}
             delay={0}
           />
+
+          {/* =================================================
+              ABOUT
+          ================================================= */}
 
           <MobileNavLink
             number="02"
@@ -62,7 +97,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
             delay={0.05}
           />
 
-          {/* SKILLS */}
+          {/* =================================================
+              SKILLS
+          ================================================= */}
 
           <div
             style={{
@@ -70,9 +107,12 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                 "mobileItemIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both"
             }}
           >
+            {/* SKILL TRIGGER */}
+
             <button
               type="button"
               onClick={onSkillsToggle}
+              aria-expanded={skillsOpen}
               className={`group flex w-full items-center justify-between rounded-xl px-4 py-4 transition duration-300 ${
                 skillsActive
                   ? "bg-linear-to-r from-[#5B7CFA]/15 to-transparent text-[#EDECE8] shadow-[inset_0_0_0_1px_rgba(91,124,250,0.2)]"
@@ -112,6 +152,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               </svg>
             </button>
 
+            {/* SKILL CONTENT */}
+
             <div
               className={`grid transition-all duration-300 ${
                 skillsOpen
@@ -136,6 +178,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                             : "border-transparent hover:border-white/7 hover:bg-white/4"
                         }`}
                       >
+                        {/* ICON */}
+
                         <div
                           className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${
                             active
@@ -145,6 +189,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                         >
                           {item.icon}
                         </div>
+
+                        {/* TEXT */}
 
                         <div className="min-w-0 flex-1 text-left">
                           <p
@@ -160,6 +206,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                           </p>
                         </div>
 
+                        {/* ARROW */}
+
                         <span
                           className={`text-xs ${
                             active ? "text-indigo-300" : "text-[#4F5260]"
@@ -170,6 +218,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                       </Link>
                     );
                   })}
+
+                  {/* ALL SKILLS */}
 
                   <Link
                     href="/skills"
@@ -185,14 +235,28 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
             </div>
           </div>
 
-          <MobileNavLink
-            number="04"
-            label="Dự án"
-            href="/projects"
-            active={isActive("/projects")}
-            onClick={onClose}
-            delay={0.15}
-          />
+          {/* =================================================
+              PROJECTS
+          ================================================= */}
+
+          <div
+            style={{
+              animation:
+                "mobileItemIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both"
+            }}
+          >
+            <MobileProjectsMenu
+              pathname={pathname}
+              currentCategory={currentCategory}
+              open={projectsOpen}
+              onToggle={onProjectsToggle}
+              onClose={onClose}
+            />
+          </div>
+
+          {/* =================================================
+              EXPERIENCE
+          ================================================= */}
 
           <MobileNavLink
             number="05"
@@ -204,7 +268,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           />
         </div>
 
-        {/* CONTACT */}
+        {/* =================================================
+            CONTACT
+        ================================================= */}
 
         <div className="mt-4 border-t border-white/7 pt-4">
           <Link
@@ -218,6 +284,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
 
             <span className="relative z-10">↗</span>
           </Link>
+
+          {/* STATUS */}
 
           <div className="mt-5 flex items-center justify-between px-1 pb-1">
             <div className="flex items-center gap-2">

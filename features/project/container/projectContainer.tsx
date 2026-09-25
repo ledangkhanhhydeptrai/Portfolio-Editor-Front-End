@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useSearchParams } from "next/navigation";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 
@@ -15,22 +16,46 @@ import DevelopmentProjects from "../components/DevelopmentProjects";
 import VideoProjects from "../components/VideoProjects";
 import DrivingProjects from "../components/DrivingProjects";
 
+const PROJECT_CATEGORIES = ["DEVELOPMENT", "VIDEO_EDITING", "DRIVING"] as const;
+
+type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];
+
+const isValidCategory = (
+  category: string | null
+): category is ProjectCategory => {
+  if (!category) {
+    return false;
+  }
+
+  return PROJECT_CATEGORIES.some((item) => item === category);
+};
+
 const ProjectContainer: React.FC = () => {
   const dispatch = useAppDispatch();
 
+  const searchParams = useSearchParams();
+
   const { data, loading, error } = useAppSelector((state) => state.project);
 
-  /* =====================================================
-     FETCH
-  ===================================================== */
+  const categoryParam = searchParams.get("category");
+
+  const selectedCategory: ProjectCategory | null = isValidCategory(
+    categoryParam
+  )
+    ? categoryParam
+    : null;
+
+  // =====================================================
+  // FETCH
+  // =====================================================
 
   React.useEffect(() => {
     dispatch(getProjectRequest());
   }, [dispatch]);
 
-  /* =====================================================
-     STATE
-  ===================================================== */
+  // =====================================================
+  // STATE
+  // =====================================================
 
   if (loading) {
     return <Loading />;
@@ -40,9 +65,9 @@ const ProjectContainer: React.FC = () => {
     return <ErrorMessage />;
   }
 
-  /* =====================================================
-     DATA
-  ===================================================== */
+  // =====================================================
+  // DATA
+  // =====================================================
 
   const projects = [...(data ?? [])].sort(
     (a, b) => a.displayOrder - b.displayOrder
@@ -60,27 +85,29 @@ const ProjectContainer: React.FC = () => {
     (project) => project.category === "DRIVING"
   );
 
-  /* =====================================================
-     UI
-  ===================================================== */
+  const visibleProjects = selectedCategory
+    ? projects.filter((project) => project.category === selectedCategory)
+    : projects;
+
+  // =====================================================
+  // UI
+  // =====================================================
 
   return (
     <section className="relative min-h-screen overflow-hidden bg-[#1B1E29] px-6 py-24 lg:px-10">
-      {/* =================================================
-          ANIMATIONS
-      ================================================= */}
-
       <style>
         {`
           @keyframes projectFadeUp {
             from {
               opacity: 0;
-              transform: translateY(20px);
+              transform:
+                translateY(20px);
             }
 
             to {
               opacity: 1;
-              transform: translateY(0);
+              transform:
+                translateY(0);
             }
           }
 
@@ -127,20 +154,12 @@ const ProjectContainer: React.FC = () => {
         `}
       </style>
 
-      {/* =================================================
-          BACKGROUND
-      ================================================= */}
+      {/* BACKGROUND */}
 
       <div className="pointer-events-none absolute inset-0">
-        {/* BASE GRADIENT */}
-
         <div className="absolute inset-0 bg-linear-to-b from-[#252936] via-[#1F222E] to-[#1A1D27]" />
 
-        {/* TOP CENTER LIGHT */}
-
         <div className="absolute -top-70 left-1/2 h-150 w-200 -translate-x-1/2 rounded-full bg-indigo-400/12 blur-[180px]" />
-
-        {/* LEFT INDIGO */}
 
         <div
           className="absolute -left-40 top-40 h-130 w-130 rounded-full bg-indigo-400/12 blur-[160px]"
@@ -149,8 +168,6 @@ const ProjectContainer: React.FC = () => {
           }}
         />
 
-        {/* RIGHT VIOLET */}
-
         <div
           className="absolute -right-40 top-180 h-130 w-130 rounded-full bg-violet-400/10 blur-[160px]"
           style={{
@@ -158,33 +175,19 @@ const ProjectContainer: React.FC = () => {
           }}
         />
 
-        {/* CENTER LIGHT */}
-
         <div className="absolute left-1/2 top-150 h-100 w-180 -translate-x-1/2 rounded-full bg-white/3 blur-[150px]" />
-
-        {/* LOWER BLUE */}
 
         <div className="absolute -bottom-50 left-1/4 h-130 w-130 rounded-full bg-blue-400/7 blur-[160px]" />
 
-        {/* GRID */}
-
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.065)_1px,transparent_0)] bg-size-[30px_30px] mask-[radial-gradient(ellipse_80%_75%_at_50%_20%,#000_20%,transparent_85%)]" />
-
-        {/* TOP SOFT LIGHT */}
 
         <div className="absolute inset-x-0 top-0 h-100 bg-linear-to-b from-white/3 to-transparent" />
       </div>
 
-      {/* =================================================
-          CONTENT
-      ================================================= */}
+      {/* CONTENT */}
 
       <div className="relative mx-auto max-w-7xl">
-        {/* HERO */}
-
-        <ProjectHero totalProjects={projects.length} />
-
-        {/* CATEGORY NAV */}
+        <ProjectHero totalProjects={visibleProjects.length} />
 
         <ProjectCategoryNav
           developmentCount={developmentProjects.length}
@@ -192,21 +195,25 @@ const ProjectContainer: React.FC = () => {
           drivingCount={drivingProjects.length}
         />
 
-        {/* DEVELOPMENT */}
+        {/* ALL / DEVELOPMENT */}
 
-        <DevelopmentProjects projects={developmentProjects} />
+        {(!selectedCategory || selectedCategory === "DEVELOPMENT") && (
+          <DevelopmentProjects projects={developmentProjects} />
+        )}
 
-        {/* VIDEO EDITING */}
+        {/* ALL / VIDEO EDITING */}
 
-        <VideoProjects projects={videoProjects} />
+        {(!selectedCategory || selectedCategory === "VIDEO_EDITING") && (
+          <VideoProjects projects={videoProjects} />
+        )}
 
-        {/* DRIVING */}
+        {/* ALL / DRIVING */}
 
-        <DrivingProjects projects={drivingProjects} />
+        {(!selectedCategory || selectedCategory === "DRIVING") && (
+          <DrivingProjects projects={drivingProjects} />
+        )}
 
-        {/* =================================================
-            FOOTER
-        ================================================= */}
+        {/* FOOTER */}
 
         <div className="mt-32 flex flex-col gap-3 border-t border-white/12 pt-8 sm:flex-row sm:items-center sm:justify-between">
           <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-slate-500">

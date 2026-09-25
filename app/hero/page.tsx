@@ -1,13 +1,8 @@
-import MainLayouts from "@/components/layouts/MainLayout";
-import Hero from "@/components/section/Hero";
+import Hero from "@/components/section/Hero/Hero";
 import React from "react";
 
 const HeroPage: React.FC = () => {
-  return (
-    <MainLayouts>
-      <Hero />
-    </MainLayouts>
-  );
+  return <Hero />;
 };
 
 export default HeroPage;

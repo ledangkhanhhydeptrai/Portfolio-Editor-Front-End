@@ -16,6 +16,14 @@ export const navItems: NavItem[] = [
   {
     label: "Kinh nghiệm",
     href: "/experience"
+  },
+  {
+    label: "Học vấn",
+    href: "/education"
+  },
+  {
+    label: "Kết nối",
+    href: "/social-link"
   }
 ];
 
