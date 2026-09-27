@@ -1,14 +1,12 @@
 "use client";
-
 import React from "react";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-
 import HeaderAnimations from "./HeaderAnimations";
 import HeaderBrand from "./HeaderBrand";
 import HeaderStatus from "./HeaderStatus";
 import DesktopNavigation from "./DesktopNavigation";
 import MobileMenu from "./MobileMenu";
+import ContactPopup from "@/components/popup/ContactPopup";
 
 interface HeaderContentProps {
   pathname: string;
@@ -16,22 +14,25 @@ interface HeaderContentProps {
 
 const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
   const searchParams = useSearchParams();
-
+  const [contactOpen, setContactOpen] = React.useState<boolean>(false);
   // =====================================================
   // STATE
   // =====================================================
 
-  const [scrolled, setScrolled] = React.useState(false);
+  const [scrolled, setScrolled] = React.useState<boolean>(false);
 
-  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState<boolean>(false);
 
-  const [mobileSkillsOpen, setMobileSkillsOpen] = React.useState(false);
+  const [mobileSkillsOpen, setMobileSkillsOpen] =
+    React.useState<boolean>(false);
 
-  const [mobileProjectsOpen, setMobileProjectsOpen] = React.useState(false);
+  const [mobileProjectsOpen, setMobileProjectsOpen] =
+    React.useState<boolean>(false);
 
   const [desktopSkillsOpen, setDesktopSkillsOpen] = React.useState(false);
 
-  const [desktopProjectsOpen, setDesktopProjectsOpen] = React.useState(false);
+  const [desktopProjectsOpen, setDesktopProjectsOpen] =
+    React.useState<boolean>(false);
 
   // =====================================================
   // REFS
@@ -296,8 +297,9 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
 
             {/* CONTACT */}
 
-            <Link
-              href="/contact"
+            <button
+              type="button"
+              onClick={() => setContactOpen(true)}
               className="group relative hidden items-center gap-2 overflow-hidden rounded-lg bg-[#EDECE8] px-4 py-2 text-[11px] font-semibold text-[#0B0B0D] shadow-[0_0_0_0_rgba(91,124,250,0)] transition-all duration-300 hover:scale-[1.03] hover:bg-white hover:shadow-[0_4px_20px_-2px_rgba(91,124,250,0.5)] sm:flex"
             >
               <span className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-[#5B7CFA]/25 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
@@ -307,7 +309,7 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
               <span className="relative z-10 transition duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
                 ↗
               </span>
-            </Link>
+            </button>
 
             {/* =================================================
                 HAMBURGER
@@ -376,6 +378,7 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
           className="fixed inset-0 z-40 bg-black/55 backdrop-blur-[2px] md:hidden"
         />
       )}
+      <ContactPopup open={contactOpen} onClose={() => setContactOpen(false)} />
     </>
   );
 };
