@@ -17,13 +17,13 @@ const ContactIntro: React.FC<ContactIntroProps> = ({
         <span className="h-px w-10 bg-[#8EA5FF]" />
 
         <span className="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.28em] text-[#9BADFF]">
-          Contact
+          Liên hệ
         </span>
       </div>
 
       <h2 className="max-w-150 text-5xl font-semibold leading-[0.95] tracking-tighter sm:text-6xl lg:text-7xl">
-        Let&apos;s create
-        <span className="block text-white/35">something together.</span>
+        Sẵn sàng cho
+        <span className="block text-white/35">hành trình tiếp theo</span>
       </h2>
 
       <p className="mt-7 max-w-135 text-sm leading-7 text-white/55 sm:text-base">
