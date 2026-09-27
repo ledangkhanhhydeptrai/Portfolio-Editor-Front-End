@@ -88,7 +88,7 @@ const ContactCard: React.FC<ContactCardProps> = ({ profile, socialLinks }) => {
         >
           <div>
             <p className="font-['Space_Grotesk'] text-[9px] uppercase tracking-[0.22em] text-white/30">
-              Phone
+              Số điện thoại
             </p>
 
             <p className="mt-2 text-sm text-white/75">{profile.phone}</p>
@@ -100,7 +100,7 @@ const ContactCard: React.FC<ContactCardProps> = ({ profile, socialLinks }) => {
         <div className="flex items-center justify-between gap-5 px-6 py-5 sm:px-8">
           <div>
             <p className="font-['Space_Grotesk'] text-[9px] uppercase tracking-[0.22em] text-white/30">
-              Location
+              Tọa lạc
             </p>
 
             <p className="mt-2 text-sm text-white/75">{profile.location}</p>
@@ -113,7 +113,7 @@ const ContactCard: React.FC<ContactCardProps> = ({ profile, socialLinks }) => {
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
             </span>
 
-            <span className="text-[10px] text-white/35">Available</span>
+            <span className="text-[10px] text-white/35">Đang hoạt động</span>
           </div>
         </div>
       </div>
