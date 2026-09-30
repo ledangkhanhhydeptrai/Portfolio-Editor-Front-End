@@ -27,12 +27,16 @@ const AuthSlice = createSlice({
     createRegisterFailure(state, action: PayloadAction<string>) {
       state.loading = false;
       state.error = action.payload;
+    },
+    clearAuthError: (state) => {
+      state.error = null;
     }
   }
 });
 export const {
   createRegisterRequest,
   createRegisterSuccess,
-  createRegisterFailure
+  createRegisterFailure,
+  clearAuthError
 } = AuthSlice.actions;
 export default AuthSlice.reducer;
