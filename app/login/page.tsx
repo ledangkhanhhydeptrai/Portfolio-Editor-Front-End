@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AuthContainer:React.FC = () => {
+const LoginPage:React.FC = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const AuthContainer:React.FC = () => {
   );
 }
 
-export default AuthContainer;
+export default LoginPage;

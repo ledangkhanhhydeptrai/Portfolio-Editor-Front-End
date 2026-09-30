@@ -9,6 +9,8 @@ export const API_CONFIG = {
     SKILLS: "/public/skill",
     EXPERIENCES: "/public/experience",
     EDUCATIONS: "/public/education",
-    SOCIAL_LINKS: "/public/social_link"
+    SOCIAL_LINKS: "/public/social_link",
+    LOGIN: "/auth/login",
+    REGISTER: "/auth/register"
   }
 } as const;
