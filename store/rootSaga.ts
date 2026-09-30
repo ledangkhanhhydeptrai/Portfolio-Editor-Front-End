@@ -1,3 +1,4 @@
+import AuthSaga from "@/features/auth/authSaga";
 import educationSaga from "@/features/education/educationSaga";
 import ExperienceSaga from "@/features/experience/experienceSaga";
 import profileSaga from "@/features/profile/profileSaga";
@@ -13,6 +14,7 @@ export default function* rootSaga() {
     projectSaga(),
     ExperienceSaga(),
     educationSaga(),
-    LinkSaga()
+    LinkSaga(),
+    AuthSaga()
   ]);
 }
