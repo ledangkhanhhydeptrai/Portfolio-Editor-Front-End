@@ -1,33 +1,41 @@
 import { API_CONFIG } from "@/config/api";
 import { fetchBaseResponse } from "@/config/fetchBaseResponse";
 import { RegisterProps } from "./authTypes";
-import { AxiosError } from "axios";
 
 export const RegisterAPI = async ({
   username,
   email,
-  password
+  password,
 }: RegisterProps) => {
-  const formData = new FormData();
-  formData.append("username", username);
-  formData.append("email", email);
-  formData.append("password", password);
   try {
-    const response = await fetchBaseResponse(
-      `${API_CONFIG.ENDPOINTS.REGISTER}`,
+    const formData = new FormData();
+
+    formData.append("username", username);
+    formData.append("email", email);
+    formData.append("password", password);
+
+    const response = await fetchBaseResponse<null>(
+      API_CONFIG.ENDPOINTS.REGISTER,
       {
         method: "POST",
-        headers: {
-          "Content-Type": "multipart/form-data"
-        },
-        data: formData
+        data: formData,
       }
     );
-    if (response.status !== 200) {
-      throw new Error(`HTTP Status:${response.status}`);
+
+    // Backend trả 400, 401, 409...
+    // fetchBaseResponse đã convert thành response
+    if (response.success === false) {
+      throw new Error(response.message);
     }
-  } catch (error) {
-    const errors = error as AxiosError;
-    throw errors;
+
+    return response;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw error;
+    }
+
+    throw new Error(
+      "Đăng ký thất bại. Vui lòng thử lại."
+    );
   }
 };
