@@ -1,5 +1,4 @@
-import React from "react";
-
+"use client"
 const RegisterContainer = () => {
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#11131B] text-[#F0EFEA]">

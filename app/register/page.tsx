@@ -1,3 +1,4 @@
+"use client"
 import RegisterContainer from "@/features/auth/container/RegisterContainer";
 import React from "react";
 
