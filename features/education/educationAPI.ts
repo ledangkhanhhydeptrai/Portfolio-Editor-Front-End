@@ -11,7 +11,7 @@ export const getAllEducation = async (): Promise<
 > => {
   try {
     const response = await fetchBaseResponse<EducationProps>(
-      `${API_CONFIG.ENDPOINTS.EDUCATIONS}`,
+      `${API_CONFIG.ENDPOINTS.PUBLIC.EDUCATIONS}`,
       requestConfig("GET")
     );
     if (response.status !== HTTP_STATUS.OK) {

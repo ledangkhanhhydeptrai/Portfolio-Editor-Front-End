@@ -4,12 +4,23 @@ export const API_CONFIG = {
   BASE_URL: API_URL ? API_URL.replace(/\/$/, "") : "http://localhost:8080",
 
   ENDPOINTS: {
-    PROFILE: "/public/profile",
-    PROJECTS: "/public/projects",
-    SKILLS: "/public/skill",
-    EXPERIENCES: "/public/experience",
-    EDUCATIONS: "/public/education",
-    SOCIAL_LINKS: "/public/social_link",
+    PUBLIC: {
+      PROFILE: "/public/profile",
+      PROJECTS: "/public/projects",
+      SKILLS: "/public/skill",
+      EXPERIENCES: "/public/experience",
+      EDUCATIONS: "/public/education",
+      SOCIAL_LINKS: "/public/social_link"
+    },
+
+    USER: {
+      PROFILE: "/user/profile",
+      PROJECTS: "/user/projects",
+      SKILLS: "/user/skill",
+      EXPERIENCES: "/user/experience",
+      EDUCATIONS: "/user/education",
+      SOCIAL_LINKS: "/user/social_link"
+    },
     LOGIN: "/auth/login",
     REGISTER: "/auth/register"
   }

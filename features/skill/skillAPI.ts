@@ -9,7 +9,7 @@ import { requestConfig } from "@/config/requestConfig";
 export const getSkillAPI = async (): Promise<ApiResponse<SkillProps[]>> => {
   try {
     const response = await fetchBaseResponse<SkillProps[]>(
-      `${API_CONFIG.ENDPOINTS.SKILLS}`,
+      `${API_CONFIG.ENDPOINTS.PUBLIC.SKILLS}`,
       requestConfig("GET")
     );
     if (response.status !== HTTP_STATUS.OK) {
