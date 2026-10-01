@@ -10,14 +10,14 @@ export const getAllEducation = async (): Promise<
   ApiResponse<EducationProps>
 > => {
   try {
-    const response = await fetchBaseResponse<ApiResponse<EducationProps>>(
+    const response = await fetchBaseResponse<EducationProps>(
       `${API_CONFIG.ENDPOINTS.EDUCATIONS}`,
       requestConfig("GET")
     );
     if (response.status !== HTTP_STATUS.OK) {
       throw new Error(`HTTP Status:${response.status}`);
     }
-    return response.data;
+    return response;
   } catch (error) {
     const errors = error as AxiosError;
     throw errors;

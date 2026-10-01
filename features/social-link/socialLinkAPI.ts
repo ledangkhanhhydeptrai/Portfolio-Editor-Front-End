@@ -10,14 +10,14 @@ export const getAllSocialLink = async (): Promise<
   ApiResponse<SocialLinkProps[]>
 > => {
   try {
-    const response = await fetchBaseResponse<ApiResponse<SocialLinkProps[]>>(
+    const response = await fetchBaseResponse<SocialLinkProps[]>(
       `${API_CONFIG.ENDPOINTS.SOCIAL_LINKS}`,
       requestConfig("GET")
     );
     if (response.status !== HTTP_STATUS.OK) {
       throw new Error(`HTTP Status:${response.status}`);
     }
-    return response.data;
+    return response;
   } catch (error) {
     const errors = error as AxiosError;
     throw errors;

@@ -8,14 +8,14 @@ import { requestConfig } from "@/config/requestConfig";
 
 export const getSkillAPI = async (): Promise<ApiResponse<SkillProps[]>> => {
   try {
-    const response = await fetchBaseResponse<ApiResponse<SkillProps[]>>(
+    const response = await fetchBaseResponse<SkillProps[]>(
       `${API_CONFIG.ENDPOINTS.SKILLS}`,
       requestConfig("GET")
     );
     if (response.status !== HTTP_STATUS.OK) {
       throw new Error(`HTTP Status:${response.status}`);
     }
-    return response.data;
+    return response;
   } catch (error) {
     const errors = error as AxiosError<string>;
     throw errors;
