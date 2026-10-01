@@ -10,14 +10,14 @@ export const ExperienceAPI = async (): Promise<
   ApiResponse<ExperienceProps[]>
 > => {
   try {
-    const response = await fetchBaseResponse<ApiResponse<ExperienceProps[]>>(
+    const response = await fetchBaseResponse<ExperienceProps[]>(
       `${API_CONFIG.ENDPOINTS.EXPERIENCES}`,
       requestConfig("GET")
     );
     if (response.status !== HTTP_STATUS.OK) {
       throw new Error(`HTTP Status:${response.status}`);
     }
-    return response.data;
+    return response;
   } catch (error) {
     const errors = error as AxiosError;
     throw errors;

@@ -10,7 +10,7 @@ export const getAllProfileAPI = async (): Promise<
   ApiResponse<ProfileProps[]>
 > => {
   try {
-    const response = await fetchBaseResponse<ApiResponse<ProfileProps[]>>(
+    const response = await fetchBaseResponse<ProfileProps[]>(
       `${API_CONFIG.ENDPOINTS.PROFILE}`,
       requestConfig("GET")
     );
@@ -22,7 +22,7 @@ export const getAllProfileAPI = async (): Promise<
     if (response.status !== HTTP_STATUS.OK) {
       throw new Error(`HTTP Status:${response.status}`);
     }
-    return response.data;
+    return response;
   } catch (error) {
     const errors = error as AxiosError;
     console.log("Error:", errors);

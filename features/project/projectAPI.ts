@@ -8,14 +8,14 @@ import { requestConfig } from "@/config/requestConfig";
 
 export const getProjectAPI = async (): Promise<ApiResponse<ProjectProps[]>> => {
   try {
-    const response = await fetchBaseResponse<ApiResponse<ProjectProps[]>>(
+    const response = await fetchBaseResponse<ProjectProps[]>(
       `${API_CONFIG.ENDPOINTS.PROJECTS}`,
       requestConfig("GET")
     );
     if (response.status !== HTTP_STATUS.OK) {
       throw new Error(`HTTP Status:${response.status}`);
     }
-    return response.data;
+    return response;
   } catch (error) {
     const errors = error as AxiosError<string>;
     throw errors;

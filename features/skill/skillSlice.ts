@@ -20,6 +20,7 @@ const SkillSlice = createSlice({
       state.error = null;
     },
     getSkillSuccess(state, action: PayloadAction<SkillProps[]>) {
+      console.log("SKILL SUCCESS PAYLOAD:", action.payload);
       state.loading = false;
       state.error = null;
       state.data = action.payload;

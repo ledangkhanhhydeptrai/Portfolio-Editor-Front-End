@@ -3,309 +3,367 @@
 import React from "react";
 import Link from "next/link";
 
-import { skillItems } from "./headerData";
-
-import MobileNavLink from "./MobileNavLink";
-import MobileProjectsMenu from "./MobileProjectsMenu";
-
-// =====================================================
-// TYPES
-// =====================================================
-
 interface MobileMenuProps {
   pathname: string;
   currentCategory: string | null;
 
-  // SKILLS
   skillsOpen: boolean;
   onSkillsToggle: () => void;
 
-  // PROJECTS
   projectsOpen: boolean;
   onProjectsToggle: () => void;
 
   onClose: () => void;
+  onContact: () => void;
 }
-
-// =====================================================
-// COMPONENT
-// =====================================================
 
 const MobileMenu: React.FC<MobileMenuProps> = ({
   pathname,
   currentCategory,
-
   skillsOpen,
   onSkillsToggle,
-
   projectsOpen,
   onProjectsToggle,
-
-  onClose
+  onClose,
+  onContact
 }) => {
   // =====================================================
   // ACTIVE
   // =====================================================
 
-  const isActive = (href: string) => {
-    if (href === "/") {
-      return pathname === "/";
-    }
+  const isHome = pathname === "/" && !currentCategory;
 
-    return pathname === href || pathname.startsWith(`${href}/`);
-  };
+  const isAbout = pathname === "/about";
 
-  const skillsActive =
-    pathname === "/skills" || pathname.startsWith("/skills/");
+  const isSkills = pathname === "/skills";
+
+  const isProjects = pathname === "/projects";
+
+  const isExperience = pathname === "/experience";
 
   // =====================================================
   // UI
   // =====================================================
 
   return (
-    <div
-      className="absolute left-0 top-full w-full border-t border-white/6 bg-[#0B0B0D]/98 backdrop-blur-2xl md:hidden"
-      style={{
-        animation: "mobileMenuIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) both"
-      }}
-    >
-      <nav className="max-h-[calc(100vh-72px)] w-full overflow-y-auto px-4 py-4 sm:px-6">
-        <div className="space-y-1">
-          {/* =================================================
-              HOME
-          ================================================= */}
+    <div className="absolute left-0 top-full z-50 w-full border-b border-white/8 bg-[#0B0B0D]/98 px-4 pb-6 pt-4 shadow-[0_30px_70px_rgba(0,0,0,0.55)] backdrop-blur-2xl md:hidden">
+      {/* ================================================= */}
+      {/* NAVIGATION */}
+      {/* ================================================= */}
 
-          <MobileNavLink
-            number="01"
-            label="Trang chủ"
-            href="/"
-            active={pathname === "/"}
-            onClick={onClose}
-            delay={0}
-          />
+      <nav className="space-y-1">
+        {/* HOME */}
 
-          {/* =================================================
-              ABOUT
-          ================================================= */}
-
-          <MobileNavLink
-            number="02"
-            label="Giới thiệu"
-            href="/about"
-            active={isActive("/about")}
-            onClick={onClose}
-            delay={0.05}
-          />
-
-          {/* =================================================
-              SKILLS
-          ================================================= */}
-
-          <div
-            style={{
-              animation:
-                "mobileItemIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both"
-            }}
-          >
-            {/* SKILL TRIGGER */}
-
-            <button
-              type="button"
-              onClick={onSkillsToggle}
-              aria-expanded={skillsOpen}
-              className={`group flex w-full items-center justify-between rounded-xl px-4 py-4 transition duration-300 ${
-                skillsActive
-                  ? "bg-linear-to-r from-[#5B7CFA]/15 to-transparent text-[#EDECE8] shadow-[inset_0_0_0_1px_rgba(91,124,250,0.2)]"
-                  : "text-[#8A887F] hover:bg-white/4 hover:text-[#EDECE8]"
+        <Link
+          href="/"
+          onClick={onClose}
+          className={`group flex min-h-14 items-center justify-between rounded-xl border px-4 transition-all duration-300 ${
+            isHome
+              ? "border-[#5B7CFA]/30 bg-[#5B7CFA]/8 text-white"
+              : "border-transparent text-white/55 hover:border-white/8 hover:bg-white/3 hover:text-white"
+          }`}
+        >
+          <div className="flex items-center gap-5">
+            <span
+              className={`text-[9px] font-medium ${
+                isHome ? "text-[#8EA5FF]" : "text-white/20"
               }`}
             >
-              <div className="flex items-center gap-4">
-                <span
-                  className={`w-5 font-mono text-[8px] ${
-                    skillsActive ? "text-[#7F96F5]" : "text-[#4C4944]"
-                  }`}
-                >
-                  03
-                </span>
+              01
+            </span>
 
-                <span className="text-[13px] font-medium">Kỹ năng</span>
+            <span className="text-sm font-semibold">Trang chủ</span>
+          </div>
 
-                {skillsActive && (
-                  <span className="h-1 w-1 rounded-full bg-indigo-300 shadow-[0_0_8px_#8EA5FF]" />
-                )}
-              </div>
+          <span
+            className={`text-xs transition-transform duration-300 group-hover:translate-x-1 ${
+              isHome ? "text-[#8EA5FF]" : "text-white/30"
+            }`}
+          >
+            →
+          </span>
+        </Link>
 
-              <svg
-                viewBox="0 0 20 20"
-                fill="none"
-                className={`h-4 w-4 transition-transform duration-300 ${
-                  skillsOpen ? "rotate-180 text-indigo-300" : "text-[#5F5C56]"
+        {/* ABOUT */}
+
+        <Link
+          href="/about"
+          onClick={onClose}
+          className={`group flex min-h-14 items-center justify-between rounded-xl border px-4 transition-all duration-300 ${
+            isAbout
+              ? "border-[#5B7CFA]/30 bg-[#5B7CFA]/8 text-white"
+              : "border-transparent text-white/55 hover:border-white/8 hover:bg-white/3 hover:text-white"
+          }`}
+        >
+          <div className="flex items-center gap-5">
+            <span
+              className={`text-[9px] font-medium ${
+                isAbout ? "text-[#8EA5FF]" : "text-white/20"
+              }`}
+            >
+              02
+            </span>
+
+            <span className="text-sm font-semibold">Giới thiệu</span>
+          </div>
+
+          <span
+            className={`text-xs transition-transform duration-300 group-hover:translate-x-1 ${
+              isAbout ? "text-[#8EA5FF]" : "text-white/30"
+            }`}
+          >
+            →
+          </span>
+        </Link>
+
+        {/* ================================================= */}
+        {/* SKILLS */}
+        {/* ================================================= */}
+
+        <div>
+          <button
+            type="button"
+            onClick={onSkillsToggle}
+            className={`group flex min-h-14 w-full items-center justify-between rounded-xl border px-4 text-left transition-all duration-300 ${
+              isSkills || skillsOpen
+                ? "border-[#5B7CFA]/20 bg-[#5B7CFA]/5 text-white"
+                : "border-transparent text-white/55 hover:border-white/8 hover:bg-white/3 hover:text-white"
+            }`}
+          >
+            <div className="flex items-center gap-5">
+              <span
+                className={`text-[9px] font-medium ${
+                  isSkills || skillsOpen ? "text-[#8EA5FF]" : "text-white/20"
                 }`}
               >
-                <path
-                  d="M6 8L10 12L14 8"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
+                03
+              </span>
 
-            {/* SKILL CONTENT */}
+              <span className="text-sm font-semibold">Kỹ năng</span>
+            </div>
 
-            <div
-              className={`grid transition-all duration-300 ${
-                skillsOpen
-                  ? "grid-rows-[1fr] opacity-100"
-                  : "grid-rows-[0fr] opacity-0"
+            <span
+              className={`text-xs transition-transform duration-300 ${
+                skillsOpen ? "rotate-180 text-[#8EA5FF]" : "text-white/30"
               }`}
             >
-              <div className="overflow-hidden">
-                <div className="ml-9 mt-2 space-y-1 border-l border-white/7 pl-3">
-                  {skillItems.map((item) => {
-                    const active =
-                      skillsActive && currentCategory === item.category;
-
-                    return (
-                      <Link
-                        key={item.category}
-                        href={item.href}
-                        onClick={onClose}
-                        className={`group flex items-center gap-3 rounded-xl border px-3 py-3 transition-all duration-300 ${
-                          active
-                            ? "border-indigo-300/20 bg-indigo-300/8"
-                            : "border-transparent hover:border-white/7 hover:bg-white/4"
-                        }`}
-                      >
-                        {/* ICON */}
-
-                        <div
-                          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${
-                            active
-                              ? "border-indigo-300/20 bg-indigo-300/10 text-indigo-200"
-                              : "border-white/7 bg-white/3 text-[#686B77]"
-                          }`}
-                        >
-                          {item.icon}
-                        </div>
-
-                        {/* TEXT */}
-
-                        <div className="min-w-0 flex-1 text-left">
-                          <p
-                            className={`text-[11px] font-medium ${
-                              active ? "text-[#F0EFEA]" : "text-[#AAA8A1]"
-                            }`}
-                          >
-                            {item.label}
-                          </p>
-
-                          <p className="mt-0.5 text-[8px] text-[#5F5C56]">
-                            {item.description}
-                          </p>
-                        </div>
-
-                        {/* ARROW */}
-
-                        <span
-                          className={`text-xs ${
-                            active ? "text-indigo-300" : "text-[#4F5260]"
-                          }`}
-                        >
-                          →
-                        </span>
-                      </Link>
-                    );
-                  })}
-
-                  {/* ALL SKILLS */}
-
-                  <Link
-                    href="/skills"
-                    onClick={onClose}
-                    className="flex items-center justify-between px-3 py-3 text-[9px] text-[#68655E] transition hover:text-indigo-200"
-                  >
-                    <span>Xem tất cả</span>
-
-                    <span>→</span>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* =================================================
-              PROJECTS
-          ================================================= */}
-
-          <div
-            style={{
-              animation:
-                "mobileItemIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both"
-            }}
-          >
-            <MobileProjectsMenu
-              pathname={pathname}
-              currentCategory={currentCategory}
-              open={projectsOpen}
-              onToggle={onProjectsToggle}
-              onClose={onClose}
-            />
-          </div>
-
-          {/* =================================================
-              EXPERIENCE
-          ================================================= */}
-
-          <MobileNavLink
-            number="05"
-            label="Kinh nghiệm"
-            href="/experience"
-            active={isActive("/experience")}
-            onClick={onClose}
-            delay={0.2}
-          />
-        </div>
-
-        {/* =================================================
-            CONTACT
-        ================================================= */}
-
-        <div className="mt-4 border-t border-white/7 pt-4">
-          <Link
-            href="/contact"
-            onClick={onClose}
-            className="group relative flex w-full items-center justify-between overflow-hidden rounded-xl bg-[#EDECE8] px-5 py-4 text-[12px] font-semibold text-[#0B0B0D] transition active:scale-[0.99]"
-          >
-            <span className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-[#5B7CFA]/25 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
-
-            <span className="relative z-10">Liên hệ</span>
-
-            <span className="relative z-10">↗</span>
-          </Link>
-
-          {/* STATUS */}
-
-          <div className="mt-5 flex items-center justify-between px-1 pb-1">
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-40" />
-
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              </span>
-
-              <span className="font-mono text-[8px] uppercase tracking-[0.14em] text-[#68655E]">
-                Sẵn sàng nhận cơ hội mới
-              </span>
-            </div>
-
-            <span className="font-mono text-[7px] uppercase tracking-[0.14em] text-[#44413D]">
-              2026
+              ↓
             </span>
-          </div>
+          </button>
+
+          {skillsOpen && (
+            <div className="mx-4 mb-2 mt-1 overflow-hidden rounded-xl border border-white/7 bg-white/2">
+              <Link
+                href="/skills?category=DEVELOPMENT"
+                onClick={onClose}
+                className="flex items-center justify-between border-b border-white/6 px-4 py-3 text-xs text-white/45 transition hover:bg-white/4 hover:text-white"
+              >
+                <span>Development</span>
+
+                <span className="text-white/20">→</span>
+              </Link>
+
+              <Link
+                href="/skills?category=VIDEO_EDITING"
+                onClick={onClose}
+                className="flex items-center justify-between border-b border-white/6 px-4 py-3 text-xs text-white/45 transition hover:bg-white/4 hover:text-white"
+              >
+                <span>Video Editing</span>
+
+                <span className="text-white/20">→</span>
+              </Link>
+
+              <Link
+                href="/skills?category=DRIVING"
+                onClick={onClose}
+                className="flex items-center justify-between px-4 py-3 text-xs text-white/45 transition hover:bg-white/4 hover:text-white"
+              >
+                <span>Driving</span>
+
+                <span className="text-white/20">→</span>
+              </Link>
+            </div>
+          )}
         </div>
+
+        {/* ================================================= */}
+        {/* PROJECTS */}
+        {/* ================================================= */}
+
+        <div>
+          <button
+            type="button"
+            onClick={onProjectsToggle}
+            className={`group flex min-h-14 w-full items-center justify-between rounded-xl border px-4 text-left transition-all duration-300 ${
+              isProjects || projectsOpen
+                ? "border-[#5B7CFA]/20 bg-[#5B7CFA]/5 text-white"
+                : "border-transparent text-white/55 hover:border-white/8 hover:bg-white/3 hover:text-white"
+            }`}
+          >
+            <div className="flex items-center gap-5">
+              <span
+                className={`text-[9px] font-medium ${
+                  isProjects || projectsOpen
+                    ? "text-[#8EA5FF]"
+                    : "text-white/20"
+                }`}
+              >
+                04
+              </span>
+
+              <span className="text-sm font-semibold">Dự án</span>
+            </div>
+
+            <span
+              className={`text-xs transition-transform duration-300 ${
+                projectsOpen ? "rotate-180 text-[#8EA5FF]" : "text-white/30"
+              }`}
+            >
+              ↓
+            </span>
+          </button>
+
+          {projectsOpen && (
+            <div className="mx-4 mb-2 mt-1 overflow-hidden rounded-xl border border-white/7 bg-white/2">
+              <Link
+                href="/projects?category=DEVELOPMENT"
+                onClick={onClose}
+                className="flex items-center justify-between border-b border-white/6 px-4 py-3 text-xs text-white/45 transition hover:bg-white/4 hover:text-white"
+              >
+                <span>Development</span>
+
+                <span className="text-white/20">→</span>
+              </Link>
+
+              <Link
+                href="/projects?category=VIDEO_EDITING"
+                onClick={onClose}
+                className="flex items-center justify-between border-b border-white/6 px-4 py-3 text-xs text-white/45 transition hover:bg-white/4 hover:text-white"
+              >
+                <span>Video Editing</span>
+
+                <span className="text-white/20">→</span>
+              </Link>
+
+              <Link
+                href="/projects?category=DRIVING"
+                onClick={onClose}
+                className="flex items-center justify-between px-4 py-3 text-xs text-white/45 transition hover:bg-white/4 hover:text-white"
+              >
+                <span>Driving</span>
+
+                <span className="text-white/20">→</span>
+              </Link>
+            </div>
+          )}
+        </div>
+
+        {/* EXPERIENCE */}
+
+        <Link
+          href="/experience"
+          onClick={onClose}
+          className={`group flex min-h-14 items-center justify-between rounded-xl border px-4 transition-all duration-300 ${
+            isExperience
+              ? "border-[#5B7CFA]/30 bg-[#5B7CFA]/8 text-white"
+              : "border-transparent text-white/55 hover:border-white/8 hover:bg-white/3 hover:text-white"
+          }`}
+        >
+          <div className="flex items-center gap-5">
+            <span
+              className={`text-[9px] font-medium ${
+                isExperience ? "text-[#8EA5FF]" : "text-white/20"
+              }`}
+            >
+              05
+            </span>
+
+            <span className="text-sm font-semibold">Kinh nghiệm</span>
+          </div>
+
+          <span
+            className={`text-xs transition-transform duration-300 group-hover:translate-x-1 ${
+              isExperience ? "text-[#8EA5FF]" : "text-white/30"
+            }`}
+          >
+            →
+          </span>
+        </Link>
       </nav>
+
+      {/* ================================================= */}
+      {/* DIVIDER */}
+      {/* ================================================= */}
+
+      <div className="my-4 h-px w-full bg-linear-to-r from-transparent via-white/10 to-transparent" />
+
+      {/* ================================================= */}
+      {/* AUTH */}
+      {/* ================================================= */}
+
+      <div className="grid grid-cols-2 gap-3">
+        {/* LOGIN */}
+
+        <Link
+          href="/login"
+          onClick={onClose}
+          className="group relative flex h-13 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/3 text-xs font-semibold text-white/70 transition-all duration-300 hover:border-[#8EA5FF]/35 hover:bg-[#8EA5FF]/8 hover:text-white active:scale-[0.98]"
+        >
+          <span className="pointer-events-none absolute inset-0 translate-y-full bg-linear-to-t from-[#5B7CFA]/10 to-transparent transition-transform duration-300 group-hover:translate-y-0" />
+
+          <span className="relative z-10">Đăng nhập</span>
+        </Link>
+
+        {/* REGISTER */}
+
+        <Link
+          href="/register"
+          onClick={onClose}
+          className="group relative flex h-13 items-center justify-center gap-2 overflow-hidden rounded-xl bg-[#8EA5FF] text-xs font-semibold text-[#0B0B0D] shadow-[0_0_0_0_rgba(142,165,255,0)] transition-all duration-300 hover:bg-[#A7B7FF] hover:shadow-[0_4px_22px_-4px_rgba(142,165,255,0.45)] active:scale-[0.98]"
+        >
+          <span className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/25 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
+
+          <span className="relative z-10">Đăng ký</span>
+
+          <span className="relative z-10 transition-transform duration-300 group-hover:translate-x-0.5">
+            →
+          </span>
+        </Link>
+      </div>
+
+      {/* ================================================= */}
+      {/* CONTACT */}
+      {/* ================================================= */}
+
+      <button
+        type="button"
+        onClick={onContact}
+        className="group relative mt-3 flex h-14 w-full items-center justify-between overflow-hidden rounded-xl bg-[#EDECE8] px-5 text-xs font-semibold text-[#0B0B0D] transition-all duration-300 hover:bg-white active:scale-[0.99]"
+      >
+        <span className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-[#5B7CFA]/25 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
+
+        <span className="relative z-10">Liên hệ</span>
+
+        <span className="relative z-10 transition duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+          ↗
+        </span>
+      </button>
+
+      {/* ================================================= */}
+      {/* BOTTOM */}
+      {/* ================================================= */}
+
+      <div className="mt-5 flex items-center justify-between px-1">
+        <div className="flex items-center gap-2">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+
+          <span className="text-[8px] font-medium uppercase tracking-[0.25em] text-white/25">
+            Sẵn sàng nhận cơ hội mới
+          </span>
+        </div>
+
+        <span className="text-[8px] tracking-[0.2em] text-white/15">2026</span>
+      </div>
     </div>
   );
 };

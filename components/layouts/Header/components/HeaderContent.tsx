@@ -1,11 +1,15 @@
 "use client";
+
 import React from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+
 import HeaderAnimations from "./HeaderAnimations";
 import HeaderBrand from "./HeaderBrand";
 import HeaderStatus from "./HeaderStatus";
 import DesktopNavigation from "./DesktopNavigation";
 import MobileMenu from "./MobileMenu";
+
 import ContactPopup from "@/components/popup/ContactPopup";
 
 interface HeaderContentProps {
@@ -14,7 +18,9 @@ interface HeaderContentProps {
 
 const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
   const searchParams = useSearchParams();
+
   const [contactOpen, setContactOpen] = React.useState<boolean>(false);
+
   // =====================================================
   // STATE
   // =====================================================
@@ -29,7 +35,8 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
   const [mobileProjectsOpen, setMobileProjectsOpen] =
     React.useState<boolean>(false);
 
-  const [desktopSkillsOpen, setDesktopSkillsOpen] = React.useState(false);
+  const [desktopSkillsOpen, setDesktopSkillsOpen] =
+    React.useState<boolean>(false);
 
   const [desktopProjectsOpen, setDesktopProjectsOpen] =
     React.useState<boolean>(false);
@@ -94,13 +101,9 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setMobileMenuOpen(false);
-
         setMobileSkillsOpen(false);
-
         setMobileProjectsOpen(false);
-
         setDesktopSkillsOpen(false);
-
         setDesktopProjectsOpen(false);
       }
     };
@@ -148,10 +151,17 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
 
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
-
     setMobileSkillsOpen(false);
-
     setMobileProjectsOpen(false);
+  };
+
+  // =====================================================
+  // CONTACT
+  // =====================================================
+
+  const handleMobileContact = () => {
+    closeMobileMenu();
+    setContactOpen(true);
   };
 
   // =====================================================
@@ -160,7 +170,6 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
 
   const handleSkillsOpen = () => {
     setDesktopProjectsOpen(false);
-
     setDesktopSkillsOpen(true);
   };
 
@@ -180,7 +189,6 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
 
   const handleProjectsOpen = () => {
     setDesktopSkillsOpen(false);
-
     setDesktopProjectsOpen(true);
   };
 
@@ -290,12 +298,46 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
               RIGHT
           ================================================= */}
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <HeaderStatus />
 
             <div className="hidden h-7 w-px bg-linear-to-b from-transparent via-white/12 to-transparent lg:block" />
 
-            {/* CONTACT */}
+            {/* =================================================
+                AUTH DESKTOP
+            ================================================= */}
+
+            <div className="hidden items-center gap-2 lg:flex">
+              {/* LOGIN */}
+
+              <Link
+                href="/login"
+                className="group relative flex h-9 items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-white/3 px-4 text-[11px] font-semibold text-white/65 transition-all duration-300 hover:border-[#8EA5FF]/35 hover:bg-[#8EA5FF]/8 hover:text-white"
+              >
+                <span className="pointer-events-none absolute inset-0 translate-y-full bg-linear-to-t from-[#5B7CFA]/10 to-transparent transition-transform duration-300 group-hover:translate-y-0" />
+
+                <span className="relative z-10">Đăng nhập</span>
+              </Link>
+
+              {/* REGISTER */}
+
+              <Link
+                href="/register"
+                className="group relative flex h-9 items-center justify-center gap-2 overflow-hidden rounded-lg bg-[#8EA5FF] px-4 text-[11px] font-semibold text-[#0B0B0D] shadow-[0_0_0_0_rgba(142,165,255,0)] transition-all duration-300 hover:scale-[1.03] hover:bg-[#A7B7FF] hover:shadow-[0_4px_22px_-4px_rgba(142,165,255,0.55)]"
+              >
+                <span className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/25 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
+
+                <span className="relative z-10">Đăng ký</span>
+
+                <span className="relative z-10 transition-transform duration-300 group-hover:translate-x-0.5">
+                  →
+                </span>
+              </Link>
+            </div>
+
+            {/* =================================================
+                CONTACT
+            ================================================= */}
 
             <button
               type="button"
@@ -350,7 +392,7 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
         </div>
 
         {/* =================================================
-            MOBILE
+            MOBILE MENU
         ================================================= */}
 
         {mobileMenuOpen && (
@@ -362,6 +404,7 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
             projectsOpen={mobileProjectsOpen}
             onProjectsToggle={handleMobileProjectsToggle}
             onClose={closeMobileMenu}
+            onContact={handleMobileContact}
           />
         )}
       </header>
@@ -378,6 +421,11 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
           className="fixed inset-0 z-40 bg-black/55 backdrop-blur-[2px] md:hidden"
         />
       )}
+
+      {/* =====================================================
+          CONTACT POPUP
+      ===================================================== */}
+
       <ContactPopup open={contactOpen} onClose={() => setContactOpen(false)} />
     </>
   );
