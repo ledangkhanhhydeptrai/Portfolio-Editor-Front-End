@@ -1,7 +1,9 @@
+"use client"
+import LoginContainer from "@/features/auth/container/LoginContainer";
 import React from "react";
 
 const LoginPage: React.FC = () => {
-  return <div></div>;
+  return <LoginContainer />;
 };
 
 export default LoginPage;
