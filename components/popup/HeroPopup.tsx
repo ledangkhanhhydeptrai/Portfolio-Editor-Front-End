@@ -74,7 +74,22 @@ const HeroPopup: React.FC<HeroPopupProps> = ({ open, onClose }) => {
           TOP BAR
       ================================================= */}
 
-      <div className="pointer-events-none absolute left-0 right-0 top-0 z-50 flex items-center justify-between px-6 py-5 lg:px-10">
+      <div
+        className="pointer-events-none
+    absolute
+    left-0
+    right-0
+    top-0
+    z-50
+    flex
+    items-center
+    justify-between
+    px-6
+    py-5
+
+    lg:pl-10
+    lg:pr-5"
+      >
         <div className="pointer-events-auto flex items-center gap-3">
           <span className="h-1.5 w-1.5 rounded-full bg-indigo-300" />
 
@@ -87,9 +102,30 @@ const HeroPopup: React.FC<HeroPopupProps> = ({ open, onClose }) => {
           type="button"
           onClick={onClose}
           aria-label="Đóng"
-          className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-[#1B1E29]/90 text-slate-400 shadow-xl backdrop-blur-xl transition-all duration-300 hover:rotate-90 hover:border-indigo-300/30 hover:bg-[#252936] hover:text-white"
+          className="
+    pointer-events-auto
+    flex
+    h-9
+    w-9
+    items-center
+    justify-center
+    rounded-full
+    border
+    border-white/10
+    bg-[#1B1E29]/80
+    text-slate-500
+    shadow-lg
+    backdrop-blur-xl
+    transition-all
+    duration-300
+
+    hover:rotate-90
+    hover:border-indigo-300/30
+    hover:bg-[#252936]
+    hover:text-white
+  "
         >
-          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4">
+          <svg viewBox="0 0 24 24" fill="none" className="h-3 w-3">
             <path
               d="M6 6L18 18M18 6L6 18"
               stroke="currentColor"

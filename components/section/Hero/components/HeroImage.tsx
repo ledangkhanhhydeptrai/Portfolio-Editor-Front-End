@@ -11,348 +11,126 @@ interface HeroImageProps {
 
 const HeroImage: React.FC<HeroImageProps> = ({ profile }) => {
   return (
-    <div
-      className="
-        relative
-        order-2
-        flex
-        w-full
-        min-w-0
-        items-center
-        justify-center
-      "
-    >
-      {/* BACKGROUND GLOW */}
+    <div className="relative order-2 w-full min-w-0 md:-translate-y-8 lg:-translate-y-10">
+      <div className="hero-image-enter relative flex w-full min-w-0 items-center justify-center md:justify-end">
+        {/* GLOW */}
 
-      <div
-        className="
-          pointer-events-none
-          absolute
-          -right-12
-          bottom-0
-          h-60
-          w-44
-          rounded-full
-          bg-[#C77B3D]/18
-          blur-[100px]
+        <div className="pointer-events-none absolute top-1/2 left-1/2 h-[85%] w-[85%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#7189FF]/12 blur-[100px]" />
 
-          md:-right-10
-          md:h-60
-          md:w-40
-        "
-      />
+        {/* OUTER FRAME */}
 
-      <div
-        className="
-          pointer-events-none
-          absolute
-          -left-10
-          top-1/3
-          h-44
-          w-44
-          rounded-full
-          bg-[#3A6B7A]/16
-          blur-[90px]
+        <div className="relative w-full max-w-125 p-2 sm:p-3 md:max-w-110">
+          {/* INDEX */}
 
-          md:-left-6
-          md:h-40
-          md:w-40
-        "
-      />
+          <div className="absolute -top-7 -right-1 z-20 hidden items-center gap-3 sm:flex">
+            <span className="h-px w-8 bg-[#8EA5FF]/40" />
 
-      {/* DECORATIVE NUMBER */}
-
-      <span
-        className="
-          pointer-events-none
-          absolute
-          -right-1
-          -top-7
-          hidden
-          select-none
-          font-['Fraunces']
-          text-7xl
-          italic
-          text-white/3
-
-          sm:block
-
-          md:hidden
-        "
-      >
-        01
-      </span>
-
-      {/* IMAGE FRAME */}
-
-      <div
-        className="
-          relative
-          aspect-16/10
-          w-full
-          overflow-hidden
-          rounded-[18px]
-          border
-          border-white/10
-          bg-[#111114]
-          shadow-[0_30px_80px_-35px_rgba(0,0,0,0.9)]
-
-          sm:aspect-video
-          sm:rounded-[22px]
-
-          md:aspect-auto
-          md:h-125
-          md:max-w-105
-          md:rounded-3xl
-        "
-        style={{
-          animation: "frameGlowPulse 6s ease-in-out infinite"
-        }}
-      >
-        {/* IMAGE */}
-
-        {profile.avatarUrl && profile.avatarUrl.trim() !== "" ? (
-          <Image
-            src={profile.avatarUrl}
-            alt={profile.fullName || "Profile Photo"}
-            fill
-            priority
-            sizes="(max-width: 640px) 90vw, (max-width: 768px) 90vw, 420px"
-            className="object-cover object-center transition-transform duration-700 hover:scale-105"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center bg-[#151619]">
-            <span className="font-['Fraunces'] text-7xl font-light text-white/5 sm:text-8xl">
-              {profile.fullName ? profile.fullName.charAt(0) : "P"}
+            <span className="font-['Space_Grotesk'] text-[9px] tracking-[0.22em] text-white/25 uppercase">
+              01 / Profile
             </span>
           </div>
-        )}
 
-        {/* DARK OVERLAY */}
+          {/* FRAME LINE */}
 
-        <div
-          className="
-            pointer-events-none
-            absolute
-            inset-0
-            bg-linear-to-t
-            from-[#101114]/75
-            via-transparent
-            to-[#101114]/5
-          "
-        />
+          <div className="pointer-events-none absolute inset-0 rounded-[28px] border border-[#8EA5FF]/15" />
 
-        {/* COLOR OVERLAY */}
+          <div className="pointer-events-none absolute -inset-2 rounded-[34px] border border-white/4" />
 
-        <div className="pointer-events-none absolute inset-0 bg-[#C77B3D]/5 mix-blend-color" />
+          {/* IMAGE */}
 
-        {/* GRID */}
-
-        <div
-          className="
-            pointer-events-none
-            absolute
-            inset-0
-            opacity-[0.05]
-          "
-          style={{
-            backgroundImage:
-              "linear-gradient(#EDEAE3 1px, transparent 1px), linear-gradient(90deg, #EDEAE3 1px, transparent 1px)",
-            backgroundSize: "36px 36px"
-          }}
-        />
-
-        {/* TOP LEFT DECORATION */}
-
-        <div className="pointer-events-none absolute left-4 top-4 flex items-center gap-2 sm:left-5 sm:top-5">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#C77B3D]" />
-
-          <span className="font-['Space_Grotesk'] text-[7px] uppercase tracking-[0.22em] text-[#EDEAE3]/60 sm:text-[8px]">
-            Profile / Visual
-          </span>
-        </div>
-
-        {/* JOB BADGE - DESKTOP */}
-
-        {profile.jobTitle && (
-          <div
-            className="
-              pointer-events-none
-              absolute
-              right-4
-              top-4
-              hidden
-              max-w-[85%]
-              items-center
-              gap-2
-              rounded-full
-              border
-              border-[#C77B3D]/30
-              bg-[#101114]/90
-              px-3
-              py-2
-              shadow-lg
-              backdrop-blur-md
-
-              md:flex
-            "
-            style={{
-              animation: "badgeFloat 5s ease-in-out infinite"
-            }}
-          >
-            <span className="relative flex h-1.5 w-1.5 shrink-0">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3A6B7A] opacity-60" />
-
-              <span className="relative h-1.5 w-1.5 rounded-full bg-[#3A6B7A]" />
-            </span>
-
-            <span className="truncate font-['Space_Grotesk'] text-[8px] uppercase tracking-[0.16em] text-[#EDEAE3]">
-              {profile.jobTitle}
-            </span>
-          </div>
-        )}
-
-        {/* LOCATION - DESKTOP */}
-
-        {profile.location && (
-          <div
-            className="
-              pointer-events-none
-              absolute
-              right-4
-              top-16
-              hidden
-              items-center
-              gap-2
-              rounded-full
-              border
-              border-[#3A6B7A]/30
-              bg-[#101114]/90
-              px-3
-              py-2
-              shadow-lg
-              backdrop-blur-md
-
-              md:flex
-            "
-            style={{
-              animation: "badgeFloatAlt 6s ease-in-out infinite 0.5s"
-            }}
-          >
-            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#C77B3D]" />
-
-            <span className="font-['Space_Grotesk'] text-[8px] uppercase tracking-[0.16em] text-[#EDEAE3]">
-              {profile.location}
-            </span>
-          </div>
-        )}
-
-        {/* BOTTOM GRADIENT LINE */}
-
-        <div
-          className="
-            pointer-events-none
-            absolute
-            bottom-0
-            left-0
-            h-0.75
-            w-full
-            bg-linear-to-r
-            from-[#C77B3D]
-            via-[#3A6B7A]
-            to-[#C77B3D]
-            opacity-60
-          "
-        />
-
-        {/* OPEN */}
-
-        <div className="pointer-events-none absolute bottom-4 left-4 sm:bottom-5 sm:left-5">
-          <div
-            className="
-              flex
-              h-10
-              w-10
-              items-center
-              justify-center
-              rounded-full
-              border
-              border-white/15
-              bg-[#101114]/60
-              backdrop-blur-md
-
-              sm:h-14
-              sm:w-14
-            "
-          >
-            <svg
-              className="absolute h-10 w-10 sm:h-14 sm:w-14"
-              viewBox="0 0 64 64"
-              style={{
-                animation: "spinSlow 12s linear infinite"
-              }}
-            >
-              <circle
-                cx="32"
-                cy="32"
-                r="30"
-                fill="none"
-                stroke="#EDEAE3"
-                strokeOpacity="0.22"
-                strokeWidth="1"
-                strokeDasharray="4 6"
+          <div className="hero-image-frame group relative aspect-4/5 w-full overflow-hidden rounded-[22px] border border-white/10 bg-[#181B25] shadow-[0_35px_90px_-35px_rgba(0,0,0,0.95)] sm:rounded-3xl md:aspect-auto md:h-135">
+            {profile.avatarUrl && profile.avatarUrl.trim() !== "" ? (
+              <Image
+                src={profile.avatarUrl}
+                alt={profile.fullName || "Profile Photo"}
+                fill
+                priority
+                sizes="(max-width: 768px) 90vw, 440px"
+                className="object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-[1.035]"
               />
-            </svg>
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-[#181B25]">
+                <span className="font-['Fraunces'] text-8xl font-light text-white/5">
+                  {profile.fullName ? profile.fullName.charAt(0) : "P"}
+                </span>
+              </div>
+            )}
 
-            <span className="font-['Space_Grotesk'] text-[6px] uppercase tracking-widest text-[#EDEAE3]/80 sm:text-[7px]">
-              Open
+            {/* IMAGE GRADIENT */}
+
+            <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-[#0E1017]/90 via-transparent to-[#11131B]/10" />
+
+            {/* SUBTLE COLOR */}
+
+            <div className="pointer-events-none absolute inset-0 bg-[#7189FF]/4 mix-blend-color" />
+
+            {/* TOP */}
+
+            <div className="pointer-events-none absolute top-5 right-5 left-5 flex items-center justify-between">
+              <div className="flex items-center gap-2 rounded-full border border-white/10 bg-[#10121A]/50 px-3 py-2 backdrop-blur-md">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#8EA5FF]" />
+
+                <span className="font-['Space_Grotesk'] text-[7px] tracking-[0.2em] text-white/60 uppercase sm:text-[8px]">
+                  Visual / Profile
+                </span>
+              </div>
+
+              <span className="font-['Space_Grotesk'] text-[8px] tracking-[0.18em] text-white/35 uppercase">
+                2026
+              </span>
+            </div>
+
+            {/* BOTTOM */}
+
+            <div className="pointer-events-none absolute right-0 bottom-0 left-0 p-5 sm:p-6">
+              <div className="flex items-end justify-between gap-5">
+                <div className="min-w-0">
+                  <p className="font-['Space_Grotesk'] text-[8px] tracking-[0.22em] text-[#AAB8FF]/70 uppercase">
+                    Selected profile
+                  </p>
+
+                  <p className="mt-2 truncate font-['Fraunces'] text-xl text-[#F4F3EF] sm:text-2xl">
+                    {profile.fullName}
+                  </p>
+
+                  {profile.location && (
+                    <p className="mt-1 truncate font-['Space_Grotesk'] text-[10px] text-white/40 sm:text-xs">
+                      {profile.location}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/6 text-[#AAB8FF] backdrop-blur-md sm:h-12 sm:w-12">
+                  ↗
+                </div>
+              </div>
+            </div>
+
+            {/* LIGHT SWEEP */}
+
+            <div className="hero-image-sheen pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 rotate-12 bg-linear-to-r from-transparent via-white/6 to-transparent blur-sm" />
+          </div>
+
+          {/* FLOATING STATUS */}
+
+          <div className="hero-status-float absolute -bottom-4 -left-2 z-20 flex items-center gap-3 rounded-xl border border-white/10 bg-[#151821]/85 px-4 py-3 shadow-[0_16px_40px_-18px_rgba(0,0,0,0.9)] backdrop-blur-xl sm:-left-5">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-30" />
+
+              <span className="relative h-2 w-2 rounded-full bg-emerald-400" />
             </span>
+
+            <div>
+              <p className="font-['Space_Grotesk'] text-[7px] tracking-[0.2em] text-white/30 uppercase">
+                Status
+              </p>
+
+              <p className="mt-0.5 font-['Space_Grotesk'] text-[10px] font-medium text-white/75">
+                Available for work
+              </p>
+            </div>
           </div>
         </div>
-
-        {/* SIGNATURE */}
-
-        <div
-          className="
-            pointer-events-none
-            absolute
-            bottom-4
-            right-4
-            max-w-[55%]
-            text-right
-
-            sm:bottom-5
-            sm:right-5
-          "
-        >
-          <p
-            className="
-              truncate
-              font-['Fraunces']
-              text-sm
-              italic
-              text-[#EDEAE3]/90
-
-              sm:text-base
-            "
-          >
-            {profile.fullName}
-          </p>
-
-          <div className="mt-1 flex items-center justify-end gap-2">
-            <span className="h-px w-5 bg-[#C77B3D]/50" />
-
-            <p className="font-['Space_Grotesk'] text-[6px] uppercase tracking-[0.2em] text-[#8F8B84] sm:text-[8px] sm:tracking-[0.25em]">
-              Portfolio 2026
-            </p>
-          </div>
-        </div>
-
-        {/* FRAME CORNERS */}
-
-        <span className="pointer-events-none absolute left-3 top-3 h-5 w-5 border-l border-t border-white/15" />
-
-        <span className="pointer-events-none absolute bottom-3 right-3 h-5 w-5 border-b border-r border-white/15" />
       </div>
     </div>
   );

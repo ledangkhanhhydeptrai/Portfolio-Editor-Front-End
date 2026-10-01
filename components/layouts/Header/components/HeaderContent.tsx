@@ -18,73 +18,32 @@ interface HeaderContentProps {
 
 const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
   const searchParams = useSearchParams();
-
-  const [contactOpen, setContactOpen] = React.useState<boolean>(false);
-
-  // =====================================================
-  // STATE
-  // =====================================================
-
-  const [scrolled, setScrolled] = React.useState<boolean>(false);
-
-  const [mobileMenuOpen, setMobileMenuOpen] = React.useState<boolean>(false);
-
-  const [mobileSkillsOpen, setMobileSkillsOpen] =
-    React.useState<boolean>(false);
-
-  const [mobileProjectsOpen, setMobileProjectsOpen] =
-    React.useState<boolean>(false);
-
-  const [desktopSkillsOpen, setDesktopSkillsOpen] =
-    React.useState<boolean>(false);
-
-  const [desktopProjectsOpen, setDesktopProjectsOpen] =
-    React.useState<boolean>(false);
-
-  // =====================================================
-  // REFS
-  // =====================================================
-
-  const desktopSkillsRef = React.useRef<HTMLDivElement>(null);
-
-  const desktopProjectsRef = React.useRef<HTMLDivElement>(null);
-
-  // =====================================================
-  // QUERY
-  // =====================================================
-
   const currentCategory = searchParams.get("category");
 
-  // =====================================================
-  // SCROLL
-  // =====================================================
+  const [contactOpen, setContactOpen] = React.useState(false);
+  const [scrolled, setScrolled] = React.useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const [mobileSkillsOpen, setMobileSkillsOpen] = React.useState(false);
+  const [mobileProjectsOpen, setMobileProjectsOpen] = React.useState(false);
+  const [desktopSkillsOpen, setDesktopSkillsOpen] = React.useState(false);
+  const [desktopProjectsOpen, setDesktopProjectsOpen] = React.useState(false);
 
+  const desktopSkillsRef = React.useRef<HTMLDivElement>(null);
+  const desktopProjectsRef = React.useRef<HTMLDivElement>(null);
+
+  // SCROLL
   React.useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 12);
-    };
+    const onScroll = () => setScrolled(window.scrollY > 12);
 
     onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
 
-    window.addEventListener("scroll", onScroll, {
-      passive: true
-    });
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-    };
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // =====================================================
   // BODY LOCK
-  // =====================================================
-
   React.useEffect(() => {
-    if (!mobileMenuOpen) {
-      document.body.style.overflow = "";
-
-      return;
-    }
+    if (!mobileMenuOpen) return;
 
     document.body.style.overflow = "hidden";
 
@@ -93,34 +52,26 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
     };
   }, [mobileMenuOpen]);
 
-  // =====================================================
   // ESC
-  // =====================================================
-
   React.useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setMobileMenuOpen(false);
-        setMobileSkillsOpen(false);
-        setMobileProjectsOpen(false);
-        setDesktopSkillsOpen(false);
-        setDesktopProjectsOpen(false);
-      }
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+
+      setMobileMenuOpen(false);
+      setMobileSkillsOpen(false);
+      setMobileProjectsOpen(false);
+      setDesktopSkillsOpen(false);
+      setDesktopProjectsOpen(false);
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", onKeyDown);
 
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  // =====================================================
   // CLICK OUTSIDE
-  // =====================================================
-
   React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const onMouseDown = (event: MouseEvent) => {
       const target = event.target as Node;
 
       if (
@@ -138,16 +89,10 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", onMouseDown);
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", onMouseDown);
   }, []);
-
-  // =====================================================
-  // CLOSE MOBILE
-  // =====================================================
 
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
@@ -155,129 +100,56 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
     setMobileProjectsOpen(false);
   };
 
-  // =====================================================
-  // CONTACT
-  // =====================================================
-
   const handleMobileContact = () => {
     closeMobileMenu();
     setContactOpen(true);
   };
 
-  // =====================================================
-  // DESKTOP SKILLS
-  // =====================================================
-
+  // DESKTOP DROPDOWNS (chỉ mở một cái tại một thời điểm)
   const handleSkillsOpen = () => {
     setDesktopProjectsOpen(false);
     setDesktopSkillsOpen(true);
   };
 
-  const handleSkillsClose = () => {
-    setDesktopSkillsOpen(false);
-  };
-
   const handleSkillsToggle = () => {
     setDesktopProjectsOpen(false);
-
     setDesktopSkillsOpen((previous) => !previous);
   };
-
-  // =====================================================
-  // DESKTOP PROJECTS
-  // =====================================================
 
   const handleProjectsOpen = () => {
     setDesktopSkillsOpen(false);
     setDesktopProjectsOpen(true);
   };
 
-  const handleProjectsClose = () => {
-    setDesktopProjectsOpen(false);
-  };
-
   const handleProjectsToggle = () => {
     setDesktopSkillsOpen(false);
-
     setDesktopProjectsOpen((previous) => !previous);
   };
 
-  // =====================================================
-  // MOBILE SKILLS
-  // =====================================================
-
+  // MOBILE ACCORDIONS
   const handleMobileSkillsToggle = () => {
     setMobileProjectsOpen(false);
-
     setMobileSkillsOpen((previous) => !previous);
   };
 
-  // =====================================================
-  // MOBILE PROJECTS
-  // =====================================================
-
   const handleMobileProjectsToggle = () => {
     setMobileSkillsOpen(false);
-
     setMobileProjectsOpen((previous) => !previous);
   };
-
-  // =====================================================
-  // UI
-  // =====================================================
 
   return (
     <>
       <header
-        className={`fixed left-0 top-0 z-50 w-full border-b backdrop-blur-2xl transition-all duration-500 ${
+        className={`fixed left-0 top-0 z-50 w-full border-b backdrop-blur-xl transition-colors duration-300 ${
           scrolled
-            ? "border-white/9 bg-[#0B0B0D]/95 shadow-[0_8px_30px_rgba(0,0,0,0.4)]"
-            : "border-white/7 bg-[#0B0B0D]/75"
+            ? "border-white/10 bg-[#0C0D10]/92 shadow-[0_8px_30px_rgba(0,0,0,0.35)]"
+            : "border-white/6 bg-[#0C0D10]/70"
         }`}
       >
         <HeaderAnimations />
 
-        {/* =================================================
-            TOP LIGHT
-        ================================================= */}
-
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-px overflow-hidden bg-linear-to-r from-transparent via-[#5B7CFA]/60 to-transparent">
-          <div
-            className="h-full w-1/3 bg-linear-to-r from-transparent via-[#8EA5FF] to-[#B9C6FF]"
-            style={{
-              animation: "shimmerLine 5s linear infinite"
-            }}
-          />
-        </div>
-
-        {/* =================================================
-            DOTS
-        ================================================= */}
-
-        <div
-          className="pointer-events-none absolute left-[6%] top-1/2 hidden h-1 w-1 -translate-y-1/2 rounded-full bg-[#5B7CFA] xl:block"
-          style={{
-            animation: "floatDot 4s ease-in-out infinite"
-          }}
-        />
-
-        <div
-          className="pointer-events-none absolute right-[6%] top-1/2 hidden h-1 w-1 -translate-y-1/2 rounded-full bg-[#8EA5FF] xl:block"
-          style={{
-            animation: "floatDot 4s ease-in-out infinite 1.5s"
-          }}
-        />
-
-        {/* =================================================
-            CONTENT
-        ================================================= */}
-
         <div className="mx-auto flex h-18 w-full max-w-375 items-center justify-between px-4 sm:px-6 lg:px-10 xl:px-14">
-          {/* BRAND */}
-
           <HeaderBrand onClick={closeMobileMenu} />
-
-          {/* DESKTOP NAVIGATION */}
 
           <DesktopNavigation
             pathname={pathname}
@@ -285,115 +157,76 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
             skillsOpen={desktopSkillsOpen}
             skillsRef={desktopSkillsRef}
             onSkillsOpen={handleSkillsOpen}
-            onSkillsClose={handleSkillsClose}
+            onSkillsClose={() => setDesktopSkillsOpen(false)}
             onSkillsToggle={handleSkillsToggle}
             projectsOpen={desktopProjectsOpen}
             projectsRef={desktopProjectsRef}
             onProjectsOpen={handleProjectsOpen}
-            onProjectsClose={handleProjectsClose}
+            onProjectsClose={() => setDesktopProjectsOpen(false)}
             onProjectsToggle={handleProjectsToggle}
           />
-
-          {/* =================================================
-              RIGHT
-          ================================================= */}
 
           <div className="flex items-center gap-2">
             <HeaderStatus />
 
-            <div className="hidden h-7 w-px bg-linear-to-b from-transparent via-white/12 to-transparent lg:block" />
-
-            {/* =================================================
-                AUTH DESKTOP
-            ================================================= */}
-
-            <div className="hidden items-center gap-2 lg:flex">
-              {/* LOGIN */}
-
+            <div className="hidden items-center gap-1 lg:flex">
               <Link
                 href="/login"
-                className="group relative flex h-9 items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-white/3 px-4 text-[11px] font-semibold text-white/65 transition-all duration-300 hover:border-[#8EA5FF]/35 hover:bg-[#8EA5FF]/8 hover:text-white"
+                className="flex h-9 items-center rounded-full px-4 text-xs font-medium text-[#B5B2A9] transition-colors hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-[#7C93FF]"
               >
-                <span className="pointer-events-none absolute inset-0 translate-y-full bg-linear-to-t from-[#5B7CFA]/10 to-transparent transition-transform duration-300 group-hover:translate-y-0" />
-
-                <span className="relative z-10">Đăng nhập</span>
+                Đăng nhập
               </Link>
-
-              {/* REGISTER */}
 
               <Link
                 href="/register"
-                className="group relative flex h-9 items-center justify-center gap-2 overflow-hidden rounded-lg bg-[#8EA5FF] px-4 text-[11px] font-semibold text-[#0B0B0D] shadow-[0_0_0_0_rgba(142,165,255,0)] transition-all duration-300 hover:scale-[1.03] hover:bg-[#A7B7FF] hover:shadow-[0_4px_22px_-4px_rgba(142,165,255,0.55)]"
+                className="flex h-9 items-center rounded-full border border-white/12 px-4 text-xs font-medium text-[#F2F0EA] transition-colors hover:border-[#7C93FF]/50 hover:bg-[#7C93FF]/10 focus-visible:outline-2 focus-visible:outline-[#7C93FF]"
               >
-                <span className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/25 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
-
-                <span className="relative z-10">Đăng ký</span>
-
-                <span className="relative z-10 transition-transform duration-300 group-hover:translate-x-0.5">
-                  →
-                </span>
+                Đăng ký
               </Link>
             </div>
-
-            {/* =================================================
-                CONTACT
-            ================================================= */}
 
             <button
               type="button"
               onClick={() => setContactOpen(true)}
-              className="group relative hidden items-center gap-2 overflow-hidden rounded-lg bg-[#EDECE8] px-4 py-2 text-[11px] font-semibold text-[#0B0B0D] shadow-[0_0_0_0_rgba(91,124,250,0)] transition-all duration-300 hover:scale-[1.03] hover:bg-white hover:shadow-[0_4px_20px_-2px_rgba(91,124,250,0.5)] sm:flex"
+              className="hidden h-9 items-center gap-1.5 rounded-full bg-[#F2F0EA] px-4 text-xs font-semibold text-[#0C0D10] transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C93FF] sm:flex"
             >
-              <span className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-[#5B7CFA]/25 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
-
-              <span className="relative z-10">Liên hệ</span>
-
-              <span className="relative z-10 transition duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-                ↗
-              </span>
+              Liên hệ
+              <span aria-hidden="true">↗</span>
             </button>
-
-            {/* =================================================
-                HAMBURGER
-            ================================================= */}
 
             <button
               type="button"
               aria-label={mobileMenuOpen ? "Đóng menu" : "Mở menu"}
               aria-expanded={mobileMenuOpen}
               onClick={() => setMobileMenuOpen((previous) => !previous)}
-              className={`relative flex h-10 w-10 items-center justify-center rounded-xl border transition duration-300 md:hidden ${
+              className={`relative flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-[#7C93FF] md:hidden ${
                 mobileMenuOpen
-                  ? "border-[#5B7CFA]/40 bg-[#5B7CFA]/10"
-                  : "border-white/10 bg-white/3 hover:border-white/20 hover:bg-white/6"
+                  ? "border-[#7C93FF]/40 bg-[#7C93FF]/10"
+                  : "border-white/10 bg-white/3 hover:bg-white/6"
               }`}
             >
-              <div className="relative h-4 w-5">
+              <span className="relative block h-3.5 w-5">
                 <span
-                  className={`absolute left-0 top-0.5 h-px bg-[#EDECE8] transition-all duration-300 ${
-                    mobileMenuOpen ? "top-2 w-5 rotate-45" : "w-5"
+                  className={`absolute left-0 h-px w-5 bg-[#F2F0EA] transition-all duration-300 ${
+                    mobileMenuOpen ? "top-1.5 rotate-45" : "top-0"
                   }`}
                 />
 
                 <span
-                  className={`absolute left-0 top-2 h-px bg-[#EDECE8] transition-all duration-300 ${
-                    mobileMenuOpen ? "w-0 opacity-0" : "w-3.5 opacity-100"
+                  className={`absolute left-0 top-1.5 h-px w-3.5 bg-[#F2F0EA] transition-opacity duration-200 ${
+                    mobileMenuOpen ? "opacity-0" : "opacity-100"
                   }`}
                 />
 
                 <span
-                  className={`absolute bottom-0.5 left-0 h-px bg-[#EDECE8] transition-all duration-300 ${
-                    mobileMenuOpen ? "bottom-1.5 w-5 -rotate-45" : "w-5"
+                  className={`absolute left-0 h-px w-5 bg-[#F2F0EA] transition-all duration-300 ${
+                    mobileMenuOpen ? "top-1.5 -rotate-45" : "top-3"
                   }`}
                 />
-              </div>
+              </span>
             </button>
           </div>
         </div>
-
-        {/* =================================================
-            MOBILE MENU
-        ================================================= */}
 
         {mobileMenuOpen && (
           <MobileMenu
@@ -409,22 +242,14 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
         )}
       </header>
 
-      {/* =====================================================
-          MOBILE BACKDROP
-      ===================================================== */}
-
       {mobileMenuOpen && (
         <button
           type="button"
           aria-label="Đóng menu"
           onClick={closeMobileMenu}
-          className="fixed inset-0 z-40 bg-black/55 backdrop-blur-[2px] md:hidden"
+          className="fixed inset-0 z-40 bg-black/55 md:hidden"
         />
       )}
-
-      {/* =====================================================
-          CONTACT POPUP
-      ===================================================== */}
 
       <ContactPopup open={contactOpen} onClose={() => setContactOpen(false)} />
     </>

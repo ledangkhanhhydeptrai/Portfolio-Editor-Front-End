@@ -3,135 +3,226 @@
 const HeroStyles = () => {
   return (
     <style>{`
-      @keyframes floatParticle {
-        0%, 100% {
-          transform: translateY(0) translateX(0);
-          opacity: 0.2;
+      @keyframes heroReveal {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+          filter: blur(6px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+          filter: blur(0);
+        }
+      }
+
+      @keyframes heroImageEnter {
+        from {
+          opacity: 0;
+          transform:
+            translateY(24px)
+            scale(0.97);
+        }
+
+        to {
+          opacity: 1;
+          transform:
+            translateY(0)
+            scale(1);
+        }
+      }
+
+      @keyframes heroGlow {
+        0%,
+        100% {
+          opacity: 0.55;
+          transform:
+            translateX(-50%)
+            scale(1);
         }
 
         50% {
-          transform: translateY(-20px) translateX(8px);
+          opacity: 0.85;
+          transform:
+            translateX(-50%)
+            scale(1.08);
+        }
+      }
+
+      @keyframes heroGlowAlt {
+        0%,
+        100% {
+          opacity: 0.5;
+          transform: scale(1);
+        }
+
+        50% {
           opacity: 0.75;
+          transform: scale(1.1);
         }
       }
 
-      @keyframes fadeUp {
-        from {
+      @keyframes heroScroll {
+        0% {
+          transform: translateY(0);
           opacity: 0;
+        }
+
+        25% {
+          opacity: 1;
+        }
+
+        100% {
           transform: translateY(18px);
-        }
-
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes spinSlow {
-        from {
-          transform: rotate(0deg);
-        }
-
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      @keyframes scrollDot {
-        0% {
-          transform: translateY(0);
-          opacity: 0;
-        }
-
-        30% {
-          opacity: 1;
-        }
-
-        100% {
-          transform: translateY(14px);
           opacity: 0;
         }
       }
 
-      @keyframes pulseGlow {
-        0%, 100% {
-          opacity: 0.18;
-        }
-
-        50% {
-          opacity: 0.34;
-        }
-      }
-
-      @keyframes shimmerSweep {
-        0% {
-          transform: translateX(-120%);
-        }
-
+      @keyframes heroStatusFloat {
+        0%,
         100% {
-          transform: translateX(220%);
-        }
-      }
-
-      @keyframes badgeFloat {
-        0%, 100% {
           transform: translateY(0);
         }
 
         50% {
-          transform: translateY(-8px);
+          transform: translateY(-6px);
         }
       }
 
-      @keyframes badgeFloatAlt {
-        0%, 100% {
-          transform: translateY(0);
+      @keyframes heroSheen {
+        0% {
+          transform:
+            translateX(-180%)
+            rotate(12deg);
+        }
+
+        55%,
+        100% {
+          transform:
+            translateX(520%)
+            rotate(12deg);
+        }
+      }
+
+      @keyframes heroFrameGlow {
+        0%,
+        100% {
+          box-shadow:
+            inset 0 0 0 1px
+              rgba(142, 165, 255, 0.06),
+            0 35px 90px -35px
+              rgba(0, 0, 0, 0.95);
         }
 
         50% {
-          transform: translateY(8px);
+          box-shadow:
+            inset 0 0 0 1px
+              rgba(142, 165, 255, 0.18),
+            0 35px 100px -30px
+              rgba(91, 124, 250, 0.18);
         }
       }
 
-      @keyframes frameGlowPulse {
-        0%, 100% {
-          box-shadow:
-            inset 0 0 0 1px rgba(199,123,61,0.2),
-            0 0 60px -20px rgba(199,123,61,0.25);
-        }
-
-        50% {
-          box-shadow:
-            inset 0 0 0 1px rgba(199,123,61,0.5),
-            0 0 90px -15px rgba(199,123,61,0.4);
-        }
-      }
-
-      .fade-up {
+      .hero-reveal {
         animation:
-          fadeUp 0.9s
+          heroReveal
+          0.9s
           cubic-bezier(0.16, 1, 0.3, 1)
           both;
       }
 
-      .fade-up-1 {
+      .hero-reveal-1 {
         animation-delay: 0.05s;
       }
 
-      .fade-up-2 {
-        animation-delay: 0.18s;
+      .hero-reveal-2 {
+        animation-delay: 0.14s;
       }
 
-      .fade-up-3 {
+      .hero-reveal-3 {
+        animation-delay: 0.23s;
+      }
+
+      .hero-reveal-4 {
         animation-delay: 0.32s;
       }
 
-      .fade-up-4 {
-        animation-delay: 0.46s;
+      .hero-reveal-5 {
+        animation-delay: 0.41s;
       }
 
-      .fade-up-5 {
-        animation-delay: 0.6s;
+      .hero-image-enter {
+        animation:
+          heroImageEnter
+          1.1s
+          cubic-bezier(0.16, 1, 0.3, 1)
+          0.18s
+          both;
+      }
+
+      .hero-glow {
+        animation:
+          heroGlow
+          10s
+          ease-in-out
+          infinite;
+      }
+
+      .hero-glow-alt {
+        animation:
+          heroGlowAlt
+          12s
+          ease-in-out
+          infinite;
+      }
+
+      .hero-scroll-dot {
+        animation:
+          heroScroll
+          1.8s
+          ease-in-out
+          infinite;
+      }
+
+      .hero-status-float {
+        animation:
+          heroStatusFloat
+          5s
+          ease-in-out
+          infinite;
+      }
+
+      .hero-image-sheen {
+        animation:
+          heroSheen
+          8s
+          ease-in-out
+          infinite;
+      }
+
+      .hero-image-frame {
+        animation:
+          heroFrameGlow
+          7s
+          ease-in-out
+          infinite;
+      }
+
+      @media (
+        prefers-reduced-motion:
+        reduce
+      ) {
+        .hero-reveal,
+        .hero-image-enter,
+        .hero-glow,
+        .hero-glow-alt,
+        .hero-scroll-dot,
+        .hero-status-float,
+        .hero-image-sheen,
+        .hero-image-frame {
+          animation: none !important;
+        }
       }
     `}</style>
   );

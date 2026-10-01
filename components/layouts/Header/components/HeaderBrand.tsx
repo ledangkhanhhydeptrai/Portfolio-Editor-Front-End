@@ -10,49 +10,21 @@ const HeaderBrand: React.FC<HeaderBrandProps> = ({ onClick }) => {
     <Link
       href="/"
       onClick={onClick}
-      className="group flex min-w-fit items-center gap-3"
+      className="group flex min-w-fit items-center gap-3 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7C93FF]"
     >
-      <div className="relative flex h-9 w-9 items-center justify-center">
-        <div
-          className="absolute -inset-0.5 rounded-xl opacity-60 transition-opacity duration-300 group-hover:opacity-100"
-          style={{
-            background:
-              "conic-gradient(from 0deg, #5B7CFA, transparent 30%, transparent 70%, #8EA5FF, #5B7CFA)",
-            animation: "logoRingSpin 5s linear infinite"
-          }}
-        />
+      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-[#7C93FF] to-[#4A63D8] text-[12px] font-bold tracking-tight text-white shadow-[0_6px_18px_-6px_rgba(124,147,255,0.7)] transition-transform duration-300 group-hover:-rotate-6">
+        KH
+      </span>
 
-        <div className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-[#0B0B0D] transition duration-300 group-hover:rotate-[8deg] group-hover:border-[#5B7CFA]/40">
-          <span className="relative z-10 text-[11px] font-bold tracking-tight text-[#EDECE8]">
-            KH
-          </span>
+      <span className="hidden sm:block">
+        <span className="block font-['Fraunces'] text-[15px] leading-tight text-[#F2F0EA]">
+          Khánh Hỷ
+        </span>
 
-          <div
-            className="absolute -bottom-5 -right-5 h-10 w-10 rounded-full bg-[#5B7CFA]/25 blur-xl transition duration-300 group-hover:bg-[#5B7CFA]/45"
-            style={{
-              animation: "logoGlowPulse 3s ease-in-out infinite"
-            }}
-          />
-        </div>
-      </div>
-
-      <div className="hidden sm:block">
-        <div className="flex items-center gap-2">
-          <p className="brand-gradient-text font-['Fraunces'] text-sm">
-            Khánh Hỷ
-          </p>
-
-          <span className="relative flex h-1 w-1">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#5B7CFA] opacity-60" />
-
-            <span className="relative h-1 w-1 rounded-full bg-[#5B7CFA]" />
-          </span>
-        </div>
-
-        <p className="mt-0.5 font-mono text-[7px] uppercase tracking-[0.2em] text-[#5c584f]">
+        <span className="mt-0.5 block text-[11px] text-[#7E7B73]">
           Portfolio cá nhân
-        </p>
-      </div>
+        </span>
+      </span>
     </Link>
   );
 };
