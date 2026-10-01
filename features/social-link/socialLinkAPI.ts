@@ -11,7 +11,7 @@ export const getAllSocialLink = async (): Promise<
 > => {
   try {
     const response = await fetchBaseResponse<SocialLinkProps[]>(
-      `${API_CONFIG.ENDPOINTS.SOCIAL_LINKS}`,
+      `${API_CONFIG.ENDPOINTS.PUBLIC.SOCIAL_LINKS}`,
       requestConfig("GET")
     );
     if (response.status !== HTTP_STATUS.OK) {

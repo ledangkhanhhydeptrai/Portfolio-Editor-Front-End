@@ -11,7 +11,7 @@ export const getAllProfileAPI = async (): Promise<
 > => {
   try {
     const response = await fetchBaseResponse<ProfileProps[]>(
-      `${API_CONFIG.ENDPOINTS.PROFILE}`,
+      `${API_CONFIG.ENDPOINTS.PUBLIC.PROFILE}`,
       requestConfig("GET")
     );
     console.log("===== PROFILE DEBUG =====");

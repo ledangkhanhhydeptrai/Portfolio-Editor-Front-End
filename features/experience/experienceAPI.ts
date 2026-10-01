@@ -11,7 +11,7 @@ export const ExperienceAPI = async (): Promise<
 > => {
   try {
     const response = await fetchBaseResponse<ExperienceProps[]>(
-      `${API_CONFIG.ENDPOINTS.EXPERIENCES}`,
+      `${API_CONFIG.ENDPOINTS.PUBLIC.EXPERIENCES}`,
       requestConfig("GET")
     );
     if (response.status !== HTTP_STATUS.OK) {
