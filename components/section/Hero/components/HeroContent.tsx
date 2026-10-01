@@ -8,61 +8,41 @@ interface HeroContentProps {
   profile: ProfileProps;
 }
 
-const CONTACT_ICON: Record<string, React.ReactNode> = {
-  email: (
-    <path
-      d="M3 5h14v10H3V5Zm0 0 7 6 7-6"
-      stroke="currentColor"
-      strokeWidth="1.4"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  ),
-
-  phone: (
-    <path
-      d="M4 3h3l1.5 4L6.5 8.5a10 10 0 0 0 5 5L13 11.5l4 1.5v3a1.5 1.5 0 0 1-1.6 1.5A14 14 0 0 1 3 4.6 1.5 1.5 0 0 1 4 3Z"
-      stroke="currentColor"
-      strokeWidth="1.3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  ),
-
-  location: (
-    <path
-      d="M10 18s6-5.2 6-9.5A6 6 0 0 0 4 8.5C4 12.8 10 18 10 18Zm0-7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"
-      stroke="currentColor"
-      strokeWidth="1.3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  )
-};
+interface ContactItem {
+  key: string;
+  label: string;
+  value: string;
+}
 
 const HeroContent: React.FC<HeroContentProps> = ({ profile }) => {
-  const contactItems = React.useMemo(() => {
-    return [
-      {
+  const contactItems = React.useMemo<ContactItem[]>(() => {
+    const items: ContactItem[] = [];
+
+    if (profile.email) {
+      items.push({
         key: "email",
+        label: "Email",
         value: profile.email
-      },
-      {
+      });
+    }
+
+    if (profile.phone) {
+      items.push({
         key: "phone",
+        label: "Phone",
         value: profile.phone
-      },
-      {
+      });
+    }
+
+    if (profile.location) {
+      items.push({
         key: "location",
+        label: "Based in",
         value: profile.location
-      }
-    ].filter(
-      (
-        item
-      ): item is {
-        key: string;
-        value: string;
-      } => Boolean(item.value)
-    );
+      });
+    }
+
+    return items;
   }, [profile]);
 
   return (
@@ -72,209 +52,245 @@ const HeroContent: React.FC<HeroContentProps> = ({ profile }) => {
         z-10
         order-1
         min-w-0
-        py-2
 
-        sm:py-4
+        md:py-2
 
-        md:py-16
+        lg:py-3
       "
     >
-      {/* NUMBER */}
+      {/* =========================================
+          EYEBROW
+      ========================================= */}
 
-      <span
+      <div
         className="
-          pointer-events-none
-          absolute
-          -left-1
-          -top-5
-          select-none
-          font-['Fraunces']
-          text-[82px]
-          font-black
-          leading-none
-          text-transparent
-
-          sm:-left-3
-          sm:-top-8
-          sm:text-[110px]
-
-          md:-left-4
-          md:-top-4
-          md:text-[9vw]
+          hero-reveal
+          hero-reveal-1
+          flex
+          flex-wrap
+          items-center
+          gap-4
         "
-        style={{
-          WebkitTextStroke: "1px rgba(199,123,61,0.25)"
-        }}
       >
-        01
-      </span>
+        {profile.jobTitle && (
+          <div
+            className="
+              inline-flex
+              max-w-full
+              items-center
+              gap-2.5
+              rounded-full
+              border
+              border-[#8EA5FF]/20
+              bg-[#8EA5FF]/7
+              px-3.5
+              py-2
+              backdrop-blur-sm
+            "
+          >
+            <span className="relative flex h-1.5 w-1.5 shrink-0">
+              <span
+                className="
+                  absolute
+                  inline-flex
+                  h-full
+                  w-full
+                  animate-ping
+                  rounded-full
+                  bg-[#8EA5FF]
+                  opacity-40
+                "
+              />
 
-      {/* JOB TITLE */}
+              <span
+                className="
+                  relative
+                  inline-flex
+                  h-1.5
+                  w-1.5
+                  rounded-full
+                  bg-[#8EA5FF]
+                "
+              />
+            </span>
 
-      {profile.jobTitle && (
+            <span
+              className="
+                truncate
+                font-['Space_Grotesk']
+                text-[9px]
+                font-medium
+                uppercase
+                tracking-[0.2em]
+                text-[#AAB8FF]
+
+                sm:text-[10px]
+              "
+            >
+              {profile.jobTitle}
+            </span>
+          </div>
+        )}
+
         <div
           className="
-            fade-up
-            fade-up-1
-            relative
-            inline-flex
-            max-w-full
+            hidden
             items-center
-            gap-2
-            overflow-hidden
-            rounded-full
-            border
-            border-[#C77B3D]/30
-            bg-[#C77B3D]/10
-            px-3
-            py-1.5
+            gap-3
 
-            sm:gap-2.5
-            sm:px-3.5
+            sm:flex
           "
         >
+          <span className="h-px w-8 bg-white/15" />
+
           <span
             className="
-              pointer-events-none
-              absolute
-              inset-0
-              -translate-x-full
-              bg-linear-to-r
-              from-transparent
-              via-white/10
-              to-transparent
-            "
-            style={{
-              animation: "shimmerSweep 6s linear infinite"
-            }}
-          />
-
-          <span className="relative flex h-1.5 w-1.5 shrink-0">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#C77B3D] opacity-75" />
-
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#C77B3D]" />
-          </span>
-
-          <p
-            className="
-              relative
-              truncate
               font-['Space_Grotesk']
               text-[9px]
               uppercase
-              tracking-[0.16em]
-              text-[#E3A56D]
-
-              sm:text-[10px]
-              sm:tracking-[0.18em]
-
-              lg:text-xs
-              lg:tracking-[0.2em]
+              tracking-[0.22em]
+              text-white/30
             "
           >
-            {profile.jobTitle}
-          </p>
+            Portfolio / 2026
+          </span>
         </div>
-      )}
+      </div>
 
-      {/* NAME */}
+      {/* =========================================
+          NAME
+      ========================================= */}
 
       <h1
         className="
-          fade-up
-          fade-up-2
-          relative
+          hero-reveal
+          hero-reveal-2
           mt-7
-          max-w-3xl
+          max-w-4xl
           font-['Fraunces']
-          text-[46px]
+          text-[54px]
           font-light
-          leading-[0.9]
-          tracking-[-0.045em]
-          text-[#EDEAE3]
+          leading-[0.86]
+          tracking-[-0.055em]
+          text-[#F4F3EF]
 
-          min-[500px]:text-[56px]
+          min-[480px]:text-[64px]
 
-          sm:mt-8
-          sm:text-[64px]
+          sm:text-[72px]
 
-          md:text-[5.2vw]
+          md:text-[5.5vw]
 
-          xl:text-[76px]
+          lg:text-[78px]
+
+          xl:text-[90px]
+        "
+      >
+        {profile.fullName}
+
+        <span className="text-[#8EA5FF]">.</span>
+      </h1>
+
+      {/* =========================================
+          ACCENT
+      ========================================= */}
+
+      <div
+        className="
+          hero-reveal
+          hero-reveal-2
+          mt-6
+          flex
+          items-center
+          gap-3
         "
       >
         <span
           className="
+            h-px
+            w-16
             bg-linear-to-r
-            from-[#EDEAE3]
-            via-[#EDEAE3]
-            to-[#C77B3D]
-            bg-clip-text
+            from-[#8EA5FF]
+            to-[#8EA5FF]/10
+
+            sm:w-24
           "
-        >
-          {profile.fullName}
-        </span>
-      </h1>
+        />
 
-      {/* TITLE LINE */}
-
-      <div className="fade-up fade-up-2 mt-4 flex items-center gap-3">
-        <span className="block h-0.75 w-14 rounded-full bg-linear-to-r from-[#C77B3D] via-[#E3A56D] to-transparent sm:w-20" />
-
-        <span className="h-1 w-1 rounded-full bg-[#C77B3D]/60" />
+        <span
+          className="
+            h-1
+            w-1
+            rounded-full
+            bg-[#8EA5FF]/70
+          "
+        />
       </div>
 
-      {/* SHORT DESCRIPTION */}
+      {/* =========================================
+          SHORT DESCRIPTION
+      ========================================= */}
 
       {profile.shortDescription && (
         <p
           className="
-            fade-up
-            fade-up-3
+            hero-reveal
+            hero-reveal-3
             mt-6
             max-w-[42ch]
             font-['Space_Grotesk']
             text-[15px]
-            leading-6
-            text-[#C4C0B8]
+            leading-7
+            text-white/70
 
-            sm:text-base
-            sm:leading-7
+            sm:text-[16px]
 
-            md:mt-8
-            md:text-lg
-
-            lg:text-xl
+            lg:text-[17px]
+            lg:leading-7
           "
         >
           {profile.shortDescription}
         </p>
       )}
 
-      {/* ABOUT */}
+      {/* =========================================
+          ABOUT
+      ========================================= */}
 
       {profile.aboutMe && (
         <div
           className="
-            fade-up
-            fade-up-3
+            hero-reveal
+            hero-reveal-3
             mt-4
             flex
-            max-w-[52ch]
-            gap-3
+            max-w-[55ch]
+            gap-4
           "
         >
-          <span className="w-0.5 shrink-0 rounded-full bg-linear-to-b from-[#3A6B7A]/60 via-[#3A6B7A]/30 to-transparent" />
+          <span
+            className="
+              mt-1
+              w-px
+              shrink-0
+              bg-linear-to-b
+              from-[#8EA5FF]/60
+              via-[#8EA5FF]/20
+              to-transparent
+            "
+          />
 
           <p
             className="
               font-['Space_Grotesk']
               text-[13px]
               leading-6
-              text-[#8F8B84]
+              text-white/40
 
-              sm:text-sm
-              sm:leading-relaxed
+              sm:text-[13px]
+              sm:leading-6
+
+              lg:text-sm
+              lg:leading-6
             "
           >
             {profile.aboutMe}
@@ -282,26 +298,23 @@ const HeroContent: React.FC<HeroContentProps> = ({ profile }) => {
         </div>
       )}
 
-      {/* ACTIONS */}
+      {/* =========================================
+          ACTIONS
+      ========================================= */}
 
       <div
         className="
-          fade-up
-          fade-up-4
+          hero-reveal
+          hero-reveal-4
           mt-7
           flex
-          min-w-0
           flex-col
-          gap-4
+          gap-3
 
-          sm:mt-8
-
-          md:mt-10
-          md:gap-5
+          min-[440px]:flex-row
+          min-[440px]:items-center
         "
       >
-        {/* CV */}
-
         {profile.cvUrl && (
           <a
             href={profile.cvUrl}
@@ -312,126 +325,215 @@ const HeroContent: React.FC<HeroContentProps> = ({ profile }) => {
               relative
               flex
               h-12
-              w-full
               items-center
               justify-center
-              gap-2.5
+              gap-3
               overflow-hidden
-              rounded-lg
-              border
-              border-[#EDEAE3]/20
-              bg-[#16171a]
+              rounded-xl
+              bg-[#F2F0EA]
               px-6
               font-['Space_Grotesk']
               text-sm
-              font-medium
-              text-[#EDEAE3]
+              font-semibold
+              text-[#11131B]
               transition-all
               duration-300
 
-              hover:border-[#C77B3D]
-              hover:text-[#101114]
-              hover:shadow-[0_10px_30px_-6px_rgba(199,123,61,0.55)]
-
-              sm:w-fit
-              sm:min-w-38
+              hover:-translate-y-0.5
+              hover:bg-white
+              hover:shadow-[0_14px_35px_-12px_rgba(142,165,255,0.55)]
             "
           >
-            <span className="absolute inset-0 -translate-x-full bg-[#C77B3D] transition-transform duration-300 ease-out group-hover:translate-x-0" />
+            <span className="relative z-10">Xem CV</span>
 
-            <span className="relative">Xem CV</span>
+            <span
+              className="
+                relative
+                z-10
+                transition-transform
+                duration-300
 
-            <span className="relative transition-transform duration-300 group-hover:translate-x-1">
-              →
+                group-hover:translate-x-1
+              "
+            >
+              ↗
             </span>
           </a>
         )}
 
-        {/* CONTACT */}
-
-        {contactItems.length > 0 && (
-          <div
+        {profile.email && (
+          <a
+            href={`mailto:${profile.email}`}
             className="
+              group
               flex
-              min-w-0
-              flex-wrap
+              h-12
               items-center
-              gap-2
+              justify-center
+              gap-3
+              rounded-xl
+              border
+              border-white/12
+              bg-white/3
+              px-6
+              font-['Space_Grotesk']
+              text-sm
+              font-medium
+              text-white/75
+              backdrop-blur-sm
+              transition-all
+              duration-300
+
+              hover:-translate-y-0.5
+              hover:border-[#8EA5FF]/35
+              hover:bg-[#8EA5FF]/8
+              hover:text-white
             "
           >
-            {contactItems.map((item) => (
-              <span
-                key={item.key}
-                className="
-                    flex
-                    max-w-full
-                    min-w-0
-                    items-center
-                    gap-2
-                    rounded-full
-                    border
-                    border-white/10
-                    bg-white/4
-                    px-3
-                    py-2
-                    font-['Space_Grotesk']
-                    text-[10px]
-                    text-[#C4C0B8]
-                    transition-all
-                    duration-300
+            Liên hệ
+            <span
+              className="
+                text-[#8EA5FF]
+                transition-transform
+                duration-300
 
-                    hover:border-[#C77B3D]/30
-                    hover:bg-[#C77B3D]/5
-                    hover:text-[#EDEAE3]
-
-                    sm:text-xs
-                  "
-              >
-                <span
-                  className="
-                      flex
-                      h-5
-                      w-5
-                      shrink-0
-                      items-center
-                      justify-center
-                      rounded-full
-                      bg-[#C77B3D]/10
-                    "
-                >
-                  <svg
-                    className="h-3 w-3 text-[#C77B3D]"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                  >
-                    {CONTACT_ICON[item.key]}
-                  </svg>
-                </span>
-
-                <span className="truncate">{item.value}</span>
-              </span>
-            ))}
-          </div>
+                group-hover:translate-x-1
+              "
+            >
+              →
+            </span>
+          </a>
         )}
       </div>
 
-      {/* DESKTOP SCROLL */}
+      {/* =========================================
+          CONTACT META
+      ========================================= */}
 
-      <div className="fade-up fade-up-5 mt-12 hidden items-center gap-3 md:flex">
-        <div className="flex h-9 w-5 items-start justify-center rounded-full border border-[#C77B3D]/40 p-1">
+      {contactItems.length > 0 && (
+        <div
+          className="
+            hero-reveal
+            hero-reveal-5
+            mt-7
+            grid
+            max-w-2xl
+            grid-cols-1
+            gap-x-8
+            gap-y-5
+            border-t
+            border-white/8
+            pt-5
+
+            sm:grid-cols-3
+
+            md:mt-6
+            md:pt-4
+
+            lg:mt-7
+            lg:pt-5
+          "
+        >
+          {contactItems.map((item) => (
+            <div key={item.key} className="min-w-0">
+              <p
+                className="
+                  font-['Space_Grotesk']
+                  text-[8px]
+                  font-medium
+                  uppercase
+                  tracking-[0.22em]
+                  text-white/25
+                "
+              >
+                {item.label}
+              </p>
+
+              <p
+                className="
+                  mt-1.5
+                  truncate
+                  font-['Space_Grotesk']
+                  text-xs
+                  text-white/60
+                  transition-colors
+                  duration-300
+
+                  hover:text-[#AAB8FF]
+
+                  sm:text-[13px]
+                "
+              >
+                {item.value}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* =========================================
+          SCROLL
+          Chỉ hiện ở màn hình lớn.
+          Laptop sẽ không chiếm thêm chiều cao.
+      ========================================= */}
+
+      <div
+        className="
+          hero-reveal
+          hero-reveal-5
+          mt-8
+          hidden
+          items-center
+          gap-4
+
+          xl:flex
+        "
+      >
+        <div
+          className="
+            relative
+            flex
+            h-10
+            w-6
+            justify-center
+            rounded-full
+            border
+            border-white/15
+            pt-2
+          "
+        >
           <span
-            className="h-1.5 w-1.5 rounded-full bg-[#C77B3D]"
-            style={{
-              animation: "scrollDot 1.8s ease-in-out infinite"
-            }}
+            className="
+              hero-scroll-dot
+              h-1
+              w-1
+              rounded-full
+              bg-[#8EA5FF]
+            "
           />
         </div>
 
-        <span className="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.25em] text-[#8F8B84]">
+        <span
+          className="
+            font-['Space_Grotesk']
+            text-[9px]
+            uppercase
+            tracking-[0.25em]
+            text-white/25
+          "
+        >
           Cuộn xuống
         </span>
 
-        <span className="h-px w-16 bg-linear-to-r from-[#8F8B84]/40 to-transparent" />
+        <span
+          className="
+            h-px
+            w-12
+            bg-linear-to-r
+            from-white/15
+            to-transparent
+          "
+        />
       </div>
     </div>
   );

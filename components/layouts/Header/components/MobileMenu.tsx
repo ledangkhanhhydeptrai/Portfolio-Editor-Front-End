@@ -3,6 +3,10 @@
 import React from "react";
 import Link from "next/link";
 
+import { navItems, skillItems } from "./headerData";
+import { projectItems } from "./Headerprojects";
+
+
 interface MobileMenuProps {
   pathname: string;
   currentCategory: string | null;
@@ -17,6 +21,96 @@ interface MobileMenuProps {
   onContact: () => void;
 }
 
+const rowClass = (active: boolean) =>
+  `flex min-h-12 w-full items-center justify-between rounded-xl px-4 text-left text-[15px] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-[#7C93FF] ${
+    active
+      ? "bg-[#7C93FF]/15 text-white ring-1 ring-inset ring-[#7C93FF]/30"
+      : "text-[#B5B2A9] hover:bg-white/5 hover:text-white"
+  }`;
+
+interface GroupProps {
+  label: string;
+  active: boolean;
+  open: boolean;
+  onToggle: () => void;
+  onClose: () => void;
+  links: { label: string; href: string; active: boolean }[];
+  all: { label: string; href: string };
+}
+
+const Group: React.FC<GroupProps> = ({
+  label,
+  active,
+  open,
+  onToggle,
+  onClose,
+  links,
+  all
+}) => (
+  <div>
+    <button
+      type="button"
+      aria-expanded={open}
+      onClick={onToggle}
+      className={rowClass(active)}
+    >
+      <span>{label}</span>
+
+      <svg
+        viewBox="0 0 20 20"
+        fill="none"
+        aria-hidden="true"
+        className={`h-4 w-4 transition-transform duration-200 ${
+          open ? "rotate-180" : ""
+        }`}
+      >
+        <path
+          d="M5 7.5L10 12.5L15 7.5"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
+
+    <div
+      className={`grid transition-[grid-template-rows] duration-300 ${
+        open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+      }`}
+    >
+      <div className="overflow-hidden">
+        <div className="ml-5 mt-1 mb-1 space-y-0.5 border-l border-white/10 pl-3">
+          {links.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={onClose}
+              tabIndex={open ? 0 : -1}
+              className={`block rounded-lg px-3 py-2.5 text-sm transition-colors ${
+                link.active
+                  ? "bg-white/8 text-white"
+                  : "text-[#9A978E] hover:bg-white/5 hover:text-white"
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+
+          <Link
+            href={all.href}
+            onClick={onClose}
+            tabIndex={open ? 0 : -1}
+            className="block rounded-lg px-3 py-2.5 text-[13px] text-[#7E7B73] transition-colors hover:text-white"
+          >
+            {all.label} →
+          </Link>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const MobileMenu: React.FC<MobileMenuProps> = ({
   pathname,
   currentCategory,
@@ -27,343 +121,108 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   onClose,
   onContact
 }) => {
-  // =====================================================
-  // ACTIVE
-  // =====================================================
+  const isActive = (href: string) =>
+    href === "/"
+      ? pathname === "/" && !currentCategory
+      : pathname === href || pathname.startsWith(`${href}/`);
 
-  const isHome = pathname === "/" && !currentCategory;
+  const renderLink = (item: { label: string; href: string }) => (
+    <Link
+      key={item.href}
+      href={item.href}
+      onClick={onClose}
+      aria-current={isActive(item.href) ? "page" : undefined}
+      className={rowClass(isActive(item.href))}
+    >
+      <span>{item.label}</span>
+      <span aria-hidden="true" className="text-white/30">
+        →
+      </span>
+    </Link>
+  );
 
-  const isAbout = pathname === "/about";
+  const before = navItems.filter((i) => i.href === "/" || i.href === "/about");
 
-  const isSkills = pathname === "/skills";
+  // Gồm cả Học vấn & Kết nối — bản cũ không có trên mobile
+  const after = navItems.filter(
+    (i) => i.href !== "/" && i.href !== "/about" && i.href !== "/projects"
+  );
 
-  const isProjects = pathname === "/projects";
-
-  const isExperience = pathname === "/experience";
-
-  // =====================================================
-  // UI
-  // =====================================================
+  const skillsActive = isActive("/skills");
+  const projectsActive = isActive("/projects");
 
   return (
-    <div className="absolute left-0 top-full z-50 w-full border-b border-white/8 bg-[#0B0B0D]/98 px-4 pb-6 pt-4 shadow-[0_30px_70px_rgba(0,0,0,0.55)] backdrop-blur-2xl md:hidden">
-      {/* ================================================= */}
-      {/* NAVIGATION */}
-      {/* ================================================= */}
+    <div
+      className="absolute left-0 top-full z-50 max-h-[calc(100dvh-4.5rem)] w-full overflow-y-auto border-b border-white/8 bg-[#0C0D10]/98 px-4 pb-6 pt-3 shadow-[0_30px_70px_rgba(0,0,0,0.55)] backdrop-blur-xl md:hidden"
+      style={{ animation: "mobileMenuIn 0.2s ease-out both" }}
+    >
+      <nav aria-label="Menu di động" className="space-y-0.5">
+        {before.map(renderLink)}
 
-      <nav className="space-y-1">
-        {/* HOME */}
+        <Group
+          label="Kỹ năng"
+          active={skillsActive}
+          open={skillsOpen}
+          onToggle={onSkillsToggle}
+          onClose={onClose}
+          links={skillItems.map((s) => ({
+            label: s.label,
+            href: s.href,
+            active: skillsActive && currentCategory === s.category
+          }))}
+          all={{ label: "Xem tất cả kỹ năng", href: "/skills" }}
+        />
 
-        <Link
-          href="/"
-          onClick={onClose}
-          className={`group flex min-h-14 items-center justify-between rounded-xl border px-4 transition-all duration-300 ${
-            isHome
-              ? "border-[#5B7CFA]/30 bg-[#5B7CFA]/8 text-white"
-              : "border-transparent text-white/55 hover:border-white/8 hover:bg-white/3 hover:text-white"
-          }`}
-        >
-          <div className="flex items-center gap-5">
-            <span
-              className={`text-[9px] font-medium ${
-                isHome ? "text-[#8EA5FF]" : "text-white/20"
-              }`}
-            >
-              01
-            </span>
+        <Group
+          label="Dự án"
+          active={projectsActive}
+          open={projectsOpen}
+          onToggle={onProjectsToggle}
+          onClose={onClose}
+          links={projectItems.map((p) => ({
+            label: p.label,
+            href: p.href,
+            active: projectsActive && currentCategory === p.category
+          }))}
+          all={{ label: "Xem tất cả dự án", href: "/projects" }}
+        />
 
-            <span className="text-sm font-semibold">Trang chủ</span>
-          </div>
-
-          <span
-            className={`text-xs transition-transform duration-300 group-hover:translate-x-1 ${
-              isHome ? "text-[#8EA5FF]" : "text-white/30"
-            }`}
-          >
-            →
-          </span>
-        </Link>
-
-        {/* ABOUT */}
-
-        <Link
-          href="/about"
-          onClick={onClose}
-          className={`group flex min-h-14 items-center justify-between rounded-xl border px-4 transition-all duration-300 ${
-            isAbout
-              ? "border-[#5B7CFA]/30 bg-[#5B7CFA]/8 text-white"
-              : "border-transparent text-white/55 hover:border-white/8 hover:bg-white/3 hover:text-white"
-          }`}
-        >
-          <div className="flex items-center gap-5">
-            <span
-              className={`text-[9px] font-medium ${
-                isAbout ? "text-[#8EA5FF]" : "text-white/20"
-              }`}
-            >
-              02
-            </span>
-
-            <span className="text-sm font-semibold">Giới thiệu</span>
-          </div>
-
-          <span
-            className={`text-xs transition-transform duration-300 group-hover:translate-x-1 ${
-              isAbout ? "text-[#8EA5FF]" : "text-white/30"
-            }`}
-          >
-            →
-          </span>
-        </Link>
-
-        {/* ================================================= */}
-        {/* SKILLS */}
-        {/* ================================================= */}
-
-        <div>
-          <button
-            type="button"
-            onClick={onSkillsToggle}
-            className={`group flex min-h-14 w-full items-center justify-between rounded-xl border px-4 text-left transition-all duration-300 ${
-              isSkills || skillsOpen
-                ? "border-[#5B7CFA]/20 bg-[#5B7CFA]/5 text-white"
-                : "border-transparent text-white/55 hover:border-white/8 hover:bg-white/3 hover:text-white"
-            }`}
-          >
-            <div className="flex items-center gap-5">
-              <span
-                className={`text-[9px] font-medium ${
-                  isSkills || skillsOpen ? "text-[#8EA5FF]" : "text-white/20"
-                }`}
-              >
-                03
-              </span>
-
-              <span className="text-sm font-semibold">Kỹ năng</span>
-            </div>
-
-            <span
-              className={`text-xs transition-transform duration-300 ${
-                skillsOpen ? "rotate-180 text-[#8EA5FF]" : "text-white/30"
-              }`}
-            >
-              ↓
-            </span>
-          </button>
-
-          {skillsOpen && (
-            <div className="mx-4 mb-2 mt-1 overflow-hidden rounded-xl border border-white/7 bg-white/2">
-              <Link
-                href="/skills?category=DEVELOPMENT"
-                onClick={onClose}
-                className="flex items-center justify-between border-b border-white/6 px-4 py-3 text-xs text-white/45 transition hover:bg-white/4 hover:text-white"
-              >
-                <span>Development</span>
-
-                <span className="text-white/20">→</span>
-              </Link>
-
-              <Link
-                href="/skills?category=VIDEO_EDITING"
-                onClick={onClose}
-                className="flex items-center justify-between border-b border-white/6 px-4 py-3 text-xs text-white/45 transition hover:bg-white/4 hover:text-white"
-              >
-                <span>Video Editing</span>
-
-                <span className="text-white/20">→</span>
-              </Link>
-
-              <Link
-                href="/skills?category=DRIVING"
-                onClick={onClose}
-                className="flex items-center justify-between px-4 py-3 text-xs text-white/45 transition hover:bg-white/4 hover:text-white"
-              >
-                <span>Driving</span>
-
-                <span className="text-white/20">→</span>
-              </Link>
-            </div>
-          )}
-        </div>
-
-        {/* ================================================= */}
-        {/* PROJECTS */}
-        {/* ================================================= */}
-
-        <div>
-          <button
-            type="button"
-            onClick={onProjectsToggle}
-            className={`group flex min-h-14 w-full items-center justify-between rounded-xl border px-4 text-left transition-all duration-300 ${
-              isProjects || projectsOpen
-                ? "border-[#5B7CFA]/20 bg-[#5B7CFA]/5 text-white"
-                : "border-transparent text-white/55 hover:border-white/8 hover:bg-white/3 hover:text-white"
-            }`}
-          >
-            <div className="flex items-center gap-5">
-              <span
-                className={`text-[9px] font-medium ${
-                  isProjects || projectsOpen
-                    ? "text-[#8EA5FF]"
-                    : "text-white/20"
-                }`}
-              >
-                04
-              </span>
-
-              <span className="text-sm font-semibold">Dự án</span>
-            </div>
-
-            <span
-              className={`text-xs transition-transform duration-300 ${
-                projectsOpen ? "rotate-180 text-[#8EA5FF]" : "text-white/30"
-              }`}
-            >
-              ↓
-            </span>
-          </button>
-
-          {projectsOpen && (
-            <div className="mx-4 mb-2 mt-1 overflow-hidden rounded-xl border border-white/7 bg-white/2">
-              <Link
-                href="/projects?category=DEVELOPMENT"
-                onClick={onClose}
-                className="flex items-center justify-between border-b border-white/6 px-4 py-3 text-xs text-white/45 transition hover:bg-white/4 hover:text-white"
-              >
-                <span>Development</span>
-
-                <span className="text-white/20">→</span>
-              </Link>
-
-              <Link
-                href="/projects?category=VIDEO_EDITING"
-                onClick={onClose}
-                className="flex items-center justify-between border-b border-white/6 px-4 py-3 text-xs text-white/45 transition hover:bg-white/4 hover:text-white"
-              >
-                <span>Video Editing</span>
-
-                <span className="text-white/20">→</span>
-              </Link>
-
-              <Link
-                href="/projects?category=DRIVING"
-                onClick={onClose}
-                className="flex items-center justify-between px-4 py-3 text-xs text-white/45 transition hover:bg-white/4 hover:text-white"
-              >
-                <span>Driving</span>
-
-                <span className="text-white/20">→</span>
-              </Link>
-            </div>
-          )}
-        </div>
-
-        {/* EXPERIENCE */}
-
-        <Link
-          href="/experience"
-          onClick={onClose}
-          className={`group flex min-h-14 items-center justify-between rounded-xl border px-4 transition-all duration-300 ${
-            isExperience
-              ? "border-[#5B7CFA]/30 bg-[#5B7CFA]/8 text-white"
-              : "border-transparent text-white/55 hover:border-white/8 hover:bg-white/3 hover:text-white"
-          }`}
-        >
-          <div className="flex items-center gap-5">
-            <span
-              className={`text-[9px] font-medium ${
-                isExperience ? "text-[#8EA5FF]" : "text-white/20"
-              }`}
-            >
-              05
-            </span>
-
-            <span className="text-sm font-semibold">Kinh nghiệm</span>
-          </div>
-
-          <span
-            className={`text-xs transition-transform duration-300 group-hover:translate-x-1 ${
-              isExperience ? "text-[#8EA5FF]" : "text-white/30"
-            }`}
-          >
-            →
-          </span>
-        </Link>
+        {after.map(renderLink)}
       </nav>
 
-      {/* ================================================= */}
-      {/* DIVIDER */}
-      {/* ================================================= */}
+      <div className="my-4 h-px w-full bg-white/8" />
 
-      <div className="my-4 h-px w-full bg-linear-to-r from-transparent via-white/10 to-transparent" />
-
-      {/* ================================================= */}
-      {/* AUTH */}
-      {/* ================================================= */}
-
-      <div className="grid grid-cols-2 gap-3">
-        {/* LOGIN */}
-
+      <div className="grid grid-cols-2 gap-2.5">
         <Link
           href="/login"
           onClick={onClose}
-          className="group relative flex h-13 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/3 text-xs font-semibold text-white/70 transition-all duration-300 hover:border-[#8EA5FF]/35 hover:bg-[#8EA5FF]/8 hover:text-white active:scale-[0.98]"
+          className="flex h-12 items-center justify-center rounded-xl border border-white/12 text-sm font-medium text-[#D6D3CB] transition-colors hover:bg-white/5 hover:text-white active:scale-[0.98]"
         >
-          <span className="pointer-events-none absolute inset-0 translate-y-full bg-linear-to-t from-[#5B7CFA]/10 to-transparent transition-transform duration-300 group-hover:translate-y-0" />
-
-          <span className="relative z-10">Đăng nhập</span>
+          Đăng nhập
         </Link>
-
-        {/* REGISTER */}
 
         <Link
           href="/register"
           onClick={onClose}
-          className="group relative flex h-13 items-center justify-center gap-2 overflow-hidden rounded-xl bg-[#8EA5FF] text-xs font-semibold text-[#0B0B0D] shadow-[0_0_0_0_rgba(142,165,255,0)] transition-all duration-300 hover:bg-[#A7B7FF] hover:shadow-[0_4px_22px_-4px_rgba(142,165,255,0.45)] active:scale-[0.98]"
+          className="flex h-12 items-center justify-center rounded-xl border border-[#7C93FF]/40 bg-[#7C93FF]/10 text-sm font-medium text-white transition-colors hover:bg-[#7C93FF]/20 active:scale-[0.98]"
         >
-          <span className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/25 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
-
-          <span className="relative z-10">Đăng ký</span>
-
-          <span className="relative z-10 transition-transform duration-300 group-hover:translate-x-0.5">
-            →
-          </span>
+          Đăng ký
         </Link>
       </div>
-
-      {/* ================================================= */}
-      {/* CONTACT */}
-      {/* ================================================= */}
 
       <button
         type="button"
         onClick={onContact}
-        className="group relative mt-3 flex h-14 w-full items-center justify-between overflow-hidden rounded-xl bg-[#EDECE8] px-5 text-xs font-semibold text-[#0B0B0D] transition-all duration-300 hover:bg-white active:scale-[0.99]"
+        className="mt-2.5 flex h-12 w-full items-center justify-center gap-1.5 rounded-xl bg-[#F2F0EA] text-sm font-semibold text-[#0C0D10] transition-colors hover:bg-white active:scale-[0.99]"
       >
-        <span className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-[#5B7CFA]/25 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
-
-        <span className="relative z-10">Liên hệ</span>
-
-        <span className="relative z-10 transition duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-          ↗
-        </span>
+        Liên hệ
+        <span aria-hidden="true">↗</span>
       </button>
 
-      {/* ================================================= */}
-      {/* BOTTOM */}
-      {/* ================================================= */}
-
-      <div className="mt-5 flex items-center justify-between px-1">
-        <div className="flex items-center gap-2">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-
-          <span className="text-[8px] font-medium uppercase tracking-[0.25em] text-white/25">
-            Sẵn sàng nhận cơ hội mới
-          </span>
-        </div>
-
-        <span className="text-[8px] tracking-[0.2em] text-white/15">2026</span>
-      </div>
+      <p className="mt-4 flex items-center gap-2 px-1 text-xs text-[#7E7B73]">
+        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+        Sẵn sàng nhận cơ hội mới
+      </p>
     </div>
   );
 };

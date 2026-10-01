@@ -3,60 +3,177 @@
 import React from "react";
 
 const HeroBackground: React.FC = () => {
-  const particles = React.useMemo(
-    () =>
-      Array.from(
-        {
-          length: 30
-        },
-        (_, i) => ({
-          id: i,
-          left: (i * 37) % 100,
-          top: (i * 53) % 100,
-          size: 2 + (i % 4),
-          delay: (i % 6) * 0.7,
-          duration: 6 + (i % 5) * 1.4,
-          tone: i % 3 === 0 ? "#3A6B7A" : "#C77B3D"
-        })
-      ),
-    []
-  );
-
   return (
     <>
-      {/* GRAIN */}
+      {/* BASE */}
+      <div className="pointer-events-none absolute inset-0 bg-[#11131B]" />
 
-      <svg className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.05] mix-blend-overlay">
-        <filter id="heroGrain">
+      {/* TOP GRADIENT */}
+      <div
+        className="
+          pointer-events-none
+          absolute
+          inset-x-0
+          top-0
+          h-[70%]
+          bg-linear-to-b
+          from-[#191C29]
+          via-[#141620]/70
+          to-transparent
+        "
+      />
+
+      {/* MAIN INDIGO GLOW */}
+      <div
+        className="
+          hero-glow
+          pointer-events-none
+          absolute
+          -top-70
+          left-[42%]
+          h-170
+          w-170
+          -translate-x-1/2
+          rounded-full
+          bg-[#7189FF]/12
+          blur-[170px]
+        "
+      />
+
+      {/* RIGHT VIOLET GLOW */}
+      <div
+        className="
+          hero-glow-alt
+          pointer-events-none
+          absolute
+          -right-60
+          top-[18%]
+          h-140
+          w-140
+          rounded-full
+          bg-[#8B5CF6]/10
+          blur-[170px]
+        "
+      />
+
+      {/* LEFT BLUE GLOW */}
+      <div
+        className="
+          pointer-events-none
+          absolute
+          -left-70
+          bottom-[-20%]
+          h-150
+          w-150
+          rounded-full
+          bg-[#3B82F6]/8
+          blur-[180px]
+        "
+      />
+
+      {/* DOT GRID */}
+      <div
+        className="
+          pointer-events-none
+          absolute
+          inset-0
+          opacity-35
+          mask-[linear-gradient(to_bottom,black,transparent_90%)]
+        "
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.08) 1px, transparent 0)",
+          backgroundSize: "32px 32px"
+        }}
+      />
+
+      {/* VERTICAL GUIDE */}
+      <div
+        className="
+          pointer-events-none
+          absolute
+          bottom-0
+          left-[8%]
+          top-0
+          hidden
+          w-px
+          bg-linear-to-b
+          from-transparent
+          via-white/6
+          to-transparent
+
+          lg:block
+        "
+      />
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          bottom-0
+          right-[8%]
+          top-0
+          hidden
+          w-px
+          bg-linear-to-b
+          from-transparent
+          via-white/6
+          to-transparent
+
+          lg:block
+        "
+      />
+
+      {/* TOP LINE */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-[#8EA5FF]/30 to-transparent" />
+
+      {/* NOISE */}
+      <svg
+        className="
+          pointer-events-none
+          absolute
+          inset-0
+          h-full
+          w-full
+          opacity-[0.025]
+          mix-blend-overlay
+        "
+      >
+        <filter id="heroNoise">
           <feTurbulence
             type="fractalNoise"
-            baseFrequency="0.9"
-            numOctaves="2"
+            baseFrequency="0.8"
+            numOctaves="3"
             stitchTiles="stitch"
           />
 
           <feColorMatrix type="saturate" values="0" />
         </filter>
 
-        <rect width="100%" height="100%" filter="url(#heroGrain)" />
+        <rect width="100%" height="100%" filter="url(#heroNoise)" />
       </svg>
 
-      {/* GRID */}
-
+      {/* SIDE LABEL */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.05]"
-        style={{
-          backgroundImage:
-            "linear-gradient(#EDEAE3 1px, transparent 1px), linear-gradient(90deg, #EDEAE3 1px, transparent 1px)",
-          backgroundSize: "64px 64px"
-        }}
-      />
+        className="
+          pointer-events-none
+          absolute
+          left-5
+          top-1/2
+          hidden
+          -translate-y-1/2
 
-      {/* LABEL */}
-
-      <div className="pointer-events-none absolute left-3 top-1/2 z-10 hidden -translate-y-1/2 md:block">
+          xl:block
+        "
+      >
         <p
-          className="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.5em] text-[#8F8B84]/70"
+          className="
+            font-['Space_Grotesk']
+            text-[9px]
+            uppercase
+            tracking-[0.45em]
+            text-white/20
+          "
           style={{
             writingMode: "vertical-rl"
           }}
@@ -64,63 +181,6 @@ const HeroBackground: React.FC = () => {
           Portfolio — 2026
         </p>
       </div>
-
-      {/* PARTICLES */}
-
-      <div className="pointer-events-none absolute inset-0 hidden md:block">
-        {particles.map((particle) => (
-          <span
-            key={particle.id}
-            className="absolute rounded-full"
-            style={{
-              left: `${particle.left}%`,
-              top: `${particle.top}%`,
-              width: particle.size,
-              height: particle.size,
-              backgroundColor: particle.tone,
-              boxShadow: `0 0 10px ${particle.tone}`,
-              animation: `floatParticle ${particle.duration}s ease-in-out ${particle.delay}s infinite`
-            }}
-          />
-        ))}
-      </div>
-
-      {/* GLOW */}
-
-      <div
-        className="pointer-events-none absolute -left-20 top-1/4 h-125 w-125 rounded-full bg-[#C77B3D]/20 blur-[130px]"
-        style={{
-          animation: "pulseGlow 8s ease-in-out infinite"
-        }}
-      />
-
-      <div
-        className="pointer-events-none absolute -right-24 bottom-0 h-96 w-96 rounded-full bg-[#3A6B7A]/20 blur-[120px]"
-        style={{
-          animation: "pulseGlow 10s ease-in-out infinite 1.5s"
-        }}
-      />
-
-      {/* CORNERS */}
-
-      <div className="pointer-events-none absolute left-6 top-6 hidden h-12 w-12 border-l-2 border-t-2 border-[#C77B3D]/40 md:block" />
-
-      <div className="pointer-events-none absolute bottom-6 right-6 hidden h-12 w-12 border-b-2 border-r-2 border-[#3A6B7A]/40 md:block" />
-
-      {/* TOP LIGHT */}
-
-      <div className="pointer-events-none absolute inset-x-0 top-0 hidden h-px overflow-hidden md:block">
-        <div
-          className="h-full w-1/4 bg-linear-to-r from-transparent via-[#C77B3D] to-transparent"
-          style={{
-            animation: "shimmerSweep 7s linear infinite"
-          }}
-        />
-      </div>
-
-      {/* BOTTOM LINE */}
-
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-0.75 bg-linear-to-r from-[#C77B3D] via-[#3A6B7A] to-[#C77B3D] opacity-60" />
     </>
   );
 };
