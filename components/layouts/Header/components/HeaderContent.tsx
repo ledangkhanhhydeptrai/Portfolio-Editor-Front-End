@@ -24,9 +24,7 @@ interface HeaderContentProps {
 
 function useHydrated() {
   return React.useSyncExternalStore(
-    () => {
-      return () => {};
-    },
+    () => () => {},
     () => true,
     () => false,
   );
@@ -34,268 +32,231 @@ function useHydrated() {
 
 const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
   const hydrated = useHydrated();
-
   const dispatch = useAppDispatch();
-
   const { user, authReady } = useAppSelector((state) => state.auth);
-
   const username = user ? user.username : null;
 
   const searchParams = useSearchParams();
-
   const currentCategory = searchParams.get("category");
 
-  // =========================================
   // STATES
-  // =========================================
-
   const [contactOpen, setContactOpen] = React.useState(false);
-
   const [scrolled, setScrolled] = React.useState(false);
-
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-
   const [mobileSkillsOpen, setMobileSkillsOpen] = React.useState(false);
-
   const [mobileProjectsOpen, setMobileProjectsOpen] = React.useState(false);
-
   const [desktopSkillsOpen, setDesktopSkillsOpen] = React.useState(false);
-
   const [desktopProjectsOpen, setDesktopProjectsOpen] = React.useState(false);
-
   const [accountOpen, setAccountOpen] = React.useState(false);
 
-  // =========================================
   // REFS
-  // =========================================
-
   const desktopSkillsRef = React.useRef<HTMLDivElement>(null);
-
   const desktopProjectsRef = React.useRef<HTMLDivElement>(null);
-
   const accountRef = React.useRef<HTMLDivElement>(null);
 
-  // =========================================
   // SCROLL
-  // =========================================
+  const progressRef = React.useRef<HTMLSpanElement>(null);
 
   React.useEffect(() => {
-    const onScroll = () => {
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+
       setScrolled(window.scrollY > 12);
+
+      // Thanh tiến độ cuộn: cập nhật trực tiếp qua ref, không gây re-render
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+
+      if (progressRef.current) {
+        progressRef.current.style.transform = `scaleX(${ratio})`;
+      }
     };
 
-    onScroll();
+    const onScroll = () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    };
 
-    window.addEventListener("scroll", onScroll, {
-      passive: true,
-    });
+    update();
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
 
     return () => {
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
     };
   }, []);
 
-  // =========================================
   // BODY LOCK
-  // =========================================
-
   React.useEffect(() => {
-    if (!mobileMenuOpen) {
-      return;
-    }
-
+    if (!mobileMenuOpen) return;
     document.body.style.overflow = "hidden";
-
     return () => {
       document.body.style.overflow = "";
     };
   }, [mobileMenuOpen]);
 
-  // =========================================
   // ESC
-  // =========================================
-
   React.useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") {
-        return;
-      }
-
+      if (event.key !== "Escape") return;
       setMobileMenuOpen(false);
-
       setMobileSkillsOpen(false);
-
       setMobileProjectsOpen(false);
-
       setDesktopSkillsOpen(false);
-
       setDesktopProjectsOpen(false);
-
       setAccountOpen(false);
     };
-
     window.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", onKeyDown);
-    };
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  // =========================================
   // CLICK OUTSIDE
-  // =========================================
-
   React.useEffect(() => {
     const onMouseDown = (event: MouseEvent) => {
       const target = event.target as Node;
-
       if (desktopSkillsRef.current && !desktopSkillsRef.current.contains(target)) {
         setDesktopSkillsOpen(false);
       }
-
       if (desktopProjectsRef.current && !desktopProjectsRef.current.contains(target)) {
         setDesktopProjectsOpen(false);
       }
-
       if (accountRef.current && !accountRef.current.contains(target)) {
         setAccountOpen(false);
       }
     };
-
     document.addEventListener("mousedown", onMouseDown);
-
-    return () => {
-      document.removeEventListener("mousedown", onMouseDown);
-    };
+    return () => document.removeEventListener("mousedown", onMouseDown);
   }, []);
 
-  // =========================================
   // MOBILE
-  // =========================================
-
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
-
     setMobileSkillsOpen(false);
-
     setMobileProjectsOpen(false);
   };
 
   const handleMobileContact = () => {
     closeMobileMenu();
-
     setContactOpen(true);
   };
 
   const handleMobileSkillsToggle = () => {
     setMobileProjectsOpen(false);
-
     setMobileSkillsOpen((previous) => !previous);
   };
 
   const handleMobileProjectsToggle = () => {
     setMobileSkillsOpen(false);
-
     setMobileProjectsOpen((previous) => !previous);
   };
 
-  // =========================================
-  // DESKTOP SKILLS
-  // =========================================
-
+  // DESKTOP
   const handleSkillsOpen = () => {
     setDesktopProjectsOpen(false);
-
     setAccountOpen(false);
-
     setDesktopSkillsOpen(true);
   };
 
   const handleSkillsToggle = () => {
     setDesktopProjectsOpen(false);
-
     setAccountOpen(false);
-
     setDesktopSkillsOpen((previous) => !previous);
   };
 
-  // =========================================
-  // DESKTOP PROJECTS
-  // =========================================
-
   const handleProjectsOpen = () => {
     setDesktopSkillsOpen(false);
-
     setAccountOpen(false);
-
     setDesktopProjectsOpen(true);
   };
 
   const handleProjectsToggle = () => {
     setDesktopSkillsOpen(false);
-
     setAccountOpen(false);
-
     setDesktopProjectsOpen((previous) => !previous);
   };
 
-  // =========================================
   // ACCOUNT
-  // =========================================
-
   const handleAccountToggle = () => {
     setDesktopSkillsOpen(false);
-
     setDesktopProjectsOpen(false);
-
     setAccountOpen((previous) => !previous);
   };
 
   const handleLogout = () => {
     setAccountOpen(false);
     closeMobileMenu();
-
     dispatch(createLogoutRequest());
   };
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 z-50 w-full border-b backdrop-blur-xl transition-colors duration-300 ${
+        className={`fixed top-0 left-0 z-50 w-full transition-[background-color,box-shadow,border-color] duration-300 motion-reduce:transition-none ${
           scrolled
-            ? "border-white/10 bg-[#0C0D10]/92 shadow-[0_8px_30px_rgba(0,0,0,0.35)]"
-            : "border-white/6 bg-[#0C0D10]/70"
+            ? "border-b border-white/10 bg-[#0B0D12]/88 shadow-[0_14px_40px_-12px_rgba(0,0,0,0.6)] backdrop-blur-2xl backdrop-saturate-150"
+            : "border-b border-white/5 bg-[#0B0D12]/60 backdrop-blur-xl backdrop-saturate-150"
         }`}
       >
         <HeaderAnimations />
 
-        <div className="mx-auto flex h-18 w-full max-w-375 items-center justify-between px-4 sm:px-6 lg:px-10 xl:px-14">
-          <HeaderBrand onClick={closeMobileMenu} />
-
-          <DesktopNavigation
-            pathname={pathname}
-            currentCategory={currentCategory}
-            skillsOpen={desktopSkillsOpen}
-            skillsRef={desktopSkillsRef}
-            onSkillsOpen={handleSkillsOpen}
-            onSkillsClose={() => setDesktopSkillsOpen(false)}
-            onSkillsToggle={handleSkillsToggle}
-            projectsOpen={desktopProjectsOpen}
-            projectsRef={desktopProjectsRef}
-            onProjectsOpen={handleProjectsOpen}
-            onProjectsClose={() => setDesktopProjectsOpen(false)}
-            onProjectsToggle={handleProjectsToggle}
+        {/* Thanh tiến độ cuộn trang */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute right-0 bottom-0 left-0 h-px overflow-hidden"
+        >
+          <span
+            ref={progressRef}
+            className="block h-full w-full origin-left scale-x-0 bg-[#8EA2FF] will-change-transform"
           />
+        </span>
 
-          <div className="flex items-center gap-2 xl:ml-5">
-            <HeaderStatus />
+        {/*
+          LAYOUT: brand | nav (flex-1, nằm giữa phần còn lại) | actions
+          Nav KHÔNG còn absolute nên không thể đè lên Status / Account nữa.
+        */}
+        <div className="relative mx-auto flex h-16 w-full max-w-375 items-center gap-3 px-5 sm:px-7 lg:gap-4 lg:px-8 xl:gap-6">
+          {/* BRAND */}
+          <div className="relative z-10 shrink-0">
+            <HeaderBrand onClick={closeMobileMenu} />
+          </div>
 
-            {/* =============================== */}
-            {/* AUTH DESKTOP                    */}
-            {/* =============================== */}
+          {/* DESKTOP NAV: chiếm phần trống ở giữa, co lại khi hết chỗ */}
+          <div className="hidden min-w-0 flex-1 justify-center lg:flex">
+            <div className="flex max-w-full items-center rounded-full border border-white/8 bg-white/3 px-1.5 py-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+              <DesktopNavigation
+                pathname={pathname}
+                currentCategory={currentCategory}
+                skillsOpen={desktopSkillsOpen}
+                skillsRef={desktopSkillsRef}
+                onSkillsOpen={handleSkillsOpen}
+                onSkillsClose={() => setDesktopSkillsOpen(false)}
+                onSkillsToggle={handleSkillsToggle}
+                projectsOpen={desktopProjectsOpen}
+                projectsRef={desktopProjectsRef}
+                onProjectsOpen={handleProjectsOpen}
+                onProjectsClose={() => setDesktopProjectsOpen(false)}
+                onProjectsToggle={handleProjectsToggle}
+              />
+            </div>
+          </div>
 
+          {/* RIGHT SIDE */}
+          <div className="relative z-10 ml-auto flex shrink-0 items-center gap-2 lg:ml-0">
+            {/* Status chỉ hiện khi màn đủ rộng */}
+            <div className="hidden 2xl:block">
+              <HeaderStatus />
+            </div>
+
+            {/* Divider ngăn nhóm điều hướng và nhóm tài khoản */}
+            <span aria-hidden="true" className="mx-1 hidden h-5 w-px bg-white/10 lg:block" />
+
+            {/* AUTH DESKTOP */}
             {!hydrated || !authReady ? (
-              <div className="hidden h-9 w-32 lg:block" />
+              <div className="hidden h-9 w-28 lg:block" />
             ) : username ? (
               <AccountDropdown
                 username={username}
@@ -306,118 +267,102 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
                 onLogout={handleLogout}
               />
             ) : (
-              <div className="hidden items-center gap-1 lg:flex">
+              <div className="hidden items-center gap-1.5 lg:flex">
                 <Link
                   href="/login"
-                  className="flex h-9 items-center rounded-full px-4 text-xs font-medium text-[#B5B2A9] transition-colors hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-[#7C93FF]"
+                  className="flex h-9 items-center rounded-full px-3.5 text-xs font-medium text-white/60 transition-colors hover:bg-white/5 hover:text-white focus-visible:ring-2 focus-visible:ring-[#8EA2FF]/50 focus-visible:outline-none"
                 >
                   Đăng nhập
                 </Link>
 
                 <Link
                   href="/register"
-                  className="flex h-9 items-center rounded-full border border-white/12 px-4 text-xs font-medium text-[#F2F0EA] transition-colors hover:border-[#7C93FF]/50 hover:bg-[#7C93FF]/10 focus-visible:outline-2 focus-visible:outline-[#7C93FF]"
+                  className="flex h-9 items-center rounded-full border border-white/12 px-3.5 text-xs font-medium text-white/85 transition-colors hover:border-white/25 hover:bg-white/5 hover:text-white focus-visible:ring-2 focus-visible:ring-[#8EA2FF]/50 focus-visible:outline-none"
                 >
                   Đăng ký
                 </Link>
               </div>
             )}
 
-            {/* =============================== */}
-            {/* CONTACT                         */}
-            {/* =============================== */}
-
+            {/* CONTACT */}
             <button
               type="button"
               onClick={() => setContactOpen(true)}
-              className="hidden h-9 items-center gap-1.5 rounded-full bg-[#F2F0EA] px-4 text-xs font-semibold text-[#0C0D10] transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7C93FF] sm:flex"
+              className="group hidden h-9 items-center gap-2 rounded-full bg-[#F2F0EA] pr-1.5 pl-4 text-xs font-semibold text-[#111318] shadow-[0_0_0_1px_rgba(255,255,255,0.4),0_6px_20px_-6px_rgba(142,162,255,0.45)] transition-all duration-200 hover:bg-white hover:shadow-[0_0_0_1px_rgba(255,255,255,0.6),0_8px_26px_-6px_rgba(142,162,255,0.7)] focus-visible:ring-2 focus-visible:ring-[#8EA2FF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B0D12] focus-visible:outline-none motion-reduce:transition-none sm:flex"
             >
               Liên hệ
-              <span aria-hidden="true">↗</span>
+              <span
+                aria-hidden="true"
+                className="flex h-6 w-6 items-center justify-center rounded-full bg-[#111318] text-[11px] text-[#F2F0EA] transition-transform duration-200 group-hover:rotate-45 motion-reduce:transition-none"
+              >
+                ↗
+              </span>
             </button>
 
-            {/* =============================== */}
-            {/* MOBILE BUTTON                   */}
-            {/* =============================== */}
-
+            {/* MOBILE MENU BUTTON */}
             <button
               type="button"
               aria-label={mobileMenuOpen ? "Đóng menu" : "Mở menu"}
               aria-expanded={mobileMenuOpen}
               onClick={() => setMobileMenuOpen((previous) => !previous)}
-              className={`relative flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-[#7C93FF] md:hidden ${
+              className={`relative flex h-9 w-9 items-center justify-center rounded-full border transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-[#8EA2FF]/50 focus-visible:outline-none lg:hidden ${
                 mobileMenuOpen
-                  ? "border-[#7C93FF]/40 bg-[#7C93FF]/10"
+                  ? "border-[#8EA2FF]/30 bg-[#8EA2FF]/10"
                   : "border-white/10 bg-white/3 hover:bg-white/6"
               }`}
             >
-              <span className="relative block h-3.5 w-5">
+              <span className="relative block h-3.5 w-4.5">
                 <span
-                  className={`absolute left-0 h-px w-5 bg-[#F2F0EA] transition-all duration-300 ${
+                  className={`absolute left-0 h-px w-4.5 bg-[#F2F0EA] transition-all duration-300 ${
                     mobileMenuOpen ? "top-1.5 rotate-45" : "top-0"
                   }`}
                 />
-
                 <span
-                  className={`absolute top-1.5 left-0 h-px w-3.5 bg-[#F2F0EA] transition-opacity duration-200 ${
+                  className={`absolute top-1.5 left-0 h-px w-3 bg-[#F2F0EA] transition-opacity duration-200 ${
                     mobileMenuOpen ? "opacity-0" : "opacity-100"
                   }`}
                 />
-
                 <span
-                  className={`absolute left-0 h-px w-5 bg-[#F2F0EA] transition-all duration-300 ${
+                  className={`absolute left-0 h-px w-4.5 bg-[#F2F0EA] transition-all duration-300 ${
                     mobileMenuOpen ? "top-1.5 -rotate-45" : "top-3"
                   }`}
                 />
               </span>
             </button>
           </div>
+
+          {/* MOBILE MENU */}
+          {mobileMenuOpen && (
+            <MobileMenu
+              pathname={pathname}
+              currentCategory={currentCategory}
+              skillsOpen={mobileSkillsOpen}
+              onSkillsToggle={handleMobileSkillsToggle}
+              projectsOpen={mobileProjectsOpen}
+              onProjectsToggle={handleMobileProjectsToggle}
+              onClose={closeMobileMenu}
+              onContact={handleMobileContact}
+              onLogout={handleLogout}
+              hydrated={hydrated}
+              authReady={authReady}
+              username={username}
+            />
+          )}
         </div>
-
-        {/* =============================== */}
-        {/* MOBILE MENU                     */}
-        {/* =============================== */}
-
-        {mobileMenuOpen && (
-          <MobileMenu
-            pathname={pathname}
-            currentCategory={currentCategory}
-            skillsOpen={mobileSkillsOpen}
-            onSkillsToggle={handleMobileSkillsToggle}
-            projectsOpen={mobileProjectsOpen}
-            onProjectsToggle={handleMobileProjectsToggle}
-            onClose={closeMobileMenu}
-            onContact={handleMobileContact}
-            onLogout={handleLogout}
-            hydrated={hydrated}
-            authReady={authReady}
-            username={username}
-          />
-        )}
       </header>
 
-      {/* ================================= */}
-      {/* MOBILE OVERLAY                    */}
-      {/* ================================= */}
-
+      {/* MOBILE OVERLAY */}
       {mobileMenuOpen && (
         <button
           type="button"
           aria-label="Đóng menu"
           onClick={closeMobileMenu}
-          className="fixed inset-0 z-40 bg-black/55 md:hidden"
+          className="fixed inset-0 z-40 bg-black/55 backdrop-blur-[2px] lg:hidden"
         />
       )}
 
-      {/* ================================= */}
-      {/* CONTACT                           */}
-      {/* ================================= */}
-
+      {/* CONTACT POPUP */}
       <ContactPopup open={contactOpen} onClose={() => setContactOpen(false)} />
-
-      {/* ================================= */}
-      {/* ANIMATION                         */}
-      {/* ================================= */}
 
       <style jsx global>{`
         @keyframes accountDropdownIn {
@@ -425,7 +370,6 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
             opacity: 0;
             transform: translateY(-6px) scale(0.98);
           }
-
           to {
             opacity: 1;
             transform: translateY(0) scale(1);
