@@ -46,7 +46,7 @@ export default function HeroSection() {
             className="mt-8 flex flex-wrap gap-3"
           >
             <Link
-              href="/project"
+              href="/projects"
               className="inline-flex items-center gap-2 rounded-lg bg-[#EDECE8] px-5 py-2.5 text-xs font-medium text-[#0B0B0D] transition hover:bg-white"
             >
               Xem dự án <span>↗</span>
@@ -61,21 +61,21 @@ export default function HeroSection() {
           <div className="mt-12 grid max-w-xl grid-cols-3 border-t border-white/8 pt-5">
             <div>
               <p className="text-[9px] uppercase tracking-[0.18em] text-[#5F5C56]">
-                Focus
+                Tập trung
               </p>
               <p className="mt-1.5 text-xs">Edit + Dev</p>
             </div>
             <div>
               <p className="text-[9px] uppercase tracking-[0.18em] text-[#5F5C56]">
-                Location
+                Tọa lạc
               </p>
               <p className="mt-1.5 text-xs">Việt Nam</p>
             </div>
             <div>
               <p className="text-[9px] uppercase tracking-[0.18em] text-[#5F5C56]">
-                Status
+                Trạng thái
               </p>
-              <p className="mt-1.5 text-xs">Available</p>
+              <p className="mt-1.5 text-xs">Đang hoạt động</p>
             </div>
           </div>
         </div>

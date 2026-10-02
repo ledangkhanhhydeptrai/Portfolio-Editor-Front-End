@@ -5,7 +5,6 @@ import Link from "next/link";
 
 import { navItems } from "./headerData";
 
-
 import DesktopSkillDropdown from "./DesktopSkillDropdown";
 import DesktopProjectsDropdown from "./DesktopProjectsDropdown";
 import { navPill } from "./Headerstyles";
@@ -39,12 +38,10 @@ const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
   projectsRef,
   onProjectsOpen,
   onProjectsClose,
-  onProjectsToggle
+  onProjectsToggle,
 }) => {
   const isActive = (href: string) =>
-    href === "/"
-      ? pathname === "/"
-      : pathname === href || pathname.startsWith(`${href}/`);
+    href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 
   const skillsActive = isActive("/skills");
 
@@ -59,20 +56,17 @@ const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
     </Link>
   );
 
-  const before = navItems.filter(
-    (item) => item.href === "/" || item.href === "/about"
-  );
+  const before = navItems.filter((item) => item.href === "/" || item.href === "/about");
 
   // "Dự án" đã có dropdown riêng nên loại khỏi danh sách link thường
   const after = navItems.filter(
-    (item) =>
-      item.href !== "/" && item.href !== "/about" && item.href !== "/projects"
+    (item) => item.href !== "/" && item.href !== "/about" && item.href !== "/projects",
   );
 
   return (
     <nav
       aria-label="Điều hướng chính"
-      className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-0.5 rounded-full border border-white/8 bg-white/3 p-1 md:flex"
+      className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-0.5 rounded-full border border-white/8 bg-white/3 p-1 md:flex xl:left-[48%]"
     >
       {before.map(renderNavLink)}
 

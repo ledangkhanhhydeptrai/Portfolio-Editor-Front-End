@@ -103,7 +103,7 @@ const VideoProjects: React.FC<VideoProjectsProps> = ({ projects }) => {
 
                 <ProjectLinks
                   demoUrl={project.demoUrl}
-                  githubUrl={project.githubUrl}
+                  githubUrl={null}
                 />
               </div>
             </article>

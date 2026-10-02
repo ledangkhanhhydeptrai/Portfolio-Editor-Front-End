@@ -1,6 +1,11 @@
-import VideoProjectSection from "@/features/video/components/VideoProjectSection";
-import React from "react";
+"use client";
+import MainLayouts from "@/components/layouts/MainLayout";
+import VideoContainer from "@/features/video/container/videoContainer";
 
 export default function VideoPage() {
-  return <VideoProjectSection />;
+  return (
+    <MainLayouts>
+      <VideoContainer />
+    </MainLayouts>
+  );
 }

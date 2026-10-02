@@ -1,91 +1,108 @@
 "use client";
 
 import React from "react";
-import { VideoProject } from "../videoTypes";
+import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+import type { VideoProject } from "../videoTypes";
+import { formatCategory } from "./VideoProjectCard";
 
 interface VideoProjectFeaturedProps {
   project: VideoProject;
+  index: number;
+  total: number;
+  autoPlay: boolean;
+  onPrev: () => void;
+  onNext: () => void;
 }
 
+/** Trình phát chính (cột PHẢI). */
 const VideoProjectFeatured: React.FC<VideoProjectFeaturedProps> = ({
-  project
+  project,
+  index,
+  total,
+  autoPlay,
+  onPrev,
+  onNext,
 }) => {
   return (
-    <article className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-[#202330]">
-      {/* VIDEO */}
-
-      <div className="relative aspect-video overflow-hidden bg-black">
-        <video
-          src={project.videoUrl}
-          poster={project.thumbnailUrl}
-          controls
-          preload="metadata"
-          playsInline
-          className="h-full w-full object-cover"
+    <div className="relative min-w-0">
+      {/* ambient glow lấy từ thumbnail */}
+      <div className="pointer-events-none absolute -inset-10 -z-10 overflow-hidden opacity-40">
+        <Image
+          key={project.id}
+          src={project.thumbnailUrl}
+          alt=""
+          fill
+          sizes="800px"
+          className="scale-125 object-cover blur-3xl"
         />
-
-        {/* TOP INFO */}
-
-        <div className="pointer-events-none absolute left-5 top-5 flex items-center gap-2 rounded-full border border-white/10 bg-[#111218]/80 px-3 py-2 backdrop-blur-xl">
-          <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
-
-          <span className="font-mono text-[8px] uppercase tracking-[0.22em] text-white/70">
-            Featured Project
-          </span>
-        </div>
       </div>
 
-      {/* CONTENT */}
+      <article className="overflow-hidden rounded-3xl border border-white/10 bg-[#141620] shadow-[0_40px_100px_-30px_rgba(0,0,0,0.8)]">
+        <div className="aspect-video bg-black">
+          <video
+            key={project.id}
+            src={project.videoUrl}
+            poster={project.thumbnailUrl}
+            controls
+            autoPlay={autoPlay}
+            playsInline
+            className="h-full w-full object-contain"
+          />
+        </div>
 
-      <div className="relative p-7 sm:p-9">
-        <span className="pointer-events-none absolute -right-2 -top-5 font-mono text-8xl font-semibold tracking-[-0.08em] text-white/3">
-          01
-        </span>
-
-        <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-180">
-            <div className="mb-4 flex flex-wrap items-center gap-3">
-              <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-violet-300">
-                {project.category}
+        <div className="flex flex-col gap-6 p-6 sm:p-8 md:flex-row md:items-start md:justify-between">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-3 text-xs text-slate-400">
+              <span className="rounded-full border border-violet-300/20 bg-violet-400/10 px-3 py-1 text-violet-200">
+                {formatCategory(project.category)}
               </span>
-
-              {project.year && (
-                <>
-                  <span className="h-1 w-1 rounded-full bg-white/20" />
-
-                  <span className="font-mono text-[9px] text-slate-500">
-                    {project.year}
-                  </span>
-                </>
-              )}
-
-              {project.duration && (
-                <>
-                  <span className="h-1 w-1 rounded-full bg-white/20" />
-
-                  <span className="font-mono text-[9px] text-slate-500">
-                    {project.duration}
-                  </span>
-                </>
-              )}
+              {project.year && <span>{project.year}</span>}
+              <span className="h-1 w-1 rounded-full bg-white/20" />
+              <span className="font-mono">{project.duration}</span>
             </div>
 
-            <h3 className="text-3xl font-medium tracking-[-0.04em] text-[#F4F3EF] sm:text-4xl">
+            <h2 className="mt-4 text-2xl font-medium tracking-[-0.03em] text-[#F4F3EF] sm:text-3xl">
               {project.title}
-            </h3>
+            </h2>
 
-            <p className="mt-4 max-w-150 text-sm leading-7 text-slate-400">
-              {project.description}
-            </p>
+            {project.description && (
+              <p className="mt-3 max-w-xl text-sm leading-7 text-slate-400">
+                {project.description}
+              </p>
+            )}
           </div>
 
-          <div className="flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.2em] text-slate-500">
-            <span className="h-px w-8 bg-violet-300/40" />
-            Selected Work
+          {/* prev / next */}
+          <div className="flex shrink-0 items-center gap-3">
+            <span className="mr-1 font-mono text-xs text-slate-500">
+              {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+            </span>
+
+            <button
+              type="button"
+              onClick={onPrev}
+              disabled={index === 0}
+              aria-label="Video trước"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/70 transition hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
+            >
+              <ChevronLeft size={18} />
+            </button>
+
+            <button
+              type="button"
+              onClick={onNext}
+              disabled={index === total - 1}
+              aria-label="Video sau"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/70 transition hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
+            >
+              <ChevronRight size={18} />
+            </button>
           </div>
         </div>
-      </div>
-    </article>
+      </article>
+    </div>
   );
 };
 
