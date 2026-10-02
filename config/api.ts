@@ -21,6 +21,7 @@ export const API_CONFIG = {
       EXPERIENCES: "/user/experience",
       EDUCATIONS: "/user/education",
       SOCIAL_LINKS: "/user/social_link",
+      VIDEO_PROJECT: "/user/video",
     },
     LOGIN: "/auth/login",
     REGISTER: "/auth/register",

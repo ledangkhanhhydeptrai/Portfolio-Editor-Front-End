@@ -1,40 +1,56 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import Notification from "@/components/ui/Notification";
 
-import {
-  clearAuthError,
-  clearAuthSuccess,
-  createLoginRequest
-} from "../authSlice";
+import { clearAuthError, clearAuthSuccess, createLoginRequest } from "../authSlice";
 
 import { LoginBrandPanel, LoginForm, LoginHeader } from "../components/login";
+
 import type { LoginField } from "../components/login";
 import { LoginProps } from "../authTypes";
 
 const LoginContainer: React.FC = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
-  const { successMessage, loading, error } = useAppSelector(
-    (state) => state.auth
-  );
+  const { successMessage, loading, error } = useAppSelector((state) => state.auth);
 
   const [values, setValues] = React.useState<LoginProps>({
     email: "",
-    password: ""
+    password: "",
   });
 
   const handleChange = (field: LoginField, value: string) => {
-    setValues((prev) => ({ ...prev, [field]: value }));
+    setValues((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     dispatch(createLoginRequest(values));
   };
+
+  React.useEffect(() => {
+    if (!successMessage) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      dispatch(clearAuthSuccess());
+      router.replace("/");
+    }, 1000);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [successMessage, dispatch, router]);
 
   return (
     <>
@@ -48,15 +64,13 @@ const LoginContainer: React.FC = () => {
       <Notification
         open={Boolean(successMessage)}
         message={
-          typeof successMessage === "string"
-            ? successMessage
-            : "Đăng nhập tài khoản thành công"
+          typeof successMessage === "string" ? successMessage : "Đăng nhập tài khoản thành công"
         }
         severity="success"
         onClose={() => dispatch(clearAuthSuccess())}
       />
 
-      <main className="h-dvh overflow-y-auto overflow-x-hidden bg-[#0D1618] text-[#E9EFEC]">
+      <main className="h-dvh overflow-x-hidden overflow-y-auto bg-[#0D1618] text-[#E9EFEC]">
         <div className="mx-auto grid min-h-dvh w-full max-w-375 lg:grid-cols-2">
           <LoginBrandPanel />
 

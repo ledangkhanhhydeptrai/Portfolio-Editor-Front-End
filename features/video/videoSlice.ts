@@ -28,7 +28,27 @@ const videoSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    getVideoUserRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    getVideoUserSuccess(state, action: PayloadAction<VideoProject[]>) {
+      state.loading = false;
+      state.error = null;
+      state.data = action.payload;
+    },
+    getVideoUserFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
-export const { getVideoRequest, getVideoSuccess, getVideoFailure } = videoSlice.actions;
+export const {
+  getVideoRequest,
+  getVideoSuccess,
+  getVideoFailure,
+  getVideoUserRequest,
+  getVideoUserSuccess,
+  getVideoUserFailure,
+} = videoSlice.actions;
 export default videoSlice.reducer;

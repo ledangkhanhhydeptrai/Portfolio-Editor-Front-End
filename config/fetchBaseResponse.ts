@@ -1,13 +1,11 @@
-import axios, {
-  AxiosRequestConfig,
-  AxiosResponse,
-} from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 import { API_CONFIG } from "./api";
 
 const API = axios.create({
   baseURL: API_CONFIG.BASE_URL,
   timeout: 15000,
+  withCredentials: true,
 });
 
 export interface BaseResponse<T> {
@@ -20,11 +18,10 @@ export interface BaseResponse<T> {
 
 export async function fetchBaseResponse<T = unknown>(
   url: string,
-  config: AxiosRequestConfig
+  config: AxiosRequestConfig,
 ): Promise<BaseResponse<T>> {
   try {
-    const response: AxiosResponse =
-      await API(url, config);
+    const response: AxiosResponse = await API(url, config);
 
     const raw = response.data;
 
@@ -46,25 +43,13 @@ export async function fetchBaseResponse<T = unknown>(
     // OBJECT
     // ================================
 
-    if (
-      raw !== null &&
-      typeof raw === "object"
-    ) {
+    if (raw !== null && typeof raw === "object") {
       return {
-        status:
-          typeof raw.status === "number"
-            ? raw.status
-            : response.status,
+        status: typeof raw.status === "number" ? raw.status : response.status,
 
-        message:
-          typeof raw.message === "string"
-            ? raw.message
-            : "Success",
+        message: typeof raw.message === "string" ? raw.message : "Success",
 
-        data:
-          typeof raw.data !== "undefined"
-            ? (raw.data as T)
-            : (raw as T),
+        data: typeof raw.data !== "undefined" ? (raw.data as T) : (raw as T),
 
         serverStatus: response.status,
         success: true,
@@ -94,25 +79,13 @@ export async function fetchBaseResponse<T = unknown>(
       if (response) {
         const raw = response.data;
 
-        if (
-          raw !== null &&
-          typeof raw === "object"
-        ) {
+        if (raw !== null && typeof raw === "object") {
           return {
-            status:
-              typeof raw.status === "number"
-                ? raw.status
-                : response.status,
+            status: typeof raw.status === "number" ? raw.status : response.status,
 
-            message:
-              typeof raw.message === "string"
-                ? raw.message
-                : "Request failed",
+            message: typeof raw.message === "string" ? raw.message : "Request failed",
 
-            data:
-              typeof raw.data !== "undefined"
-                ? (raw.data as T)
-                : (null as T),
+            data: typeof raw.data !== "undefined" ? (raw.data as T) : (null as T),
 
             serverStatus: response.status,
             success: false,
@@ -132,8 +105,7 @@ export async function fetchBaseResponse<T = unknown>(
       if (error.request) {
         return {
           status: 503,
-          message:
-            "Không thể kết nối đến server",
+          message: "Không thể kết nối đến server",
           data: null as T,
           serverStatus: 503,
           success: false,
@@ -142,9 +114,7 @@ export async function fetchBaseResponse<T = unknown>(
 
       return {
         status: 500,
-        message:
-          error.message ||
-          "Request failed",
+        message: error.message || "Request failed",
         data: null as T,
         serverStatus: 500,
         success: false,
@@ -156,9 +126,7 @@ export async function fetchBaseResponse<T = unknown>(
       throw error;
     }
 
-    throw new Error(
-      "Có lỗi không xác định xảy ra"
-    );
+    throw new Error("Có lỗi không xác định xảy ra");
   }
 }
 

@@ -20,3 +20,18 @@ export const getVideoAPI = async (): Promise<ApiResponse<VideoProject[]>> => {
     throw errors;
   }
 };
+export const getVideoUserAPI = async (): Promise<ApiResponse<VideoProject[]>> => {
+  try {
+    const response = await fetchBaseResponse<VideoProject[]>(
+      `${API_CONFIG.ENDPOINTS.USER.VIDEO_PROJECT}`,
+      requestConfig("GET"),
+    );
+    if (response.status !== 200) {
+      throw new Error(`HTTP Status:${response.status}`);
+    }
+    return response;
+  } catch (error) {
+    const errors = error as AxiosError<string>;
+    throw errors;
+  }
+};
