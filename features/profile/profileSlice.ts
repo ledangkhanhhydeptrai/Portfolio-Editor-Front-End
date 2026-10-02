@@ -5,11 +5,13 @@ interface ProfileState {
   loading: boolean;
   error: string | null;
   data: ProfileProps[];
+  user: ProfileProps | null;
 }
 const initialState: ProfileState = {
   loading: false,
   error: null,
-  data: []
+  data: [],
+  user: null,
 };
 const ProfileSlice = createSlice({
   name: "profile",
@@ -27,9 +29,28 @@ const ProfileSlice = createSlice({
     getProfileFailure(state, action: PayloadAction<string>) {
       state.loading = false;
       state.error = action.payload;
-    }
-  }
+    },
+    getProfileUserRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    getProfileUserSuccess(state, action: PayloadAction<ProfileProps>) {
+      state.loading = false;
+      state.error = null;
+      state.user = action.payload;
+    },
+    getProfileUserFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+  },
 });
-export const { getProfileRequest, getProfileSuccess, getProfileFailure } =
-  ProfileSlice.actions;
+export const {
+  getProfileRequest,
+  getProfileSuccess,
+  getProfileFailure,
+  getProfileUserRequest,
+  getProfileUserSuccess,
+  getProfileUserFailure,
+} = ProfileSlice.actions;
 export default ProfileSlice.reducer;

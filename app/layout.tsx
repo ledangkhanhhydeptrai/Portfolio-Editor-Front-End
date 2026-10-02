@@ -4,8 +4,8 @@ import "./globals.css";
 import StoreProvider from "@/store/StoreProvider";
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={geistSans.variable}>
+      <body className={geistSans.className}>
         <StoreProvider>{children}</StoreProvider>
       </body>
     </html>
