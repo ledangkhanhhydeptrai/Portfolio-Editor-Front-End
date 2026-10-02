@@ -6,7 +6,6 @@ import Link from "next/link";
 import { navItems, skillItems } from "./headerData";
 import { projectItems } from "./Headerprojects";
 
-
 interface MobileMenuProps {
   pathname: string;
   currentCategory: string | null;
@@ -19,6 +18,10 @@ interface MobileMenuProps {
 
   onClose: () => void;
   onContact: () => void;
+
+  hydrated: boolean;
+  authReady: boolean;
+  username: string | null;
 }
 
 const rowClass = (active: boolean) =>
@@ -34,35 +37,27 @@ interface GroupProps {
   open: boolean;
   onToggle: () => void;
   onClose: () => void;
-  links: { label: string; href: string; active: boolean }[];
-  all: { label: string; href: string };
+  links: {
+    label: string;
+    href: string;
+    active: boolean;
+  }[];
+  all: {
+    label: string;
+    href: string;
+  };
 }
 
-const Group: React.FC<GroupProps> = ({
-  label,
-  active,
-  open,
-  onToggle,
-  onClose,
-  links,
-  all
-}) => (
+const Group: React.FC<GroupProps> = ({ label, active, open, onToggle, onClose, links, all }) => (
   <div>
-    <button
-      type="button"
-      aria-expanded={open}
-      onClick={onToggle}
-      className={rowClass(active)}
-    >
+    <button type="button" aria-expanded={open} onClick={onToggle} className={rowClass(active)}>
       <span>{label}</span>
 
       <svg
         viewBox="0 0 20 20"
         fill="none"
         aria-hidden="true"
-        className={`h-4 w-4 transition-transform duration-200 ${
-          open ? "rotate-180" : ""
-        }`}
+        className={`h-4 w-4 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
       >
         <path
           d="M5 7.5L10 12.5L15 7.5"
@@ -80,7 +75,7 @@ const Group: React.FC<GroupProps> = ({
       }`}
     >
       <div className="overflow-hidden">
-        <div className="ml-5 mt-1 mb-1 space-y-0.5 border-l border-white/10 pl-3">
+        <div className="mt-1 mb-1 ml-5 space-y-0.5 border-l border-white/10 pl-3">
           {links.map((link) => (
             <Link
               key={link.href}
@@ -119,7 +114,10 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   projectsOpen,
   onProjectsToggle,
   onClose,
-  onContact
+  onContact,
+  hydrated,
+  authReady,
+  username,
 }) => {
   const isActive = (href: string) =>
     href === "/"
@@ -135,17 +133,17 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
       className={rowClass(isActive(item.href))}
     >
       <span>{item.label}</span>
+
       <span aria-hidden="true" className="text-white/30">
         →
       </span>
     </Link>
   );
 
-  const before = navItems.filter((i) => i.href === "/" || i.href === "/about");
+  const before = navItems.filter((item) => item.href === "/" || item.href === "/about");
 
-  // Gồm cả Học vấn & Kết nối — bản cũ không có trên mobile
   const after = navItems.filter(
-    (i) => i.href !== "/" && i.href !== "/about" && i.href !== "/projects"
+    (item) => item.href !== "/" && item.href !== "/about" && item.href !== "/projects",
   );
 
   const skillsActive = isActive("/skills");
@@ -153,8 +151,10 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
 
   return (
     <div
-      className="absolute left-0 top-full z-50 max-h-[calc(100dvh-4.5rem)] w-full overflow-y-auto border-b border-white/8 bg-[#0C0D10]/98 px-4 pb-6 pt-3 shadow-[0_30px_70px_rgba(0,0,0,0.55)] backdrop-blur-xl md:hidden"
-      style={{ animation: "mobileMenuIn 0.2s ease-out both" }}
+      className="absolute top-full left-0 z-50 max-h-[calc(100dvh-4.5rem)] w-full overflow-y-auto border-b border-white/8 bg-[#0C0D10]/98 px-4 pt-3 pb-6 shadow-[0_30px_70px_rgba(0,0,0,0.55)] backdrop-blur-xl md:hidden"
+      style={{
+        animation: "mobileMenuIn 0.2s ease-out both",
+      }}
     >
       <nav aria-label="Menu di động" className="space-y-0.5">
         {before.map(renderLink)}
@@ -165,12 +165,15 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           open={skillsOpen}
           onToggle={onSkillsToggle}
           onClose={onClose}
-          links={skillItems.map((s) => ({
-            label: s.label,
-            href: s.href,
-            active: skillsActive && currentCategory === s.category
+          links={skillItems.map((skill) => ({
+            label: skill.label,
+            href: skill.href,
+            active: skillsActive && currentCategory === skill.category,
           }))}
-          all={{ label: "Xem tất cả kỹ năng", href: "/skills" }}
+          all={{
+            label: "Xem tất cả kỹ năng",
+            href: "/skills",
+          }}
         />
 
         <Group
@@ -179,12 +182,15 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           open={projectsOpen}
           onToggle={onProjectsToggle}
           onClose={onClose}
-          links={projectItems.map((p) => ({
-            label: p.label,
-            href: p.href,
-            active: projectsActive && currentCategory === p.category
+          links={projectItems.map((project) => ({
+            label: project.label,
+            href: project.href,
+            active: projectsActive && currentCategory === project.category,
           }))}
-          all={{ label: "Xem tất cả dự án", href: "/projects" }}
+          all={{
+            label: "Xem tất cả dự án",
+            href: "/projects",
+          }}
         />
 
         {after.map(renderLink)}
@@ -192,23 +198,50 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
 
       <div className="my-4 h-px w-full bg-white/8" />
 
-      <div className="grid grid-cols-2 gap-2.5">
-        <Link
-          href="/login"
-          onClick={onClose}
-          className="flex h-12 items-center justify-center rounded-xl border border-white/12 text-sm font-medium text-[#D6D3CB] transition-colors hover:bg-white/5 hover:text-white active:scale-[0.98]"
-        >
-          Đăng nhập
-        </Link>
+      {!hydrated || !authReady ? (
+        <div className="grid grid-cols-2 gap-2.5">
+          <div className="h-12 animate-pulse rounded-xl border border-white/8 bg-white/3" />
+          <div className="h-12 animate-pulse rounded-xl border border-white/8 bg-white/3" />
+        </div>
+      ) : username ? (
+        <div className="flex h-12 w-full items-center justify-between rounded-xl border border-[#7C93FF]/20 bg-[#7C93FF]/8 px-4">
+          <div className="flex min-w-0 items-center gap-2">
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#7C93FF]/25 bg-[#7C93FF]/10">
+              <span className="text-xs font-semibold text-[#9BADFF]">
+                {username.charAt(0).toUpperCase()}
+              </span>
+            </div>
 
-        <Link
-          href="/register"
-          onClick={onClose}
-          className="flex h-12 items-center justify-center rounded-xl border border-[#7C93FF]/40 bg-[#7C93FF]/10 text-sm font-medium text-white transition-colors hover:bg-[#7C93FF]/20 active:scale-[0.98]"
-        >
-          Đăng ký
-        </Link>
-      </div>
+            <div className="min-w-0">
+              <p className="text-[11px] leading-none text-[#7E7B73]">Đã đăng nhập</p>
+
+              <p className="mt-1 truncate text-sm font-semibold text-[#C4CEFF]">{username}</p>
+            </div>
+          </div>
+
+          <span aria-hidden="true" className="ml-3 shrink-0 text-[#7C93FF]/60">
+            ✓
+          </span>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 gap-2.5">
+          <Link
+            href="/login"
+            onClick={onClose}
+            className="flex h-12 items-center justify-center rounded-xl border border-white/12 text-sm font-medium text-[#D6D3CB] transition-colors hover:bg-white/5 hover:text-white active:scale-[0.98]"
+          >
+            Đăng nhập
+          </Link>
+
+          <Link
+            href="/register"
+            onClick={onClose}
+            className="flex h-12 items-center justify-center rounded-xl border border-[#7C93FF]/40 bg-[#7C93FF]/10 text-sm font-medium text-white transition-colors hover:bg-[#7C93FF]/20 active:scale-[0.98]"
+          >
+            Đăng ký
+          </Link>
+        </div>
+      )}
 
       <button
         type="button"

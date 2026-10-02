@@ -13,21 +13,30 @@ import ExperienceSection from "@/components/home/ExperienceSection";
 import ContactSection from "@/components/home/ContactSection";
 import MainLayouts from "@/components/layouts/MainLayout";
 
-import { useAppDispatch } from "@/hooks/redux";
-import { getVideoRequest } from "@/features/video/videoSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { getVideoRequest, getVideoUserRequest } from "@/features/video/videoSlice";
 import { getSkillRequest } from "@/features/skill/skillSlice";
 import { getProjectRequest } from "@/features/project/projectSlice";
 import { getExperienceRequest } from "@/features/experience/experienceSlice";
 
 export default function Home() {
   const dispatch = useAppDispatch();
-
+  const { user, authReady } = useAppSelector((state) => state.auth);
   React.useEffect(() => {
+    if (!authReady) {
+      return;
+    }
+
+    if (user) {
+      dispatch(getVideoUserRequest());
+      return;
+    }
+
     dispatch(getVideoRequest());
     dispatch(getSkillRequest());
     dispatch(getProjectRequest());
     dispatch(getExperienceRequest());
-  }, [dispatch]);
+  }, [dispatch, user, authReady]);
 
   return (
     <MainLayouts>
