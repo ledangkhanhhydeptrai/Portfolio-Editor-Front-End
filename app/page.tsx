@@ -18,10 +18,41 @@ import { getVideoRequest, getVideoUserRequest } from "@/features/video/videoSlic
 import { getSkillRequest } from "@/features/skill/skillSlice";
 import { getProjectRequest } from "@/features/project/projectSlice";
 import { getExperienceRequest } from "@/features/experience/experienceSlice";
+import { getProfileRequest } from "@/features/profile/profileSlice";
+import { getLinkRequest } from "@/features/social-link/socialLinkSlice";
 
 export default function Home() {
   const dispatch = useAppDispatch();
+
   const { user, authReady } = useAppSelector((state) => state.auth);
+
+  /*
+   * PROFILE + SOCIAL LINK
+   *
+   * Hiện hai resource này đang dùng PUBLIC.
+   * Chỉ load một lần.
+   */
+  React.useEffect(() => {
+    dispatch(getProfileRequest());
+
+    dispatch(getLinkRequest());
+  }, [dispatch]);
+
+  /*
+   * USER / PUBLIC DATA
+   *
+   * user != null
+   *     -> USER API
+   *
+   * user == null
+   *     -> PUBLIC API
+   *
+   * Khi logout:
+   * createLogoutSuccess()
+   * -> user = null
+   * -> effect chạy lại
+   * -> PUBLIC API
+   */
   React.useEffect(() => {
     if (!authReady) {
       return;
@@ -29,12 +60,22 @@ export default function Home() {
 
     if (user) {
       dispatch(getVideoUserRequest());
+
+      // dispatch(getSkillUserRequest());
+
+      // dispatch(getProjectUserRequest());
+
+      // dispatch(getExperienceUserRequest());
+
       return;
     }
 
     dispatch(getVideoRequest());
+
     dispatch(getSkillRequest());
+
     dispatch(getProjectRequest());
+
     dispatch(getExperienceRequest());
   }, [dispatch, user, authReady]);
 

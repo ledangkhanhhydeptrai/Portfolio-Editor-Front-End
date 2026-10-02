@@ -12,6 +12,7 @@ export const API_CONFIG = {
       EDUCATIONS: "/public/education",
       SOCIAL_LINKS: "/public/social_link",
       VIDEO_PROJECT: "/public/video",
+      
     },
 
     USER: {
@@ -22,8 +23,10 @@ export const API_CONFIG = {
       EDUCATIONS: "/user/education",
       SOCIAL_LINKS: "/user/social_link",
       VIDEO_PROJECT: "/user/video",
+      USERPROFILE:"/user/profile"
     },
     LOGIN: "/auth/login",
     REGISTER: "/auth/register",
+    LOG_OUT:"/auth/logout"
   },
 } as const;
