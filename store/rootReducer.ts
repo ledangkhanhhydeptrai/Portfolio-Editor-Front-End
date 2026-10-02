@@ -6,6 +6,7 @@ import ExperienceReducer from "../features/experience/experienceSlice";
 import EducationReducer from "../features/education/educationSlice";
 import SocialLinkReducer from "../features/social-link/socialLinkSlice";
 import AuthReducer from "../features/auth/authSlice";
+import VideoReducer from "../features/video/videoSlice";
 const rootReducer = combineReducers({
   profile: ProfileReducer,
   skill: SkillReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   experience: ExperienceReducer,
   education: EducationReducer,
   socialLink: SocialLinkReducer,
-  auth: AuthReducer
+  auth: AuthReducer,
+  video: VideoReducer,
 });
 export default rootReducer;

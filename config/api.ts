@@ -10,7 +10,8 @@ export const API_CONFIG = {
       SKILLS: "/public/skill",
       EXPERIENCES: "/public/experience",
       EDUCATIONS: "/public/education",
-      SOCIAL_LINKS: "/public/social_link"
+      SOCIAL_LINKS: "/public/social_link",
+      VIDEO_PROJECT: "/public/video",
     },
 
     USER: {
@@ -19,9 +20,9 @@ export const API_CONFIG = {
       SKILLS: "/user/skill",
       EXPERIENCES: "/user/experience",
       EDUCATIONS: "/user/education",
-      SOCIAL_LINKS: "/user/social_link"
+      SOCIAL_LINKS: "/user/social_link",
     },
     LOGIN: "/auth/login",
-    REGISTER: "/auth/register"
-  }
+    REGISTER: "/auth/register",
+  },
 } as const;

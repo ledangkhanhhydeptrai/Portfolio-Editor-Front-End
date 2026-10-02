@@ -5,6 +5,7 @@ import profileSaga from "@/features/profile/profileSaga";
 import projectSaga from "@/features/project/projectSaga";
 import skillSaga from "@/features/skill/skillSaga";
 import LinkSaga from "@/features/social-link/socialLinkSaga";
+import videoSaga from "@/features/video/videoSaga";
 import { all } from "redux-saga/effects";
 
 export default function* rootSaga() {
@@ -15,6 +16,7 @@ export default function* rootSaga() {
     ExperienceSaga(),
     educationSaga(),
     LinkSaga(),
-    AuthSaga()
+    AuthSaga(),
+    videoSaga()
   ]);
 }

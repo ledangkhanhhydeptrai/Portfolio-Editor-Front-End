@@ -166,7 +166,7 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
             onProjectsToggle={handleProjectsToggle}
           />
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 xl:ml-5">
             <HeaderStatus />
 
             <div className="hidden items-center gap-1 lg:flex">

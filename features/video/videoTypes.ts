@@ -3,8 +3,9 @@ export interface VideoProject {
   title: string;
   description: string;
   videoUrl: string;
-  thumbnailUrl?: string;
+  thumbnailUrl: string;
   category: string;
   duration: string;
   year: number;
+  displayOrder: number;
 }

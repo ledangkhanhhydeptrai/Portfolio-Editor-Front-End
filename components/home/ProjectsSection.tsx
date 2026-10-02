@@ -1,143 +1,269 @@
 "use client";
 
-const tech = ["React", "Next.js", "FastAPI", "PostgreSQL", "AI"];
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import { useAppSelector } from "@/hooks/redux";
+
 export default function ProjectsSection() {
+  const { data, loading, error } = useAppSelector((state) => state.project);
+
+  // =========================================================
+  // SORT PROJECTS
+  // Featured trước -> displayOrder
+  // =========================================================
+
+  const projects = React.useMemo(() => {
+    const categoryPriority: Record<string, number> = {
+      VIDEO_EDITING: 1,
+      DEVELOPMENT: 2,
+      DRIVING: 3,
+    };
+
+    return [...data].sort((a, b) => {
+      const priorityA = categoryPriority[a.category] || 999;
+      const priorityB = categoryPriority[b.category] || 999;
+
+      // 1. Project Edit / Video Editing lên đầu
+      if (priorityA !== priorityB) {
+        return priorityA - priorityB;
+      }
+
+      // 2. Cùng category thì Featured lên trước
+      if (a.featured !== b.featured) {
+        return a.featured ? -1 : 1;
+      }
+
+      // 3. Cuối cùng theo displayOrder
+      return a.displayOrder - b.displayOrder;
+    });
+  }, [data]);
+
+  // Home chỉ hiển thị tối đa 3 project
+  const featuredProjects = React.useMemo(() => {
+    return projects.slice(0, 3);
+  }, [projects]);
+
+  const formatCategory = (category: string) => {
+    return category
+      .replaceAll("_", " ")
+      .toLowerCase()
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
+  // =========================================================
+  // STATES
+  // =========================================================
+
+  if (loading) {
+    return (
+      <section id="projects" className="border-t border-white/7 px-6 py-24 lg:px-10 xl:px-14">
+        <div className="mx-auto w-full max-w-375">
+          <div className="grid gap-5 lg:grid-cols-3">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <div
+                key={index}
+                className="h-96 animate-pulse rounded-2xl border border-white/8 bg-white/3"
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section id="projects" className="border-t border-white/7 px-6 py-24 lg:px-10 xl:px-14">
+        <div className="mx-auto w-full max-w-375">
+          <div className="rounded-2xl border border-white/8 bg-white/3 px-6 py-10">
+            <p className="text-sm text-[#8E91A3]">Không thể tải danh sách dự án.</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (projects.length === 0) {
+    return (
+      <section id="projects" className="border-t border-white/7 px-6 py-24 lg:px-10 xl:px-14">
+        <div className="mx-auto w-full max-w-375">
+          <div className="rounded-2xl border border-dashed border-white/10 bg-white/2 px-6 py-14 text-center">
+            <p className="text-sm text-[#8E91A3]">Chưa có dự án nào.</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section
-      id="projects"
-      className="border-t border-white/7 px-6 py-24 lg:px-10 xl:px-14"
-    >
+    <section id="projects" className="border-t border-white/7 px-6 py-24 lg:px-10 xl:px-14">
       <div className="mx-auto w-full max-w-375">
+        {/* =====================================================
+            HEADER
+        ===================================================== */}
+
         <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#7F96F5]">
+            <p className="font-mono text-[10px] tracking-[0.28em] text-[#7F96F5] uppercase">
               03 / Dự án
             </p>
-            <h2 className="mt-5 font-['Fraunces'] text-3xl font-light leading-tight lg:text-4xl">
+
+            <h2 className="mt-5 font-['Fraunces'] text-3xl leading-tight font-light lg:text-4xl">
               Những sản phẩm
               <br />
               <span className="text-[#8E91A3]">tôi đã tạo nên.</span>
             </h2>
           </div>
-          <p className="text-sm text-[#817E77]">Code · AI · Video</p>
+
+          <p className="text-sm text-[#817E77]">Development · Creative · Product</p>
         </div>
-        <article className="mt-12 overflow-hidden rounded-2xl border border-white/9 bg-[#101012]">
-          <div className="grid lg:grid-cols-[0.85fr_1.15fr]">
-            <div className="flex min-h-105 flex-col justify-between p-8 lg:p-10">
-              <div>
-                <div className="flex gap-2">
-                  <span className="rounded-full border border-white/10 px-3 py-1 text-[9px] text-[#A6A39B]">
+
+        {/* =====================================================
+            PROJECT GRID
+        ===================================================== */}
+
+        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {featuredProjects.map((project, index) => (
+            <article
+              key={project.id}
+              className="group overflow-hidden rounded-2xl border border-white/8 bg-[#101012] transition-all duration-500 hover:-translate-y-1 hover:border-[#7F96F5]/25"
+            >
+              {/* =================================================
+                  THUMBNAIL
+              ================================================= */}
+
+              <div className="relative aspect-video overflow-hidden border-b border-white/8 bg-[#0A0A0C]">
+                {project.thumbnailUrl ? (
+                  <Image
+                    src={project.thumbnailUrl}
+                    alt={project.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="font-mono text-4xl font-medium text-white/5">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                )}
+
+                {/* Thumbnail overlay */}
+
+                <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-[#101012]/60 via-transparent to-transparent" />
+
+                {/* Number */}
+
+                <span className="absolute top-4 left-4 rounded-full border border-white/10 bg-black/40 px-2.5 py-1 font-mono text-[9px] text-white/70 backdrop-blur-md">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+
+                {/* Featured */}
+
+                {project.featured && (
+                  <span className="absolute top-4 right-4 rounded-full border border-[#9BADFF]/20 bg-[#7F96F5]/10 px-2.5 py-1 font-mono text-[8px] tracking-[0.14em] text-[#AAB7FF] uppercase backdrop-blur-md">
                     Featured
                   </span>
-                  <span className="rounded-full border border-white/10 px-3 py-1 text-[9px] text-[#A6A39B]">
-                    Live
-                  </span>
-                </div>
-                <p className="mt-8 font-mono text-[9px] uppercase tracking-[0.22em] text-[#5F5C56]">
-                  Full-stack / AI / Web
+                )}
+              </div>
+
+              {/* =================================================
+                  CONTENT
+              ================================================= */}
+
+              <div className="flex min-h-60 flex-col p-6">
+                {/* Category */}
+
+                <p className="font-mono text-[9px] tracking-[0.2em] text-[#7F96F5] uppercase">
+                  {formatCategory(project.category)}
                 </p>
-                <h3 className="mt-3 text-3xl font-semibold tracking-tight">
-                  Product AI
+
+                {/* Title */}
+
+                <h3 className="mt-3 text-xl font-semibold tracking-[-0.02em] text-[#F0EFEA] transition-colors duration-300 group-hover:text-white">
+                  {project.title}
                 </h3>
-                <p className="mt-4 text-sm leading-6 text-[#A6A39B]">
-                  Nền tảng sản phẩm tích hợp AI.
-                </p>
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {tech.map((t) => (
-                    <span
-                      key={t}
-                      className="rounded-md border border-white/8 px-2.5 py-1 font-mono text-[9px] text-[#817E77]"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div className="mt-10 flex gap-3">
-                <a
-                  href="https://product-ai-front-end.vercel.app/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-lg bg-[#EDECE8] px-4 py-2.5 text-xs font-medium text-[#0B0B0D] transition hover:bg-white"
-                >
-                  Xem dự án ↗
-                </a>
-                <a
-                  href="#"
-                  className="rounded-lg border border-white/10 px-4 py-2.5 text-xs text-[#C7C4BD] transition hover:border-white/20"
-                >
-                  GitHub
-                </a>
-              </div>
-            </div>
-            <a
-              href="https://product-ai-front-end.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="min-h-105 border-t border-white/8 bg-[#0A0A0C] p-7 lg:border-l lg:border-t-0"
-            >
-              <div className="h-full overflow-hidden rounded-xl border border-white/9 bg-[#F8F8FB] text-[#16161A]">
-                <div className="flex h-10 items-center gap-2 border-b border-black/5 bg-white px-4">
-                  <span className="h-2 w-2 rounded-full bg-black/10" />
-                  <span className="h-2 w-2 rounded-full bg-black/10" />
-                  <span className="h-2 w-2 rounded-full bg-black/10" />
-                  <div className="ml-2 h-5 flex-1 rounded bg-zinc-100" />
-                </div>
-                <div className="bg-[#302B67] px-7 py-10 text-white">
-                  <p className="text-[8px] uppercase tracking-[0.2em] text-white/50">
-                    AI-Powered Shopping
+
+                {/* Description */}
+
+                {project.description && (
+                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-[#8E8B84]">
+                    {project.description}
                   </p>
-                  <h4 className="mt-3 text-xl font-semibold">
-                    Discover style
-                    <br />
-                    curated for you
-                  </h4>
-                  <p className="mt-3 max-w-xs text-[9px] leading-4 text-white/55">
-                    Personalized recommendations based on taste, budget and
-                    products.
-                  </p>
-                </div>
-                <div className="grid grid-cols-3 gap-3 p-7">
-                  {[1, 2, 3].map((i) => (
-                    <div
-                      key={i}
-                      className="h-20 rounded-lg border border-black/5 bg-white shadow-sm"
-                    />
-                  ))}
+                )}
+
+                {/* Bottom */}
+
+                <div className="mt-auto pt-7">
+                  <div className="border-t border-white/7 pt-5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      {/* DEMO */}
+
+                      {project.demoUrl && (
+                        <a
+                          href={project.demoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group/demo flex items-center gap-2 rounded-lg bg-[#EDECE8] px-3.5 py-2 text-[11px] font-medium text-[#0B0B0D] transition-colors hover:bg-white"
+                        >
+                          Xem dự án
+                          <ArrowUpRight
+                            size={13}
+                            className="transition-transform duration-300 group-hover/demo:translate-x-0.5 group-hover/demo:-translate-y-0.5"
+                          />
+                        </a>
+                      )}
+
+                      {project.category === "DEVELOPMENT" && project.githubUrl && (
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 rounded-lg border border-white/10 px-3.5 py-2 text-[11px] text-[#C7C4BD] transition-colors hover:border-white/20 hover:bg-white/4 hover:text-white"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            className="h-3.5 w-3.5"
+                            fill="currentColor"
+                            aria-hidden="true"
+                          >
+                            <path d="M12 .7C5.7.7.6 5.8.6 12.1c0 5 3.3 9.3 7.8 10.8.6.1.8-.3.8-.6v-2.2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.1 1.2a10.8 10.8 0 0 1 5.7 0C17 4.7 18 5 18 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6 4.5-1.5 7.8-5.8 7.8-10.8C23.4 5.8 18.3.7 12 .7Z" />
+                          </svg>
+
+                          <span>GitHub</span>
+                        </a>
+                      )}
+
+                      {/* Không có URL */}
+
+                      {!project.demoUrl && !project.githubUrl && (
+                        <span className="font-mono text-[9px] tracking-[0.14em] text-white/25 uppercase">
+                          Project
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </a>
-          </div>
-        </article>
-        <div className="mt-5 grid gap-5 md:grid-cols-2">
-          <article className="min-h-72 rounded-2xl border border-white/8 bg-[#101012] p-7">
-            <span className="font-mono text-[9px] text-[#7F96F5]">02</span>
-            <div className="mt-8 rounded-xl border border-white/7 bg-black/25 p-4">
-              <div className="flex gap-1">
-                <span className="h-4 w-1/4 rounded bg-white/7" />
-                <span className="h-4 w-1/2 rounded bg-[#5B7CFA]/40" />
-                <span className="h-4 flex-1 rounded bg-white/7" />
-              </div>
-            </div>
-            <div className="mt-10">
-              <p className="text-[9px] uppercase tracking-[0.2em] text-[#5F5C56]">
-                Creative
-              </p>
-              <h3 className="mt-2 text-xl font-semibold">Video Editing</h3>
-              <p className="mt-2 text-sm text-[#A6A39B]">
-                Storytelling · Short-form · Visual
-              </p>
-            </div>
-          </article>
-          <article className="flex min-h-72 flex-col justify-between rounded-2xl border border-white/8 bg-[#101012] p-7">
-            <span className="font-mono text-[9px] text-[#7F96F5]">03</span>
-            <div>
-              <h3 className="text-xl font-semibold">Đang phát triển.</h3>
-              <p className="mt-2 text-sm text-[#A6A39B]">
-                Nhiều dự án mới đang được xây dựng.
-              </p>
-            </div>
-          </article>
+            </article>
+          ))}
+        </div>
+
+        {/* =====================================================
+            VIEW ALL
+        ===================================================== */}
+
+        <div className="mt-8 flex justify-center">
+          <Link
+            href="/projects"
+            className="group flex items-center gap-3 rounded-full border border-white/10 bg-white/3 px-5 py-2.5 text-xs font-medium text-[#C8C6BF] transition-all duration-300 hover:border-[#7F96F5]/40 hover:bg-[#7F96F5]/8 hover:text-white"
+          >
+            Xem tất cả dự án
+            <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+          </Link>
         </div>
       </div>
     </section>
