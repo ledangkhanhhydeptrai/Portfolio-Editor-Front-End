@@ -7,7 +7,6 @@ import { navItems } from "./headerData";
 
 import DesktopSkillDropdown from "./DesktopSkillDropdown";
 import DesktopProjectsDropdown from "./DesktopProjectsDropdown";
-import { navPill } from "./Headerstyles";
 
 interface DesktopNavigationProps {
   pathname: string;
@@ -41,32 +40,75 @@ const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
   onProjectsToggle,
 }) => {
   const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
+    href === "/"
+      ? pathname === "/"
+      : pathname === href || pathname.startsWith(`${href}/`);
 
   const skillsActive = isActive("/skills");
 
-  const renderNavLink = (item: { label: string; href: string }) => (
-    <Link
-      key={item.href}
-      href={item.href}
-      aria-current={isActive(item.href) ? "page" : undefined}
-      className={navPill(isActive(item.href))}
-    >
-      {item.label}
-    </Link>
+  const renderNavLink = (item: {
+    label: string;
+    href: string;
+  }) => {
+    const active = isActive(item.href);
+
+    return (
+      <Link
+        key={item.href}
+        href={item.href}
+        aria-current={active ? "page" : undefined}
+        className={`
+          relative flex h-9 shrink-0 items-center rounded-xl px-3
+          text-[13px] font-medium
+          transition-all duration-200
+          focus-visible:outline-none
+          focus-visible:ring-2
+          focus-visible:ring-[#8EA2FF]/50
+          ${
+            active
+              ? "bg-[#778DFF]/12 text-[#F4F5FF] shadow-[inset_0_0_0_1px_rgba(142,162,255,0.22)]"
+              : "text-white/55 hover:bg-white/4.5 hover:text-white/90"
+          }
+        `}
+      >
+        {item.label}
+
+        {active && (
+          <span
+            className="
+              absolute right-3 bottom-1 left-3
+              h-px rounded-full
+              bg-[#8EA2FF]/70
+            "
+          />
+        )}
+      </Link>
+    );
+  };
+
+  const before = navItems.filter(
+    (item) =>
+      item.href === "/" ||
+      item.href === "/about",
   );
 
-  const before = navItems.filter((item) => item.href === "/" || item.href === "/about");
-
-  // "Dự án" đã có dropdown riêng nên loại khỏi danh sách link thường
   const after = navItems.filter(
-    (item) => item.href !== "/" && item.href !== "/about" && item.href !== "/projects",
+    (item) =>
+      item.href !== "/" &&
+      item.href !== "/about" &&
+      item.href !== "/projects",
   );
 
   return (
     <nav
       aria-label="Điều hướng chính"
-      className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-0.5 rounded-full border border-white/8 bg-white/3 p-1 md:flex xl:left-[48%]"
+      className="
+        absolute left-1/2 top-1/2
+        hidden -translate-x-1/2 -translate-y-1/2
+        items-center gap-0.5
+        whitespace-nowrap
+        md:flex
+      "
     >
       {before.map(renderNavLink)}
 
