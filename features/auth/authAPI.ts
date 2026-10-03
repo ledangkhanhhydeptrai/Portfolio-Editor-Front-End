@@ -58,7 +58,7 @@ export const LoginAPI = async ({ email, password }: LoginProps) => {
 };
 export const LogoutAPI = async () => {
   const response = await fetchBaseResponse<null>(
-    API_CONFIG.ENDPOINTS.LOG_OUT,
+    API_CONFIG.ENDPOINTS.LOGOUT,
     requestConfig("POST"),
   );
 

@@ -8,7 +8,7 @@ import Notification from "@/components/ui/Notification";
 
 import { clearAuthError, clearAuthSuccess, createLoginRequest } from "../authSlice";
 
-import { LoginBrandPanel, LoginForm, LoginHeader } from "../components/login";
+import { LoginBrandPanel, LoginForm, LoginHeader, PasswordOptionsModal } from "../components/login";
 
 import type { LoginField } from "../components/login";
 import { LoginProps } from "../authTypes";
@@ -23,7 +23,7 @@ const LoginContainer: React.FC = () => {
     email: "",
     password: "",
   });
-
+  const [passwordOptionsOpen, setPasswordOptionsOpen] = React.useState(false);
   const handleChange = (field: LoginField, value: string) => {
     setValues((prev) => ({
       ...prev,
@@ -83,10 +83,15 @@ const LoginContainer: React.FC = () => {
                 loading={loading}
                 onChange={handleChange}
                 onSubmit={handleSubmit}
+                onForgotPassword={() => setPasswordOptionsOpen(true)}
               />
             </div>
           </section>
         </div>
+        <PasswordOptionsModal
+          open={passwordOptionsOpen}
+          onClose={() => setPasswordOptionsOpen(false)}
+        />
       </main>
     </>
   );
