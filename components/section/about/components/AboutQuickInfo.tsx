@@ -1,15 +1,19 @@
 import React from "react";
 
 import MagneticLink from "./MagneticLink";
+import { ProfileProps } from "@/features/profile/profileTypes";
+interface AboutQuickInfoProps {
+  profile: ProfileProps | null;
+}
 
-const information = [
-  ["ĐỊA ĐIỂM", "Việt Nam"],
-  ["LĨNH VỰC", "Edit + Development"],
-  ["ĐỊNH HƯỚNG", "Freelance / Remote"],
-  ["TRẠNG THÁI", "Sẵn sàng"]
-] as [string, string][];
+const AboutQuickInfo: React.FC<AboutQuickInfoProps> = ({ profile }) => {
+  const information: [string, string][] = [
+    ["ĐỊA ĐIỂM", profile ? profile.location : "Việt Nam"],
+    ["LĨNH VỰC", profile ? profile.jobTitle : "Edit + Development"],
+    ["ĐỊNH HƯỚNG", "Freelance / Remote"],
+    ["TRẠNG THÁI", "Sẵn sàng"],
+  ];
 
-const AboutQuickInfo: React.FC = () => {
   return (
     <section className="relative">
       <div className="pointer-events-none absolute bottom-0 left-1/2 h-80 w-200 -translate-x-1/2 rounded-full bg-[#718CFF]/8 blur-[150px]" />
@@ -23,7 +27,7 @@ const AboutQuickInfo: React.FC = () => {
               key={label}
               className="group bg-[#1B1E29] px-6 py-6 transition-colors duration-300 hover:bg-[#222632]"
             >
-              <p className="font-mono text-[8px] uppercase tracking-[0.2em] text-[#777A84]">
+              <p className="font-mono text-[8px] tracking-[0.2em] text-[#777A84] uppercase">
                 {label}
               </p>
 
@@ -36,16 +40,14 @@ const AboutQuickInfo: React.FC = () => {
 
         <div className="mt-16 grid gap-10 border-t border-white/10 pt-14 lg:grid-cols-[1fr_auto] lg:items-end">
           <div>
-            <p className="font-mono text-2.25 uppercase tracking-[0.24em] text-[#8EA5FF]">
+            <p className="text-2.25 font-mono tracking-[0.24em] text-[#8EA5FF] uppercase">
               Tiếp theo
             </p>
 
-            <h2 className="mt-5 max-w-3xl font-['Fraunces'] text-4xl font-light leading-[1.1] tracking-[-0.03em] text-[#F4F3EF] sm:text-5xl">
+            <h2 className="mt-5 max-w-3xl font-['Fraunces'] text-4xl leading-[1.1] font-light tracking-[-0.03em] text-[#F4F3EF] sm:text-5xl">
               Đừng chỉ đọc về tôi.
               <br />
-              <span className="text-[#A09E98]">
-                Hãy xem những gì tôi đã làm.
-              </span>
+              <span className="text-[#A09E98]">Hãy xem những gì tôi đã làm.</span>
             </h2>
           </div>
 

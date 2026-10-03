@@ -1,28 +1,35 @@
 import React from "react";
 
-import { SKILL_TAGS } from "../data/aboutData";
+import type { SkillProps } from "@/features/skill/skillTypes";
 
 import useInView from "../hooks/useInView";
 
-const AboutMarquee: React.FC = () => {
+interface AboutMarqueeProps {
+  skills: SkillProps[];
+}
+
+const AboutMarquee: React.FC<AboutMarqueeProps> = ({ skills }) => {
   const [ref, inView] = useInView<HTMLDivElement>(0.2);
 
+  if (skills.length === 0) {
+    return null;
+  }
+
+  const marqueeSkills = [...skills, ...skills];
+
   return (
-    <section
-      ref={ref}
-      className="relative overflow-hidden border-b border-white/10 py-10"
-    >
+    <section ref={ref} className="relative overflow-hidden border-b border-white/10 py-10">
       <div
         className={`about-marquee flex w-max items-center gap-10 transition-opacity duration-700 ${
           inView ? "opacity-100" : "opacity-0"
         }`}
       >
-        {[...SKILL_TAGS, ...SKILL_TAGS].map((tag, index) => (
+        {marqueeSkills.map((skill, index) => (
           <span
-            key={`${tag}-${index}`}
+            key={`${skill.id}-${index}`}
             className="flex items-center gap-10 font-['Fraunces'] text-2xl font-light text-[#96948E] sm:text-3xl"
           >
-            {tag}
+            {skill.name}
 
             <span className="text-sm text-[#8EA5FF]/70">✦</span>
           </span>
