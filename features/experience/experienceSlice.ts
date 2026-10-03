@@ -5,11 +5,13 @@ interface ExperienceState {
   loading: boolean;
   error: string | null;
   data: ExperienceProps[];
+  userExperience: ExperienceProps[];
 }
 const initialState: ExperienceState = {
   loading: false,
   error: null,
-  data: []
+  data: [],
+  userExperience: [],
 };
 const ExperienceSlice = createSlice({
   name: "experience",
@@ -28,7 +30,7 @@ const ExperienceSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-     getExperienceUserRequest(state) {
+    getExperienceUserRequest(state) {
       state.loading = true;
       state.error = null;
     },
@@ -40,8 +42,8 @@ const ExperienceSlice = createSlice({
     getExperienceUserFailure(state, action: PayloadAction<string>) {
       state.loading = false;
       state.error = action.payload;
-    }
-  }
+    },
+  },
 });
 export const {
   getExperienceRequest,
@@ -49,6 +51,6 @@ export const {
   getExperienceFailure,
   getExperienceUserRequest,
   getExperienceUserSuccess,
-  getExperienceUserFailure
+  getExperienceUserFailure,
 } = ExperienceSlice.actions;
 export default ExperienceSlice.reducer;

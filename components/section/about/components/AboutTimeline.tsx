@@ -1,17 +1,41 @@
 import React from "react";
 
-import { TIMELINE } from "../data/aboutData";
+import type {
+  ExperienceProps,
+} from "@/features/experience/experienceTypes";
 
 import TimelineItem from "./TimelineItem";
 
-const AboutTimeline: React.FC = () => {
+interface AboutTimelineProps {
+  experiences: ExperienceProps[];
+}
+
+const AboutTimeline: React.FC<
+  AboutTimelineProps
+> = ({
+  experiences,
+}) => {
+  if (experiences.length === 0) {
+    return null;
+  }
+
+  const sortedExperiences = [
+    ...experiences,
+  ].sort(
+    (a, b) =>
+      a.displayOrder -
+      b.displayOrder,
+  );
+
   return (
     <section className="relative border-b border-white/10">
       <div className="mx-auto w-full max-w-375 px-6 py-20 lg:px-10 lg:py-24 xl:px-14">
         <div className="grid gap-14 lg:grid-cols-[0.55fr_1.45fr] lg:gap-24">
           <div>
             <div className="flex items-center gap-3">
-              <span className="font-mono text-2.25 text-[#8EA5FF]">01</span>
+              <span className="font-mono text-2.25 text-[#8EA5FF]">
+                01
+              </span>
 
               <span className="h-px w-8 bg-white/15" />
             </div>
@@ -26,14 +50,19 @@ const AboutTimeline: React.FC = () => {
           </div>
 
           <div>
-            {TIMELINE.map((item, index) => (
-              <TimelineItem
-                key={item.title}
-                item={item}
-                index={index}
-                isLast={index === TIMELINE.length - 1}
-              />
-            ))}
+            {sortedExperiences.map(
+              (experience, index) => (
+                <TimelineItem
+                  key={experience.id}
+                  experience={experience}
+                  index={index}
+                  isLast={
+                    index ===
+                    sortedExperiences.length - 1
+                  }
+                />
+              ),
+            )}
           </div>
         </div>
       </div>

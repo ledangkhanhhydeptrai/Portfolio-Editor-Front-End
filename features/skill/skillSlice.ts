@@ -5,11 +5,13 @@ interface SkillState {
   loading: boolean;
   error: string | null;
   data: SkillProps[];
+  userSkill: SkillProps[];
 }
 const initialState: SkillState = {
   loading: false,
   error: null,
   data: [],
+  userSkill: [],
 };
 const SkillSlice = createSlice({
   name: "skill",
