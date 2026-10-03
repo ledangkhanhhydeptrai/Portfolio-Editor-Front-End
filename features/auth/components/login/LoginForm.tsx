@@ -10,13 +10,15 @@ interface LoginFormProps {
   loading: boolean;
   onChange: (field: LoginField, value: string) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onForgotPassword: () => void;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({
   values,
   loading,
   onChange,
-  onSubmit
+  onSubmit,
+  onForgotPassword,
 }) => (
   <>
     <form onSubmit={onSubmit} noValidate className="space-y-5">
@@ -38,12 +40,13 @@ const LoginForm: React.FC<LoginFormProps> = ({
         autoComplete="current-password"
         showStrength={false}
         labelAction={
-          <Link
-            href="/forgot-password"
-            className="text-xs font-medium text-[#F2B544] underline-offset-4 transition hover:underline"
+          <button
+            type="button"
+            onClick={onForgotPassword}
+            className="text-sm font-medium text-[#91A4FF] transition-colors hover:text-[#B1BEFF]"
           >
             Quên mật khẩu?
-          </Link>
+          </button>
         }
       />
 
@@ -74,10 +77,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
     </p>
 
     <p className="mt-4 text-center">
-      <Link
-        href="/"
-        className="text-xs text-white/35 transition hover:text-white/70"
-      >
+      <Link href="/" className="text-xs text-white/35 transition hover:text-white/70">
         Quay lại portfolio
       </Link>
     </p>

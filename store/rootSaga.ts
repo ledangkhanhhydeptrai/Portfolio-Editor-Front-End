@@ -1,4 +1,7 @@
 import AuthSaga from "@/features/auth/authSaga";
+import ChangePasswordOTPSaga from "@/features/auth/change-password-otp/ChangePasswordOTPSaga";
+import ChangePasswordSaga from "@/features/auth/change-password/ChangePasswordSaga";
+import ResetPasswordSaga from "@/features/auth/reset-password/reset-password-saga";
 import educationSaga from "@/features/education/educationSaga";
 import ExperienceSaga from "@/features/experience/experienceSaga";
 import profileSaga from "@/features/profile/profileSaga";
@@ -17,6 +20,9 @@ export default function* rootSaga() {
     educationSaga(),
     LinkSaga(),
     AuthSaga(),
-    videoSaga()
+    videoSaga(),
+    ChangePasswordSaga(),
+    ChangePasswordOTPSaga(),
+    ResetPasswordSaga()
   ]);
 }

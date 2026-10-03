@@ -12,7 +12,6 @@ export const API_CONFIG = {
       EDUCATIONS: "/public/education",
       SOCIAL_LINKS: "/public/social_link",
       VIDEO_PROJECT: "/public/video",
-      
     },
 
     USER: {
@@ -23,10 +22,14 @@ export const API_CONFIG = {
       EDUCATIONS: "/user/education",
       SOCIAL_LINKS: "/user/social_link",
       VIDEO_PROJECT: "/user/video",
-      USERPROFILE:"/user/profile"
+      USERPROFILE: "/user/profile",
     },
     LOGIN: "/auth/login",
     REGISTER: "/auth/register",
-    LOG_OUT:"/auth/logout"
+    LOGOUT: "/auth/logout",
+    CHANGE_PASSWORD: "/auth/change-password",
+    FORGOT_PASSWORD: "/auth/forgot-password",
+    VERIFY_OTP: "/auth/verify-otp",
+    RESET_PASSWORD:"/auth/reset-password"
   },
 } as const;
