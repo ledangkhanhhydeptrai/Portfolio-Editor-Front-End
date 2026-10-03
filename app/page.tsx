@@ -15,9 +15,9 @@ import MainLayouts from "@/components/layouts/MainLayout";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { getVideoRequest, getVideoUserRequest } from "@/features/video/videoSlice";
-import { getSkillRequest } from "@/features/skill/skillSlice";
-import { getProjectRequest } from "@/features/project/projectSlice";
-import { getExperienceRequest } from "@/features/experience/experienceSlice";
+import { getSkillRequest, getSkillUserRequest } from "@/features/skill/skillSlice";
+import { getProjectRequest, getProjectUserRequest } from "@/features/project/projectSlice";
+import { getExperienceRequest, getExperienceUserRequest } from "@/features/experience/experienceSlice";
 import { getProfileRequest } from "@/features/profile/profileSlice";
 import { getLinkRequest } from "@/features/social-link/socialLinkSlice";
 
@@ -61,11 +61,11 @@ export default function Home() {
     if (user) {
       dispatch(getVideoUserRequest());
 
-      // dispatch(getSkillUserRequest());
+      dispatch(getSkillUserRequest());
 
-      // dispatch(getProjectUserRequest());
+      dispatch(getProjectUserRequest());
 
-      // dispatch(getExperienceUserRequest());
+      dispatch(getExperienceUserRequest());
 
       return;
     }

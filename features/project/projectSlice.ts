@@ -9,7 +9,7 @@ interface ProjectState {
 const initialState: ProjectState = {
   loading: false,
   error: null,
-  data: []
+  data: [],
 };
 const ProjectSlice = createSlice({
   name: "project",
@@ -27,9 +27,28 @@ const ProjectSlice = createSlice({
     getProjectFailure(state, action: PayloadAction<string>) {
       state.loading = false;
       state.error = action.payload;
-    }
-  }
+    },
+    getProjectUserRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    getProjectUserSuccess(state, action: PayloadAction<ProjectProps[]>) {
+      state.loading = false;
+      state.error = null;
+      state.data = action.payload;
+    },
+    getProjectUserFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+  },
 });
-export const { getProjectRequest, getProjectSuccess, getProjectFailure } =
-  ProjectSlice.actions;
+export const {
+  getProjectRequest,
+  getProjectSuccess,
+  getProjectFailure,
+  getProjectUserRequest,
+  getProjectUserSuccess,
+  getProjectUserFailure,
+} = ProjectSlice.actions;
 export default ProjectSlice.reducer;

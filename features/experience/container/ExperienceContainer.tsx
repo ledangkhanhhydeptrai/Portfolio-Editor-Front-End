@@ -4,7 +4,7 @@ import React from "react";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 
-import { getExperienceRequest } from "../experienceSlice";
+import { getExperienceRequest, getExperienceUserRequest } from "../experienceSlice";
 
 import Loading from "@/components/ui/Loading";
 import ErrorMessage from "@/components/ui/ErrorMessage";
@@ -26,6 +26,7 @@ const ExperienceContainer: React.FC = () => {
   ===================================================== */
 
   React.useEffect(() => {
+    dispatch(getExperienceUserRequest());
     dispatch(getExperienceRequest());
   }, [dispatch]);
 
@@ -45,9 +46,7 @@ const ExperienceContainer: React.FC = () => {
      DATA
   ===================================================== */
 
-  const experiences = [...(data ?? [])].sort(
-    (a, b) => a.displayOrder - b.displayOrder
-  );
+  const experiences = [...(data ?? [])].sort((a, b) => a.displayOrder - b.displayOrder);
 
   const internshipCount = experiences.filter((experience) => {
     const position = experience.position.toLowerCase();
@@ -148,24 +147,24 @@ const ExperienceContainer: React.FC = () => {
         {/* LEFT GLOW */}
 
         <div
-          className="absolute -left-50 top-60 h-130 w-130 rounded-full bg-indigo-400/10 blur-[160px]"
+          className="absolute top-60 -left-50 h-130 w-130 rounded-full bg-indigo-400/10 blur-[160px]"
           style={{
-            animation: "experienceGlow 12s ease-in-out infinite"
+            animation: "experienceGlow 12s ease-in-out infinite",
           }}
         />
 
         {/* RIGHT GLOW */}
 
         <div
-          className="absolute -right-50 top-180 h-130 w-130 rounded-full bg-violet-400/9 blur-[160px]"
+          className="absolute top-180 -right-50 h-130 w-130 rounded-full bg-violet-400/9 blur-[160px]"
           style={{
-            animation: "experienceGlow 14s ease-in-out infinite reverse"
+            animation: "experienceGlow 14s ease-in-out infinite reverse",
           }}
         />
 
         {/* CENTER LIGHT */}
 
-        <div className="absolute left-1/2 top-160 h-100 w-180 -translate-x-1/2 rounded-full bg-white/3 blur-[150px]" />
+        <div className="absolute top-160 left-1/2 h-100 w-180 -translate-x-1/2 rounded-full bg-white/3 blur-[150px]" />
 
         {/* LOWER GLOW */}
 
@@ -173,7 +172,7 @@ const ExperienceContainer: React.FC = () => {
 
         {/* GRID */}
 
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.06)_1px,transparent_0)] bg-size-[30px_30px] mask-[radial-gradient(ellipse_80%_75%_at_50%_20%,#000_20%,transparent_85%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.06)_1px,transparent_0)] mask-[radial-gradient(ellipse_80%_75%_at_50%_20%,#000_20%,transparent_85%)] bg-size-[30px_30px]" />
 
         {/* SOFT TOP LIGHT */}
 

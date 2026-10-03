@@ -4,7 +4,7 @@ import React from "react";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 
-import { getLinkRequest } from "../socialLinkSlice";
+import { getLinkRequest, getLinkUserRequest } from "../socialLinkSlice";
 
 import Loading from "@/components/ui/Loading";
 import ErrorMessage from "@/components/ui/ErrorMessage";
@@ -20,6 +20,7 @@ export default function SocialLinkContainer() {
   const { data, loading, error } = useAppSelector((state) => state.socialLink);
 
   React.useEffect(() => {
+    dispatch(getLinkUserRequest());
     dispatch(getLinkRequest());
   }, [dispatch]);
 

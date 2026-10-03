@@ -1,11 +1,14 @@
 import { ApiResponse } from "@/response/ApiResponse";
 import { SkillProps } from "./skillTypes";
 import { call, put, takeLatest } from "redux-saga/effects";
-import { getSkillAPI } from "./skillAPI";
+import { getSkillAPI, getSkillUserAPI } from "./skillAPI";
 import {
   getSkillFailure,
   getSkillRequest,
-  getSkillSuccess
+  getSkillSuccess,
+  getSkillUserFailure,
+  getSkillUserRequest,
+  getSkillUserSuccess,
 } from "./skillSlice";
 import { AxiosError } from "axios";
 
@@ -16,16 +19,26 @@ function* getSkillFunction() {
   } catch (error) {
     const errors = error as AxiosError<ApiResponse<string>>;
     let message = "Get Skill Failure";
-    if (
-      errors.response &&
-      errors.response.data &&
-      errors.response.data.message
-    ) {
+    if (errors.response && errors.response.data && errors.response.data.message) {
       message = errors.response.data.message;
     }
     yield put(getSkillFailure(message));
   }
 }
+function* getSkillUserFunction() {
+  try {
+    const response: ApiResponse<SkillProps[]> = yield call(getSkillUserAPI);
+    yield put(getSkillUserSuccess(response.data));
+  } catch (error) {
+    const errors = error as AxiosError<ApiResponse<string>>;
+    let message = "Get Skill Failure";
+    if (errors.response && errors.response.data && errors.response.data.message) {
+      message = errors.response.data.message;
+    }
+    yield put(getSkillUserFailure(message));
+  }
+}
 export default function* skillSaga() {
   yield takeLatest(getSkillRequest.type, getSkillFunction);
+  yield takeLatest(getSkillUserRequest.type, getSkillUserFunction);
 }

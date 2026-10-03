@@ -3,7 +3,7 @@
 import React from "react";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { getVideoRequest } from "../videoSlice";
+import { getVideoRequest, getVideoUserRequest } from "../videoSlice";
 
 import Loading from "@/components/ui/Loading";
 import ErrorMessage from "@/components/ui/ErrorMessage";
@@ -15,6 +15,7 @@ const VideoContainer: React.FC = () => {
   const { data, loading, error } = useAppSelector((state) => state.video);
 
   React.useEffect(() => {
+    dispatch(getVideoUserRequest());
     dispatch(getVideoRequest());
   }, [dispatch]);
 

@@ -27,12 +27,28 @@ const ExperienceSlice = createSlice({
     getExperienceFailure(state, action: PayloadAction<string>) {
       state.loading = false;
       state.error = action.payload;
+    },
+     getExperienceUserRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    getExperienceUserSuccess(state, action: PayloadAction<ExperienceProps[]>) {
+      state.loading = false;
+      state.error = null;
+      state.data = action.payload;
+    },
+    getExperienceUserFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
     }
   }
 });
 export const {
   getExperienceRequest,
   getExperienceSuccess,
-  getExperienceFailure
+  getExperienceFailure,
+  getExperienceUserRequest,
+  getExperienceUserSuccess,
+  getExperienceUserFailure
 } = ExperienceSlice.actions;
 export default ExperienceSlice.reducer;

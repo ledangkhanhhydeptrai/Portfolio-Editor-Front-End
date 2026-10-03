@@ -10,7 +10,22 @@ export const getProjectAPI = async (): Promise<ApiResponse<ProjectProps[]>> => {
   try {
     const response = await fetchBaseResponse<ProjectProps[]>(
       `${API_CONFIG.ENDPOINTS.PUBLIC.PROJECTS}`,
-      requestConfig("GET")
+      requestConfig("GET"),
+    );
+    if (response.status !== HTTP_STATUS.OK) {
+      throw new Error(`HTTP Status:${response.status}`);
+    }
+    return response;
+  } catch (error) {
+    const errors = error as AxiosError<string>;
+    throw errors;
+  }
+};
+export const getProjectUserAPI = async (): Promise<ApiResponse<ProjectProps[]>> => {
+  try {
+    const response = await fetchBaseResponse<ProjectProps[]>(
+      `${API_CONFIG.ENDPOINTS.USER.PROJECTS}`,
+      requestConfig("GET"),
     );
     if (response.status !== HTTP_STATUS.OK) {
       throw new Error(`HTTP Status:${response.status}`);

@@ -5,11 +5,13 @@ interface EducationState {
   loading: boolean;
   error: string | null;
   data: EducationProps[];
+  user: EducationProps[];
 }
 const initialState: EducationState = {
   loading: false,
   error: null,
-  data: []
+  data: [],
+  user: [],
 };
 const EducationSlice = createSlice({
   name: "education",
@@ -27,9 +29,28 @@ const EducationSlice = createSlice({
     getEducationFailure(state, action: PayloadAction<string>) {
       state.loading = false;
       state.error = action.payload;
-    }
-  }
+    },
+    getEducationUserRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    getEducationUserSuccess(state, action: PayloadAction<EducationProps[]>) {
+      state.loading = false;
+      state.error = null;
+      state.data = action.payload;
+    },
+    getEducationUserFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+  },
 });
-export const { getEducationRequest, getEducationSuccess, getEducationFailure } =
-  EducationSlice.actions;
+export const {
+  getEducationRequest,
+  getEducationSuccess,
+  getEducationFailure,
+  getEducationUserRequest,
+  getEducationUserSuccess,
+  getEducationUserFailure,
+} = EducationSlice.actions;
 export default EducationSlice.reducer;

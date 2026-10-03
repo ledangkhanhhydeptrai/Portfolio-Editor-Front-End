@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 
-import { getProjectRequest } from "../projectSlice";
+import { getProjectRequest, getProjectUserRequest } from "../projectSlice";
 
 import Loading from "@/components/ui/Loading";
 import ErrorMessage from "@/components/ui/ErrorMessage";
@@ -50,6 +50,7 @@ const ProjectContainer: React.FC = () => {
   // =====================================================
 
   React.useEffect(() => {
+    dispatch(getProjectUserRequest());
     dispatch(getProjectRequest());
   }, [dispatch]);
 
