@@ -9,7 +9,7 @@ interface SocialLinkState {
 const initialState: SocialLinkState = {
   loading: false,
   error: null,
-  data: []
+  data: [],
 };
 const SocialLinkSlice = createSlice({
   name: "socialLink",
@@ -27,9 +27,28 @@ const SocialLinkSlice = createSlice({
     getLinkFailure(state, action: PayloadAction<string>) {
       state.loading = false;
       state.error = action.payload;
-    }
-  }
+    },
+    getLinkUserRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    getLinkUserSuccess(state, action: PayloadAction<SocialLinkProps[]>) {
+      state.loading = false;
+      state.error = null;
+      state.data = action.payload;
+    },
+    getLinkUserFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+  },
 });
-export const { getLinkRequest, getLinkSuccess, getLinkFailure } =
-  SocialLinkSlice.actions;
+export const {
+  getLinkRequest,
+  getLinkSuccess,
+  getLinkFailure,
+  getLinkUserRequest,
+  getLinkUserSuccess,
+  getLinkUserFailure,
+} = SocialLinkSlice.actions;
 export default SocialLinkSlice.reducer;

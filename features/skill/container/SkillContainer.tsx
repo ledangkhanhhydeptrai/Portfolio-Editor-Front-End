@@ -3,15 +3,12 @@
 import React from "react";
 import { useSearchParams } from "next/navigation";
 
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/hooks/redux";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 
 import Loading from "@/components/ui/Loading";
 import ErrorMessage from "@/components/ui/ErrorMessage";
 
-import { getSkillRequest } from "../skillSlice";
+import { getSkillRequest, getSkillUserRequest } from "../skillSlice";
 import type { SkillProps } from "../skillTypes";
 
 import SkillBackground from "../components/SkillBackground";
@@ -19,38 +16,26 @@ import SkillSidebar from "../components/SkillSidebar";
 import SkillCategoryCard from "../components/SkillCategoryCard";
 import SkillEmpty from "../components/SkillEmpty";
 
-import {
-  groupByCategory,
-} from "../utils/skillUtils";
+import { groupByCategory } from "../utils/skillUtils";
 
 // =====================================================
 // SKILL CATEGORIES
 // =====================================================
 
-const SKILL_CATEGORIES = [
-  "VIDEO_EDITING",
-  "DEVELOPMENT",
-  "DRIVING",
-] as const;
+const SKILL_CATEGORIES = ["VIDEO_EDITING", "DEVELOPMENT", "DRIVING"] as const;
 
-type SkillCategory =
-  (typeof SKILL_CATEGORIES)[number];
+type SkillCategory = (typeof SKILL_CATEGORIES)[number];
 
 // =====================================================
 // VALIDATE CATEGORY
 // =====================================================
 
-const isValidCategory = (
-  category: string | null
-): category is SkillCategory => {
+const isValidCategory = (category: string | null): category is SkillCategory => {
   if (!category) {
     return false;
   }
 
-  return SKILL_CATEGORIES.some(
-    (item) =>
-      item === category
-  );
+  return SKILL_CATEGORIES.some((item) => item === category);
 };
 
 // =====================================================
@@ -58,46 +43,29 @@ const isValidCategory = (
 // =====================================================
 
 const SkillContainer: React.FC = () => {
-  const dispatch =
-    useAppDispatch();
+  const dispatch = useAppDispatch();
 
-  const searchParams =
-    useSearchParams();
+  const searchParams = useSearchParams();
 
-  const {
-    data,
-    loading,
-    error,
-  } = useAppSelector(
-    (state) => state.skill
-  );
+  const { data, loading, error } = useAppSelector((state) => state.skill);
 
   // =====================================================
   // CATEGORY FROM URL
   // =====================================================
 
-  const categoryParam =
-    searchParams.get(
-      "category"
-    );
+  const categoryParam = searchParams.get("category");
 
-  const selectedCategory:
-    | SkillCategory
-    | null =
-    isValidCategory(
-      categoryParam
-    )
-      ? categoryParam
-      : null;
+  const selectedCategory: SkillCategory | null = isValidCategory(categoryParam)
+    ? categoryParam
+    : null;
 
   // =====================================================
   // API
   // =====================================================
 
   React.useEffect(() => {
-    dispatch(
-      getSkillRequest()
-    );
+    dispatch(getSkillUserRequest());
+    dispatch(getSkillRequest());
   }, [dispatch]);
 
   // =====================================================
@@ -116,8 +84,7 @@ const SkillContainer: React.FC = () => {
   // DATA
   // =====================================================
 
-  const skills: SkillProps[] =
-    data ?? [];
+  const skills: SkillProps[] = data ?? [];
 
   // =====================================================
   // FILTER
@@ -136,35 +103,22 @@ const SkillContainer: React.FC = () => {
   // -> chỉ DRIVING
   // =====================================================
 
-  const filteredSkills =
-    selectedCategory
-      ? skills.filter(
-          (skill) =>
-            skill.category ===
-            selectedCategory
-        )
-      : skills;
+  const filteredSkills = selectedCategory
+    ? skills.filter((skill) => skill.category === selectedCategory)
+    : skills;
 
   // =====================================================
   // GROUP
   // =====================================================
 
-  const grouped =
-    groupByCategory(
-      filteredSkills
-    );
+  const grouped = groupByCategory(filteredSkills);
 
   // =====================================================
   // SCROLL
   // =====================================================
 
-  const scrollToCategory = (
-    category: string
-  ) => {
-    const element =
-      document.getElementById(
-        `skill-${category}`
-      );
+  const scrollToCategory = (category: string) => {
+    const element = document.getElementById(`skill-${category}`);
 
     if (!element) {
       return;
@@ -281,9 +235,9 @@ const SkillContainer: React.FC = () => {
           CORNERS
       ================================================= */}
 
-      <div className="pointer-events-none absolute left-6 top-6 hidden h-8 w-8 border-l border-t border-white/15 lg:block" />
+      <div className="pointer-events-none absolute top-6 left-6 hidden h-8 w-8 border-t border-l border-white/15 lg:block" />
 
-      <div className="pointer-events-none absolute bottom-6 right-6 hidden h-8 w-8 border-b border-r border-white/15 lg:block" />
+      <div className="pointer-events-none absolute right-6 bottom-6 hidden h-8 w-8 border-r border-b border-white/15 lg:block" />
 
       {/* =================================================
           CONTENT
@@ -295,15 +249,9 @@ const SkillContainer: React.FC = () => {
         =============================================== */}
 
         <SkillSidebar
-          skills={
-            filteredSkills
-          }
-          grouped={
-            grouped
-          }
-          onCategoryClick={
-            scrollToCategory
-          }
+          skills={filteredSkills}
+          grouped={grouped}
+          onCategoryClick={scrollToCategory}
         />
 
         {/* ===============================================
@@ -324,8 +272,7 @@ const SkillContainer: React.FC = () => {
             strokeWidth="1"
             strokeDasharray="3 9"
             style={{
-              animation:
-                "skillDashTravel 8s linear infinite",
+              animation: "skillDashTravel 8s linear infinite",
             }}
           />
         </svg>
@@ -335,35 +282,11 @@ const SkillContainer: React.FC = () => {
         =============================================== */}
 
         <div className="grid grid-cols-1 items-stretch gap-5 sm:grid-cols-2">
-          {grouped.map(
-            (
-              [
-                category,
-                items,
-              ],
-              index
-            ) => (
-              <SkillCategoryCard
-                key={
-                  category
-                }
-                category={
-                  category
-                }
-                items={
-                  items
-                }
-                index={
-                  index
-                }
-              />
-            )
-          )}
+          {grouped.map(([category, items], index) => (
+            <SkillCategoryCard key={category} category={category} items={items} index={index} />
+          ))}
 
-          {grouped.length ===
-            0 && (
-            <SkillEmpty />
-          )}
+          {grouped.length === 0 && <SkillEmpty />}
         </div>
       </div>
     </section>

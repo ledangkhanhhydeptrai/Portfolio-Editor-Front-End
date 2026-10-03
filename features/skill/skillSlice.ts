@@ -9,7 +9,7 @@ interface SkillState {
 const initialState: SkillState = {
   loading: false,
   error: null,
-  data: []
+  data: [],
 };
 const SkillSlice = createSlice({
   name: "skill",
@@ -28,9 +28,29 @@ const SkillSlice = createSlice({
     getSkillFailure(state, action: PayloadAction<string>) {
       state.loading = false;
       state.error = action.payload;
-    }
-  }
+    },
+    getSkillUserRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    getSkillUserSuccess(state, action: PayloadAction<SkillProps[]>) {
+      console.log("SKILL SUCCESS PAYLOAD:", action.payload);
+      state.loading = false;
+      state.error = null;
+      state.data = action.payload;
+    },
+    getSkillUserFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+  },
 });
-export const { getSkillRequest, getSkillSuccess, getSkillFailure } =
-  SkillSlice.actions;
+export const {
+  getSkillRequest,
+  getSkillSuccess,
+  getSkillFailure,
+  getSkillUserRequest,
+  getSkillUserSuccess,
+  getSkillUserFailure,
+} = SkillSlice.actions;
 export default SkillSlice.reducer;

@@ -10,7 +10,22 @@ export const getSkillAPI = async (): Promise<ApiResponse<SkillProps[]>> => {
   try {
     const response = await fetchBaseResponse<SkillProps[]>(
       `${API_CONFIG.ENDPOINTS.PUBLIC.SKILLS}`,
-      requestConfig("GET")
+      requestConfig("GET"),
+    );
+    if (response.status !== HTTP_STATUS.OK) {
+      throw new Error(`HTTP Status:${response.status}`);
+    }
+    return response;
+  } catch (error) {
+    const errors = error as AxiosError<string>;
+    throw errors;
+  }
+};
+export const getSkillUserAPI = async (): Promise<ApiResponse<SkillProps[]>> => {
+  try {
+    const response = await fetchBaseResponse<SkillProps[]>(
+      `${API_CONFIG.ENDPOINTS.USER.SKILLS}`,
+      requestConfig("GET"),
     );
     if (response.status !== HTTP_STATUS.OK) {
       throw new Error(`HTTP Status:${response.status}`);

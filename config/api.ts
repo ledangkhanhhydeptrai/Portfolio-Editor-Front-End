@@ -16,7 +16,7 @@ export const API_CONFIG = {
 
     USER: {
       PROFILE: "/user/profile",
-      PROJECTS: "/user/projects",
+      PROJECTS: "/user/project",
       SKILLS: "/user/skill",
       EXPERIENCES: "/user/experience",
       EDUCATIONS: "/user/education",
