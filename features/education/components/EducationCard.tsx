@@ -3,6 +3,7 @@
 import React from "react";
 
 import type { EducationProps } from "../educationTypes";
+import Link from "next/link";
 
 interface EducationCardProps {
   education: EducationProps;
@@ -18,7 +19,7 @@ const EducationCard: React.FC<EducationCardProps> = ({ education, index }) => {
             LEFT — TIME
         ============================================= */}
 
-      <div className="relative pl-10 lg:pl-0 lg:pt-8">
+      <div className="relative pl-10 lg:pt-8 lg:pl-0">
         <div className="flex items-center gap-3">
           <span className="font-mono text-xs font-medium text-indigo-300">
             {education.startYear}
@@ -28,19 +29,17 @@ const EducationCard: React.FC<EducationCardProps> = ({ education, index }) => {
             <div className="absolute inset-0 -translate-x-full bg-indigo-300 transition-transform duration-500 group-hover:translate-x-0" />
           </div>
 
-          <span className="font-mono text-xs text-slate-500">
-            {education.endYear}
-          </span>
+          <span className="font-mono text-xs text-slate-500">{education.endYear}</span>
         </div>
 
         <div className="mt-4 flex items-center gap-2">
-          <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-slate-600">
+          <span className="font-mono text-[8px] tracking-[0.2em] text-slate-600 uppercase">
             {order}
           </span>
 
           <span className="text-slate-700">/</span>
 
-          <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-slate-600">
+          <span className="font-mono text-[8px] tracking-[0.2em] text-slate-600 uppercase">
             Education
           </span>
         </div>
@@ -50,7 +49,7 @@ const EducationCard: React.FC<EducationCardProps> = ({ education, index }) => {
             TIMELINE DOT
         ============================================= */}
 
-      <div className="absolute left-0 top-8 z-10 lg:left-52">
+      <div className="absolute top-8 left-0 z-10 lg:left-52">
         <div className="relative flex h-5 w-5 items-center justify-center rounded-full border border-indigo-300/30 bg-[#1B1E29] transition-all duration-500 group-hover:border-indigo-300/70">
           <span className="h-1.5 w-1.5 rounded-full bg-indigo-300" />
 
@@ -65,17 +64,17 @@ const EducationCard: React.FC<EducationCardProps> = ({ education, index }) => {
       <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[#222632]/65 transition-all duration-500 group-hover:-translate-y-1 group-hover:border-indigo-300/20 group-hover:bg-[#242835]/80">
         {/* TOP ACCENT */}
 
-        <div className="absolute left-0 top-0 h-full w-px bg-linear-to-b from-indigo-300/70 via-indigo-300/10 to-transparent" />
+        <div className="absolute top-0 left-0 h-full w-px bg-linear-to-b from-indigo-300/70 via-indigo-300/10 to-transparent" />
 
         {/* BACKGROUND NUMBER */}
 
-        <span className="pointer-events-none absolute -right-3 -top-12 select-none font-mono text-[150px] font-semibold leading-none tracking-[-0.08em] text-white/2 sm:text-[190px]">
+        <span className="pointer-events-none absolute -top-12 -right-3 font-mono text-[150px] leading-none font-semibold tracking-[-0.08em] text-white/2 select-none sm:text-[190px]">
           {order}
         </span>
 
         {/* GLOW */}
 
-        <div className="pointer-events-none absolute -right-30 -top-30 h-80 w-80 rounded-full bg-indigo-500/5 blur-[100px] transition-all duration-700 group-hover:bg-indigo-500/10" />
+        <div className="pointer-events-none absolute -top-30 -right-30 h-80 w-80 rounded-full bg-indigo-500/5 blur-[100px] transition-all duration-700 group-hover:bg-indigo-500/10" />
 
         <div className="relative p-7 sm:p-9 lg:p-11">
           {/* =========================================
@@ -88,12 +87,12 @@ const EducationCard: React.FC<EducationCardProps> = ({ education, index }) => {
                 <span className="h-1.5 w-1.5 rounded-full bg-indigo-300" />
               </span>
 
-              <span className="font-mono text-[9px] uppercase tracking-[0.24em] text-indigo-300">
+              <span className="font-mono text-[9px] tracking-[0.24em] text-indigo-300 uppercase">
                 Học vấn
               </span>
             </div>
 
-            <span className="hidden font-mono text-[8px] uppercase tracking-[0.2em] text-slate-600 sm:block">
+            <span className="hidden font-mono text-[8px] tracking-[0.2em] text-slate-600 uppercase sm:block">
               {education.startYear}
               {" — "}
               {education.endYear}
@@ -126,18 +125,16 @@ const EducationCard: React.FC<EducationCardProps> = ({ education, index }) => {
             {/* MAJOR */}
 
             <div>
-              <p className="font-mono text-[8px] uppercase tracking-[0.24em] text-slate-600">
+              <p className="font-mono text-[8px] tracking-[0.24em] text-slate-600 uppercase">
                 Chuyên ngành
               </p>
 
-              <p className="mt-4 text-base font-medium text-[#EEEDE8]">
-                {education.major}
-              </p>
+              <p className="mt-4 text-base font-medium text-[#EEEDE8]">{education.major}</p>
 
               <div className="mt-5 flex items-center gap-2">
                 <span className="h-1 w-1 rounded-full bg-indigo-300" />
 
-                <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-slate-600">
+                <span className="font-mono text-[8px] tracking-[0.18em] text-slate-600 uppercase">
                   Academic Program
                 </span>
               </div>
@@ -146,7 +143,7 @@ const EducationCard: React.FC<EducationCardProps> = ({ education, index }) => {
             {/* DESCRIPTION */}
 
             <div className="lg:border-l lg:border-white/7 lg:pl-12">
-              <p className="font-mono text-[8px] uppercase tracking-[0.24em] text-slate-600">
+              <p className="font-mono text-[8px] tracking-[0.24em] text-slate-600 uppercase">
                 Tổng quan
               </p>
 
@@ -157,21 +154,31 @@ const EducationCard: React.FC<EducationCardProps> = ({ education, index }) => {
           </div>
 
           {/* =========================================
-                FOOTER
-            ========================================= */}
+      FOOTER
+========================================= */}
 
-          <div className="mt-10 flex items-center justify-between border-t border-white/7 pt-6">
+          <div className="mt-10 flex items-center justify-between gap-4 border-t border-white/7 pt-6">
+            {/* LABEL */}
+
             <div className="flex items-center gap-3">
               <div className="h-px w-7 bg-indigo-300/30" />
 
-              <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-slate-600">
+              <span className="font-mono text-[8px] tracking-[0.2em] text-slate-600 uppercase">
                 Academic Background
               </span>
             </div>
 
-            <span className="font-mono text-[9px] text-indigo-300/70">
-              {order}
-            </span>
+            {/* DETAIL */}
+
+            <Link
+              href={`/education/${education.id}`}
+              className="group/detail inline-flex shrink-0 items-center gap-2.5 rounded-full border border-white/8 bg-white/3 px-3.5 py-2 font-mono text-[8px] tracking-[0.14em] text-slate-500 uppercase transition-all duration-300 hover:border-indigo-300/30 hover:bg-indigo-300/7 hover:text-indigo-300"
+            >
+              Xem chi tiết
+              <span className="transition-transform duration-300 group-hover/detail:translate-x-1">
+                →
+              </span>
+            </Link>
           </div>
         </div>
       </div>
