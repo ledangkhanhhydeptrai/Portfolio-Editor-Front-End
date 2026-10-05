@@ -21,10 +21,40 @@ export const getAllEducation = async (): Promise<ApiResponse<EducationProps>> =>
     throw errors;
   }
 };
+export const getEducationById = async (id: string): Promise<ApiResponse<EducationProps | null>> => {
+  try {
+    const response = await fetchBaseResponse<EducationProps>(
+      `${API_CONFIG.ENDPOINTS.PUBLIC.EDUCATIONS_ID(id)}`,
+      requestConfig("GET"),
+    );
+    if (response.status !== HTTP_STATUS.OK) {
+      throw new Error(`HTTP Status:${response.status}`);
+    }
+    return response;
+  } catch (error) {
+    const errors = error as AxiosError;
+    throw errors;
+  }
+};
 export const getUserEducation = async (): Promise<ApiResponse<EducationProps>> => {
   try {
     const response = await fetchBaseResponse<EducationProps>(
       `${API_CONFIG.ENDPOINTS.USER.EDUCATIONS}`,
+      requestConfig("GET"),
+    );
+    if (response.status !== HTTP_STATUS.OK) {
+      throw new Error(`HTTP Status:${response.status}`);
+    }
+    return response;
+  } catch (error) {
+    const errors = error as AxiosError;
+    throw errors;
+  }
+};
+export const getEducationByUserId = async (id: string): Promise<ApiResponse<EducationProps | null>> => {
+  try {
+    const response = await fetchBaseResponse<EducationProps>(
+      `${API_CONFIG.ENDPOINTS.USER.EDUCATIONS_USER_ID(id)}`,
       requestConfig("GET"),
     );
     if (response.status !== HTTP_STATUS.OK) {

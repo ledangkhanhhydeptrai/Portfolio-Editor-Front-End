@@ -6,12 +6,14 @@ interface ExperienceState {
   error: string | null;
   data: ExperienceProps[];
   userExperience: ExperienceProps[];
+  experience: ExperienceProps | null;
 }
 const initialState: ExperienceState = {
   loading: false,
   error: null,
   data: [],
   userExperience: [],
+  experience: null,
 };
 const ExperienceSlice = createSlice({
   name: "experience",
@@ -30,6 +32,19 @@ const ExperienceSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    getExperienceIdRequest(state, _action: PayloadAction<string>) {
+      state.loading = true;
+      state.error = null;
+    },
+    getExperienceIdSuccess(state, action: PayloadAction<ExperienceProps>) {
+      state.loading = false;
+      state.error = null;
+      state.experience = action.payload;
+    },
+    getExperienceIdFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
     getExperienceUserRequest(state) {
       state.loading = true;
       state.error = null;
@@ -43,6 +58,19 @@ const ExperienceSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    getExperienceUserIdRequest(state, _action: PayloadAction<string>) {
+      state.loading = true;
+      state.error = null;
+    },
+    getExperienceUserIdSuccess(state, action: PayloadAction<ExperienceProps>) {
+      state.loading = false;
+      state.error = null;
+      state.experience = action.payload;
+    },
+    getExperienceUserIdFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 export const {
@@ -52,5 +80,11 @@ export const {
   getExperienceUserRequest,
   getExperienceUserSuccess,
   getExperienceUserFailure,
+  getExperienceIdRequest,
+  getExperienceIdSuccess,
+  getExperienceIdFailure,
+  getExperienceUserIdRequest,
+  getExperienceUserIdSuccess,
+  getExperienceUserIdFailure
 } = ExperienceSlice.actions;
 export default ExperienceSlice.reducer;
