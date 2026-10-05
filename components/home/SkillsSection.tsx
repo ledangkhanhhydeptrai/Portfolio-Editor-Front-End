@@ -7,17 +7,21 @@ import Link from "next/link";
 import { useAppSelector } from "@/hooks/redux";
 
 export default function SkillsSection() {
-  const { data, loading, error } = useAppSelector((state) => state.skill);
+  const { user } = useAppSelector((state) => state.auth);
+
+  const { data, userSkill, loading, error } = useAppSelector((state) => state.skill);
+
+  const skillData = user ? userSkill : data;
 
   const skills = React.useMemo(() => {
-    return [...data].sort((a, b) => {
+    return [...skillData].sort((a, b) => {
       if (a.category === b.category) {
         return a.displayOrder - b.displayOrder;
       }
 
       return a.category.localeCompare(b.category);
     });
-  }, [data]);
+  }, [skillData]);
 
   const formatCategory = (category: string) => {
     switch (category) {
