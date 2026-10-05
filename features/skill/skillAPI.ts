@@ -21,10 +21,40 @@ export const getSkillAPI = async (): Promise<ApiResponse<SkillProps[]>> => {
     throw errors;
   }
 };
+export const getSkillAPIById = async (id: string): Promise<ApiResponse<SkillProps | null>> => {
+  try {
+    const response = await fetchBaseResponse<SkillProps>(
+      `${API_CONFIG.ENDPOINTS.PUBLIC.SKILLS_BY_ID(id)}`,
+      requestConfig("GET"),
+    );
+    if (response.status !== HTTP_STATUS.OK) {
+      throw new Error(`HTTP Status:${response.status}`);
+    }
+    return response;
+  } catch (error) {
+    const errors = error as AxiosError<string>;
+    throw errors;
+  }
+};
 export const getSkillUserAPI = async (): Promise<ApiResponse<SkillProps[]>> => {
   try {
     const response = await fetchBaseResponse<SkillProps[]>(
       `${API_CONFIG.ENDPOINTS.USER.SKILLS}`,
+      requestConfig("GET"),
+    );
+    if (response.status !== HTTP_STATUS.OK) {
+      throw new Error(`HTTP Status:${response.status}`);
+    }
+    return response;
+  } catch (error) {
+    const errors = error as AxiosError<string>;
+    throw errors;
+  }
+};
+export const getSkillAPIUserById = async (id: string): Promise<ApiResponse<SkillProps | null>> => {
+  try {
+    const response = await fetchBaseResponse<SkillProps>(
+      `${API_CONFIG.ENDPOINTS.USER.SKILLS_USER_BY_ID(id)}`,
       requestConfig("GET"),
     );
     if (response.status !== HTTP_STATUS.OK) {

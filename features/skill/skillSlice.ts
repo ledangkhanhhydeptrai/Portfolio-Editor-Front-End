@@ -6,12 +6,14 @@ interface SkillState {
   error: string | null;
   data: SkillProps[];
   userSkill: SkillProps[];
+  skill: SkillProps | null;
 }
 const initialState: SkillState = {
   loading: false,
   error: null,
   data: [],
   userSkill: [],
+  skill: null,
 };
 const SkillSlice = createSlice({
   name: "skill",
@@ -22,7 +24,6 @@ const SkillSlice = createSlice({
       state.error = null;
     },
     getSkillSuccess(state, action: PayloadAction<SkillProps[]>) {
-      console.log("SKILL SUCCESS PAYLOAD:", action.payload);
       state.loading = false;
       state.error = null;
       state.data = action.payload;
@@ -31,17 +32,42 @@ const SkillSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    getSkillIdRequest(state, _action: PayloadAction<string>) {
+      state.loading = true;
+      state.error = null;
+    },
+    getSkillIdSuccess(state, action: PayloadAction<SkillProps>) {
+      state.loading = false;
+      state.error = null;
+      state.skill = action.payload;
+    },
+    getSkillIdFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
     getSkillUserRequest(state) {
       state.loading = true;
       state.error = null;
     },
     getSkillUserSuccess(state, action: PayloadAction<SkillProps[]>) {
-      console.log("SKILL SUCCESS PAYLOAD:", action.payload);
       state.loading = false;
       state.error = null;
       state.data = action.payload;
     },
     getSkillUserFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+     getSkillUserIdRequest(state,_action:PayloadAction<string>) {
+      state.loading = true;
+      state.error = null;
+    },
+    getSkillUserIdSuccess(state, action: PayloadAction<SkillProps>) {
+      state.loading = false;
+      state.error = null;
+      state.skill = action.payload;
+    },
+    getSkillUserIdFailure(state, action: PayloadAction<string>) {
       state.loading = false;
       state.error = action.payload;
     },
@@ -54,5 +80,11 @@ export const {
   getSkillUserRequest,
   getSkillUserSuccess,
   getSkillUserFailure,
+  getSkillIdRequest,
+  getSkillIdSuccess,
+  getSkillIdFailure,
+  getSkillUserIdRequest,
+  getSkillUserIdSuccess,
+  getSkillUserIdFailure
 } = SkillSlice.actions;
 export default SkillSlice.reducer;

@@ -92,8 +92,9 @@ export default function SkillsSection() {
           <>
             <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {skills.map((skill, index) => (
-                <article
+                <Link
                   key={skill.id}
+                  href={`/skills/${skill.id}`}
                   className="group relative min-h-52 overflow-hidden rounded-2xl border border-white/8 bg-[#101012] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#7F96F5]/25 hover:bg-[#12141A]"
                 >
                   {/* GLOW */}
@@ -112,7 +113,7 @@ export default function SkillsSection() {
                           alt={skill.name}
                           fill
                           sizes="48px"
-                          className="object-contain p-2"
+                          className="object-contain p-2 transition-transform duration-300 group-hover:scale-105"
                         />
                       ) : (
                         <span className="font-mono text-xs text-[#7F96F5]">
@@ -139,17 +140,19 @@ export default function SkillsSection() {
                       {skill.name}
                     </h3>
 
+                    {/* DETAIL */}
+
                     <div className="mt-5 flex items-center justify-between border-t border-white/6 pt-4">
-                      <span className="font-mono text-[9px] tracking-[0.14em] text-[#65636B] uppercase">
-                        Skill
+                      <span className="font-mono text-[9px] tracking-[0.14em] text-[#65636B] uppercase transition-colors duration-300 group-hover:text-[#9BADFF]">
+                        Xem chi tiết
                       </span>
 
-                      <span className="text-xs text-white/25 transition-all duration-300 group-hover:translate-x-1 group-hover:text-[#9BADFF]">
+                      <span className="flex h-7 w-7 items-center justify-center rounded-full border border-white/8 text-xs text-white/25 transition-all duration-300 group-hover:translate-x-1 group-hover:border-[#7F96F5]/30 group-hover:bg-[#7F96F5]/8 group-hover:text-[#9BADFF]">
                         →
                       </span>
                     </div>
                   </div>
-                </article>
+                </Link>
               ))}
             </div>
 

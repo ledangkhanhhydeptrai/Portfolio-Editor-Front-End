@@ -172,6 +172,15 @@ export default function ShowreelSection() {
                           {video.description}
                         </p>
                       )}
+                      <Link
+                        href={`/video/${video.id}`}
+                        className="mt-4 inline-flex items-center gap-2 font-mono text-[9px] tracking-[0.14em] text-white/50 uppercase transition-colors duration-300 hover:text-[#9BADFF]"
+                      >
+                        Xem chi tiết
+                        <span className="transition-transform duration-300 group-hover:translate-x-1">
+                          →
+                        </span>
+                      </Link>
                     </div>
                   </article>
                 ))}
