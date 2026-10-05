@@ -1,39 +1,65 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
+
+import type { SocialLinkProps } from "../socialLinkTypes";
 
 interface SocialLinkHeaderProps {
   total: number;
+  previews?: Pick<SocialLinkProps, "id" | "platform" | "iconUrl">[];
 }
 
-const SocialLinkHeader: React.FC<SocialLinkHeaderProps> = ({ total }) => {
+const SocialLinkHeader: React.FC<SocialLinkHeaderProps> = ({
+  total,
+  previews = [],
+}) => {
+  const shown = previews.slice(0, 5);
+
   return (
-    <div className="mb-14 border-b border-white/10 pb-10">
-      <div className="mb-7 flex items-center gap-4">
-        <span className="font-mono text-[9px] uppercase tracking-[0.24em] text-indigo-300">
-          06 · Connect
-        </span>
+    <header>
+      <h1 className="text-4xl font-semibold tracking-tight text-balance text-[#F4F3EF] sm:text-5xl">
+        Kết nối với tôi
+      </h1>
 
-        <div className="h-px w-10 bg-indigo-300/40" />
+      <p className="mt-5 max-w-sm text-base leading-relaxed text-slate-400">
+        Theo dõi các nền tảng và kết nối với tôi qua những liên kết bên cạnh.
+      </p>
 
-        <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-slate-600">
-          {String(total).padStart(2, "0")} liên kết
-        </span>
-      </div>
+      {total > 0 && (
+        <div className="mt-8 flex items-center gap-4">
+          <ul className="flex -space-x-2">
+            {shown.map((item) => (
+              <li
+                key={item.id}
+                className="relative flex size-10 items-center justify-center overflow-hidden rounded-full border-2 border-[#1B1E29] bg-[#2A2F3E]"
+              >
+                {item.iconUrl ? (
+                  <span className="relative block size-5">
+                    <Image
+                      src={item.iconUrl}
+                      alt={item.platform}
+                      fill
+                      sizes="20px"
+                      className="object-contain"
+                    />
+                  </span>
+                ) : (
+                  <span className="text-xs font-semibold text-indigo-200">
+                    {item.platform.charAt(0).toUpperCase()}
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
 
-      <div className="grid gap-8 lg:grid-cols-[1fr_380px] lg:items-end">
-        <div>
-          <h1 className="text-5xl font-medium tracking-[-0.05em] text-[#F4F3EF] sm:text-6xl lg:text-7xl">
-            Kết nối
-            <span className="block text-slate-500">với tôi</span>
-          </h1>
+          <p className="text-sm text-slate-400">
+            <span className="font-medium text-[#F4F3EF]">{total}</span> nền
+            tảng
+          </p>
         </div>
-
-        <p className="text-sm leading-7 text-slate-500">
-          Theo dõi các nền tảng và kết nối với tôi qua những liên kết bên dưới.
-        </p>
-      </div>
-    </div>
+      )}
+    </header>
   );
 };
 

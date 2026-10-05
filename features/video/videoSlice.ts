@@ -5,11 +5,13 @@ interface VideoState {
   loading: boolean;
   error: string | null;
   data: VideoProject[];
+  video: VideoProject | null;
 }
 const initialState: VideoState = {
   loading: false,
   error: null,
   data: [],
+  video: null,
 };
 const videoSlice = createSlice({
   name: "video",
@@ -28,7 +30,34 @@ const videoSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    getVideoUserRequest(state) {
+    getVideoRequestById(state, _action: PayloadAction<string>) {
+      state.loading = true;
+      state.error = null;
+    },
+    getVideoSuccessById(state, action: PayloadAction<VideoProject>) {
+      state.loading = false;
+      state.error = null;
+      state.video = action.payload;
+    },
+    getVideoFailureById(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    getVideoRequestUserById(state, _action: PayloadAction<string>) {
+      state.loading = true;
+      state.error = null;
+    },
+    getVideoSuccessUserById(state, action: PayloadAction<VideoProject>) {
+      state.loading = false;
+      state.error = null;
+      state.video = action.payload;
+    },
+    getVideoFailureUserById(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    getVideoUserRequest
+    (state) {
       state.loading = true;
       state.error = null;
     },
@@ -50,5 +79,11 @@ export const {
   getVideoUserRequest,
   getVideoUserSuccess,
   getVideoUserFailure,
+  getVideoRequestById,
+  getVideoSuccessById,
+  getVideoFailureById,
+  getVideoRequestUserById,
+  getVideoSuccessUserById,
+  getVideoFailureUserById
 } = videoSlice.actions;
 export default videoSlice.reducer;

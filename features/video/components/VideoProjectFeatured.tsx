@@ -2,10 +2,8 @@
 
 import React from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import type { VideoProject } from "../videoTypes";
-import { formatCategory } from "./VideoProjectCard";
 
 interface VideoProjectFeaturedProps {
   project: VideoProject;
@@ -16,7 +14,11 @@ interface VideoProjectFeaturedProps {
   onNext: () => void;
 }
 
-/** Trình phát chính (cột PHẢI). */
+const focusRing =
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9BADFF]";
+
+const pad = (n: number) => String(n).padStart(2, "0");
+
 const VideoProjectFeatured: React.FC<VideoProjectFeaturedProps> = ({
   project,
   index,
@@ -25,84 +27,84 @@ const VideoProjectFeatured: React.FC<VideoProjectFeaturedProps> = ({
   onPrev,
   onNext,
 }) => {
+  const categoryLabel =
+    project.category === "PRODUCT_VIDEO" ? "Product Video" : project.category.replaceAll("_", " ");
+
+  const canNavigate = total > 1;
+
   return (
-    <div className="relative min-w-0">
-      {/* ambient glow lấy từ thumbnail */}
-      <div className="pointer-events-none absolute -inset-10 -z-10 overflow-hidden opacity-40">
+    <article className="flex h-full min-h-0 flex-col overflow-hidden rounded-[28px] bg-white/6 p-1.5 shadow-[0_40px_100px_-30px_rgba(0,0,0,0.8)] ring-1 ring-white/12 backdrop-blur sm:p-2">
+      {/* Video: chiếm toàn bộ chiều cao còn lại, phần thừa được lấp bằng ảnh bìa mờ */}
+      <div className="relative aspect-video min-h-0 overflow-hidden rounded-[22px] bg-black sm:rounded-[20px] lg:aspect-auto lg:flex-1">
         <Image
-          key={project.id}
           src={project.thumbnailUrl}
           alt=""
+          aria-hidden
           fill
-          sizes="800px"
-          className="scale-125 object-cover blur-3xl"
+          sizes="(min-width: 1024px) 70vw, 100vw"
+          className="scale-110 object-cover opacity-40 blur-2xl"
         />
+        <video
+          key={project.id}
+          controls
+          playsInline
+          autoPlay={autoPlay}
+          preload="metadata"
+          poster={project.thumbnailUrl}
+          className="relative h-full w-full object-contain"
+        >
+          <source src={project.videoUrl} type="video/mp4" />
+          Trình duyệt của bạn không hỗ trợ video.
+        </video>
       </div>
 
-      <article className="overflow-hidden rounded-3xl border border-white/10 bg-[#141620] shadow-[0_40px_100px_-30px_rgba(0,0,0,0.8)]">
-        <div className="aspect-video bg-black">
-          <video
-            key={project.id}
-            src={project.videoUrl}
-            poster={project.thumbnailUrl}
-            controls
-            autoPlay={autoPlay}
-            playsInline
-            className="h-full w-full object-contain"
-          />
-        </div>
-
-        <div className="flex flex-col gap-6 p-6 sm:p-8 md:flex-row md:items-start md:justify-between">
-          <div className="min-w-0">
-            <div className="flex flex-wrap items-center gap-3 text-xs text-slate-400">
-              <span className="rounded-full border border-violet-300/20 bg-violet-400/10 px-3 py-1 text-violet-200">
-                {formatCategory(project.category)}
-              </span>
-              {project.year && <span>{project.year}</span>}
-              <span className="h-1 w-1 rounded-full bg-white/20" />
-              <span className="font-mono">{project.duration}</span>
-            </div>
-
-            <h2 className="mt-4 text-2xl font-medium tracking-[-0.03em] text-[#F4F3EF] sm:text-3xl">
-              {project.title}
-            </h2>
-
-            {project.description && (
-              <p className="mt-3 max-w-xl text-sm leading-7 text-slate-400">
-                {project.description}
-              </p>
-            )}
-          </div>
-
-          {/* prev / next */}
-          <div className="flex shrink-0 items-center gap-3">
-            <span className="mr-1 font-mono text-xs text-slate-500">
-              {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+      {/* Thanh thông tin gọn, một hàng */}
+      <div className="flex shrink-0 items-center gap-4 px-3 pt-3 pb-1.5 sm:px-4">
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            <span className="rounded-full bg-[#9BADFF]/15 px-2.5 py-1 font-medium text-[#BCC8FF] ring-1 ring-[#9BADFF]/25">
+              {categoryLabel}
             </span>
-
-            <button
-              type="button"
-              onClick={onPrev}
-              disabled={index === 0}
-              aria-label="Video trước"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/70 transition hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
-            >
-              <ChevronLeft size={18} />
-            </button>
-
-            <button
-              type="button"
-              onClick={onNext}
-              disabled={index === total - 1}
-              aria-label="Video sau"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/70 transition hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
-            >
-              <ChevronRight size={18} />
-            </button>
+            <span className="text-white/45">
+              {project.year} · {project.duration}
+            </span>
           </div>
+
+          <h2 className="mt-2 truncate font-['Fraunces'] text-2xl leading-tight font-light tracking-[-0.02em] text-[#F4F3EF]">
+            {project.title}
+          </h2>
+
+          {project.description ? (
+            <p className="mt-1 line-clamp-1 text-sm text-white/50">{project.description}</p>
+          ) : null}
         </div>
-      </article>
-    </div>
+
+        <div className="flex shrink-0 items-center gap-2">
+          <span className="mr-1 hidden text-sm text-white/45 tabular-nums sm:block">
+            {pad(index + 1)} / {pad(total)}
+          </span>
+
+          <button
+            type="button"
+            onClick={onPrev}
+            disabled={!canNavigate}
+            aria-label="Video trước"
+            className={`flex h-10 w-10 items-center justify-center rounded-full bg-white/8 text-white/80 transition hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:bg-white/8 ${focusRing}`}
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            onClick={onNext}
+            disabled={!canNavigate}
+            aria-label="Video tiếp theo"
+            className={`flex h-10 w-10 items-center justify-center rounded-full bg-[#9BADFF] text-[#14161F] transition hover:bg-[#B3C1FF] disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:bg-[#9BADFF] ${focusRing}`}
+          >
+            →
+          </button>
+        </div>
+      </div>
+    </article>
   );
 };
 

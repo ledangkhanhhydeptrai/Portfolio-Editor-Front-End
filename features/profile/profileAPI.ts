@@ -12,11 +12,7 @@ export const getAllProfileAPI = async (): Promise<ApiResponse<ProfileProps[]>> =
       `${API_CONFIG.ENDPOINTS.PUBLIC.PROFILE}`,
       requestConfig("GET"),
     );
-    console.log("===== PROFILE DEBUG =====");
-    console.log("FULL RESPONSE:", response);
-    console.log("RESPONSE STATUS:", response.status);
-    console.log("RESPONSE DATA:", response.data);
-    console.log("=========================");
+
     if (response.status !== HTTP_STATUS.OK) {
       throw new Error(`HTTP Status:${response.status}`);
     }

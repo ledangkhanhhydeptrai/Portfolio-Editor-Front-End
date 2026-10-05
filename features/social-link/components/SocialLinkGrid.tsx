@@ -12,11 +12,13 @@ interface SocialLinkGridProps {
 
 const SocialLinkGrid: React.FC<SocialLinkGridProps> = ({ socialLinks }) => {
   return (
-    <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-      {socialLinks.map((social, index) => (
-        <SocialLinkCard key={social.id} social={social} index={index} />
+    <ul className="flex flex-col gap-3">
+      {socialLinks.map((social) => (
+        <li key={social.id}>
+          <SocialLinkCard social={social} />
+        </li>
       ))}
-    </div>
+    </ul>
   );
 };
 
