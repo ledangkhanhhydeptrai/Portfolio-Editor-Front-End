@@ -28,244 +28,110 @@ export default function WorkStyleContainer() {
   const workStyles = [...data].sort((a, b) => a.displayOrder - b.displayOrder);
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#1B1E29] px-6 py-24 text-[#F0EFEA] lg:px-10">
-      {/* =====================================================
-          ANIMATION
-      ===================================================== */}
-
+    <main className="relative min-h-screen overflow-hidden bg-[#0F111A] px-6 pt-28 pb-24 text-[#ECEAE4] lg:px-10 lg:pt-36">
       <style>
         {`
-          @keyframes workStyleFadeUp {
-            from {
-              opacity: 0;
-              transform: translateY(28px);
-            }
-
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
+          @keyframes wsRise {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
           }
 
-          @keyframes workStyleGlow {
-            0%,
-            100% {
-              transform: translate3d(0, 0, 0) scale(1);
-            }
-
-            50% {
-              transform: translate3d(20px, 18px, 0) scale(1.08);
-            }
+          @media (prefers-reduced-motion: reduce) {
+            .ws-motion { animation: none !important; opacity: 1 !important; transform: none !important; }
           }
         `}
       </style>
 
-      {/* =====================================================
-          BACKGROUND
-      ===================================================== */}
-
-      <div className="pointer-events-none absolute inset-0">
-        {/* BASE */}
-
-        <div className="absolute inset-0 bg-linear-to-b from-[#252936] via-[#1F222E] to-[#1A1D27]" />
-
-        {/* TOP GLOW */}
-
-        <div className="absolute -top-70 left-1/2 h-150 w-200 -translate-x-1/2 rounded-full bg-indigo-400/12 blur-[180px]" />
-
-        {/* LEFT GLOW */}
-
-        <div
-          className="absolute top-80 -left-50 h-120 w-120 rounded-full bg-indigo-500/8 blur-[160px]"
-          style={{
-            animation: "workStyleGlow 12s ease-in-out infinite",
-          }}
-        />
-
-        {/* RIGHT GLOW */}
-
-        <div
-          className="absolute top-150 -right-50 h-130 w-130 rounded-full bg-violet-500/8 blur-[170px]"
-          style={{
-            animation: "workStyleGlow 15s ease-in-out infinite reverse",
-          }}
-        />
-
-        {/* GRID */}
-
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.055)_1px,transparent_0)] mask-[radial-gradient(ellipse_80%_70%_at_50%_25%,#000_20%,transparent_85%)] bg-size-[30px_30px]" />
-
-        {/* TOP LIGHT */}
-
-        <div className="absolute inset-x-0 top-0 h-100 bg-linear-to-b from-white/3 to-transparent" />
+      {/* Nền */}
+      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+        <div className="absolute -top-40 left-1/2 h-130 w-215 -translate-x-1/2 rounded-full bg-indigo-500/12 blur-[170px]" />
+        <div className="absolute right-0 bottom-0 h-96 w-96 rounded-full bg-violet-500/8 blur-[160px]" />
       </div>
 
-      {/* =====================================================
-          CONTENT
-      ===================================================== */}
+      <div className="relative z-10 mx-auto max-w-5xl">
+        {/* ============ HEADER ============ */}
+        <header
+          className="ws-motion flex flex-col gap-8 md:flex-row md:items-end md:justify-between"
+          style={{ animation: "wsRise 0.8s cubic-bezier(0.16,1,0.3,1) both" }}
+        >
+          <div className="max-w-2xl">
+            <h1 className="text-4xl leading-[1.1] font-bold tracking-[-0.035em] text-white sm:text-5xl lg:text-6xl">
+              Cách tôi làm việc
+              <span className="bg-linear-to-r from-indigo-300 to-violet-300 bg-clip-text text-transparent">
+                .
+              </span>
+            </h1>
 
-      <div className="relative z-10 mx-auto max-w-7xl">
-        {/* =====================================================
-            HEADER
-        ===================================================== */}
-
-        <header className="mx-auto max-w-4xl text-center">
-          <div className="flex items-center justify-center gap-4">
-            <span className="h-px w-10 bg-indigo-300/30" />
-
-            <span className="font-mono text-[9px] tracking-[0.28em] text-indigo-300 uppercase">
-              Work Style
-            </span>
-
-            <span className="h-px w-10 bg-indigo-300/30" />
+            <p className="mt-6 max-w-xl text-base leading-8 text-slate-400">
+              Những nguyên tắc tôi giữ trong suốt quá trình làm việc để đảm bảo chất lượng, tiến độ
+              và sự nhất quán của sản phẩm.
+            </p>
           </div>
 
-          <h1 className="mt-7 text-4xl font-semibold tracking-[-0.045em] text-[#F4F3EF] sm:text-5xl lg:text-6xl">
-            Cách tôi làm việc
-            <span className="text-indigo-300">.</span>
-          </h1>
-
-          <p className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-slate-500">
-            Những nguyên tắc tôi duy trì trong quá trình làm việc để đảm bảo chất lượng, tiến độ và
-            sự nhất quán của sản phẩm.
-          </p>
-
-          {/* COUNT */}
-
-          <div className="mt-8 inline-flex items-center gap-3 rounded-full border border-white/7 bg-white/3 px-4 py-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-indigo-300" />
-
-            <span className="font-mono text-[8px] tracking-[0.18em] text-slate-500 uppercase">
-              {workStyles.length} nguyên tắc làm việc
+          <div className="inline-flex shrink-0 items-center gap-3 self-start rounded-full border border-white/10 bg-white/4 px-5 py-2.5 text-sm text-slate-300 md:self-auto">
+            <span className="h-2 w-2 rounded-full bg-indigo-300 shadow-[0_0_12px_rgba(165,180,252,0.8)]" />
+            <span>
+              <span className="font-semibold text-white tabular-nums">{workStyles.length}</span>{" "}
+              nguyên tắc làm việc
             </span>
           </div>
         </header>
 
-        {/* =====================================================
-            CONTENT
-        ===================================================== */}
-
+        {/* ============ DANH SÁCH ============ */}
         {workStyles.length > 0 ? (
-          <section className="mt-20 grid gap-5 md:grid-cols-2">
-            {workStyles.map((workStyle, index) => {
-              const order = String(index + 1).padStart(2, "0");
+          <section className="mt-14 grid gap-5 md:grid-cols-2 lg:mt-16">
+            {workStyles.map((workStyle, index) => (
+              <article
+                key={workStyle.id}
+                className="ws-motion group relative flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-linear-to-br from-white/6 to-white/2 p-8 transition-all duration-300 hover:-translate-y-1 hover:border-indigo-300/40 hover:from-white/8 sm:p-10 last:odd:md:col-span-2"
+                style={{
+                  animation: `wsRise 0.7s cubic-bezier(0.16,1,0.3,1) ${0.15 + index * 0.08}s both`,
+                }}
+              >
+                {/* Vệt sáng góc phải */}
+                <div className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full bg-indigo-400/10 blur-[80px] transition-colors duration-500 group-hover:bg-indigo-400/20" />
 
-              return (
-                <article
-                  key={workStyle.id}
-                  className="group relative min-h-80 overflow-hidden rounded-[28px] border border-white/8 bg-white/3 transition-all duration-500 hover:-translate-y-1 hover:border-indigo-300/20 hover:bg-white/4"
-                  style={{
-                    animation: `workStyleFadeUp 0.7s cubic-bezier(0.16,1,0.3,1) ${
-                      index * 0.1 + 0.15
-                    }s both`,
-                  }}
-                >
-                  {/* TOP ACCENT */}
+                {/* Icon */}
+                <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-indigo-400 to-violet-500 shadow-lg shadow-indigo-500/25">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-6 w-6 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12.5l4.5 4.5L19 7.5" />
+                  </svg>
+                </div>
 
-                  <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-indigo-300/45 to-transparent opacity-40 transition-opacity duration-500 group-hover:opacity-100" />
+                {/* Nội dung */}
+                <h2 className="relative mt-8 text-2xl font-semibold tracking-[-0.02em] text-white sm:text-[1.65rem]">
+                  {workStyle.title}
+                </h2>
 
-                  {/* GLOW */}
+                <p className="relative mt-4 max-w-2xl text-[15px] leading-8 text-slate-400 transition-colors duration-300 group-hover:text-slate-300">
+                  {workStyle.description}
+                </p>
 
-                  <div className="pointer-events-none absolute -top-30 -right-30 h-80 w-80 rounded-full bg-indigo-500/5 blur-[100px] transition-all duration-700 group-hover:bg-indigo-500/10" />
-
-                  {/* BACKGROUND NUMBER */}
-
-                  <span className="pointer-events-none absolute -top-8 -right-3 font-mono text-[150px] leading-none font-bold tracking-[-0.08em] text-white/2 select-none sm:text-[180px]">
-                    {order}
-                  </span>
-
-                  {/* CONTENT */}
-
-                  <div className="relative flex h-full min-h-80 flex-col p-7 sm:p-9">
-                    {/* TOP */}
-
-                    <div className="flex items-start justify-between gap-5">
-                      {/* ICON */}
-
-                      <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-indigo-300/15 bg-indigo-300/5 transition-all duration-500 group-hover:border-indigo-300/30 group-hover:bg-indigo-300/8">
-                        <span className="h-2 w-2 rounded-full bg-indigo-300 shadow-[0_0_15px_rgba(165,180,252,0.5)]" />
-                      </div>
-
-                      {/* ORDER */}
-
-                      <span className="font-mono text-[9px] tracking-[0.18em] text-slate-600">
-                        / {order}
-                      </span>
-                    </div>
-
-                    {/* LABEL */}
-
-                    <p className="mt-10 font-mono text-[8px] tracking-[0.22em] text-indigo-300/70 uppercase">
-                      Nguyên tắc làm việc
-                    </p>
-
-                    {/* TITLE */}
-
-                    <h2 className="mt-4 max-w-lg text-2xl font-semibold tracking-[-0.035em] text-[#F0EFEA] transition-colors duration-300 group-hover:text-white sm:text-3xl">
-                      {workStyle.title}
-                    </h2>
-
-                    {/* DESCRIPTION */}
-
-                    <p className="mt-5 max-w-xl text-sm leading-7 text-slate-500 transition-colors duration-300 group-hover:text-slate-400">
-                      {workStyle.description}
-                    </p>
-
-                    {/* FOOTER */}
-
-                    <div className="mt-auto pt-10">
-                      <div className="flex items-center justify-between border-t border-white/6 pt-5">
-                        <div className="flex items-center gap-3">
-                          <span className="h-px w-6 bg-indigo-300/30" />
-
-                          <span className="font-mono text-[8px] tracking-[0.18em] text-slate-600 uppercase">
-                            Work Style
-                          </span>
-                        </div>
-
-                        <span className="font-mono text-[8px] tracking-[0.14em] text-indigo-300/50">
-                          #{String(workStyle.displayOrder).padStart(2, "0")}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
+                {/* Thanh nhấn dưới */}
+                <div className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-linear-to-r from-indigo-400 via-violet-400 to-transparent transition-transform duration-500 group-hover:scale-x-100" />
+              </article>
+            ))}
           </section>
         ) : (
-          /* =====================================================
-              EMPTY
-          ===================================================== */
-
-          <section className="mt-20 flex min-h-80 items-center justify-center rounded-[28px] border border-dashed border-white/10 bg-white/2">
-            <div className="text-center">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-white/8 bg-white/3">
-                <span className="h-2 w-2 rounded-full bg-slate-600" />
-              </div>
-
-              <p className="mt-5 text-sm font-medium text-slate-400">Chưa có Work Style</p>
-
-              <p className="mt-2 text-xs text-slate-600">Nội dung sẽ được cập nhật sau.</p>
-            </div>
+          <section className="mt-14 flex min-h-72 flex-col items-center justify-center rounded-3xl border border-dashed border-white/12 px-6 text-center">
+            <span className="h-2 w-2 rounded-full bg-indigo-300/60" />
+            <p className="mt-5 text-base font-medium text-slate-200">
+              Chưa có nguyên tắc nào được thêm
+            </p>
+            <p className="mt-2 max-w-xs text-sm leading-6 text-slate-500">
+              Thêm nguyên tắc đầu tiên trong trang quản trị, nội dung sẽ hiển thị tại đây.
+            </p>
           </section>
         )}
-
-        {/* =====================================================
-            FOOTER
-        ===================================================== */}
-
-        <footer className="mt-24 border-t border-white/7 pt-7">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p className="font-mono text-[8px] tracking-[0.2em] text-slate-700 uppercase">
-              Work Philosophy
-            </p>
-
-            <p className="font-mono text-[8px] tracking-[0.16em] text-slate-700 uppercase">
-              Quality · Consistency · Growth
-            </p>
-          </div>
-        </footer>
       </div>
     </main>
   );
