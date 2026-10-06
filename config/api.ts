@@ -1,12 +1,9 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api";
 
-const DEFAULT_API_URL =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:8080/api"
-    : "";
+const DEFAULT_API_URL = process.env.NODE_ENV === "development" ? "http://localhost:8080/api" : "";
 
 export const API_CONFIG = {
-  BASE_URL: API_URL ?  `${API_URL.replace(/\/$/, "")}/api` : DEFAULT_API_URL,
+  BASE_URL: `${API_URL.replace(/\/$/, "")}/api`,
 
   ENDPOINTS: {
     PUBLIC: {
