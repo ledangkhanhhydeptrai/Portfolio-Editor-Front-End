@@ -52,7 +52,7 @@ const ExperienceSlice = createSlice({
     getExperienceUserSuccess(state, action: PayloadAction<ExperienceProps[]>) {
       state.loading = false;
       state.error = null;
-      state.data = action.payload;
+      state.userExperience = action.payload;
     },
     getExperienceUserFailure(state, action: PayloadAction<string>) {
       state.loading = false;

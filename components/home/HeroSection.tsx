@@ -2,43 +2,94 @@
 
 import Link from "next/link";
 import { motion } from "motion/react";
+import React from "react";
+
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { getProfileRequest } from "@/features/profile/profileSlice";
+import type { ProfileProps } from "@/features/profile/profileTypes";
 
 export default function HeroSection() {
+  const dispatch = useAppDispatch();
+
+  const { user } = useAppSelector((state) => state.auth);
+  const { data } = useAppSelector((state) => state.profile);
+
+  React.useEffect(() => {
+    dispatch(getProfileRequest());
+  }, [dispatch]);
+
+  const profile = React.useMemo<ProfileProps | null>(() => {
+    if (!data) {
+      return null;
+    }
+
+    if (Array.isArray(data)) {
+      if (data.length === 0) {
+        return null;
+      }
+
+      return (data as ProfileProps[]).at(0) || null;
+    }
+
+    return data as ProfileProps;
+  }, [data]);
+
+  const displayName =
+    user && user.username
+      ? user.username
+      : "Khánh Hỷ";
+
+  const workspaceName =
+    user && user.username
+      ? `${user.username}.workspace`
+      : "khanhhy.workspace";
+
   return (
     <section
       id="home"
       className="relative min-h-screen overflow-hidden px-6 pt-24 lg:px-10 xl:px-14"
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-[#5B7CFA]/35 to-transparent" />
+
       <div className="relative mx-auto grid min-h-[calc(100vh-6rem)] w-full max-w-375 items-center gap-14 py-12 lg:grid-cols-12">
         <div className="lg:col-span-7">
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45 }}
-            className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#7F96F5]"
+            className="font-mono text-[10px] tracking-[0.28em] text-[#7F96F5] uppercase"
           >
             Portfolio / 2026
           </motion.p>
+
           <motion.h1
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.08 }}
-            className="mt-6 max-w-3xl font-['Fraunces'] text-5xl font-light leading-[1.02] tracking-[-0.04em] sm:text-6xl lg:text-[68px]"
+            className="mt-6 max-w-3xl font-['Fraunces'] text-5xl leading-[1.02] font-light tracking-[-0.04em] sm:text-6xl lg:text-[68px]"
           >
-            Khánh Hỷ
+            {displayName}
+
             <br />
-            <span className="text-[#9BAEFF]">Editor & Developer.</span>
+
+            <span className="text-[#9BAEFF]">
+              {profile && profile.jobTitle
+                ? profile.jobTitle
+                : "Editor & Developer."}
+            </span>
           </motion.h1>
+
           <motion.p
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.18 }}
             className="mt-6 max-w-xl text-sm leading-7 text-[#A6A39B] lg:text-[15px]"
           >
-            Tôi làm video và xây dựng sản phẩm số — tập trung vào trải nghiệm rõ
-            ràng, hình ảnh có chủ đích và những thứ thực sự sử dụng được.
+            {profile && profile.aboutMe
+              ? profile.aboutMe
+              : "Tôi làm video và xây dựng sản phẩm số — tập trung vào trải nghiệm rõ ràng, hình ảnh có chủ đích và những thứ thực sự sử dụng được."}
           </motion.p>
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -51,6 +102,7 @@ export default function HeroSection() {
             >
               Xem dự án <span>↗</span>
             </Link>
+
             <Link
               href="/about"
               className="rounded-lg border border-white/10 px-5 py-2.5 text-xs font-medium text-[#C7C4BD] transition hover:border-white/20 hover:text-white"
@@ -58,27 +110,42 @@ export default function HeroSection() {
               Về tôi
             </Link>
           </motion.div>
+
           <div className="mt-12 grid max-w-xl grid-cols-3 border-t border-white/8 pt-5">
             <div>
-              <p className="text-[9px] uppercase tracking-[0.18em] text-[#5F5C56]">
+              <p className="text-[9px] tracking-[0.18em] text-[#5F5C56] uppercase">
                 Tập trung
               </p>
-              <p className="mt-1.5 text-xs">Edit + Dev</p>
+
+              <p className="mt-1.5 text-xs">
+                Edit + Dev
+              </p>
             </div>
+
             <div>
-              <p className="text-[9px] uppercase tracking-[0.18em] text-[#5F5C56]">
+              <p className="text-[9px] tracking-[0.18em] text-[#5F5C56] uppercase">
                 Tọa lạc
               </p>
-              <p className="mt-1.5 text-xs">Việt Nam</p>
+
+              <p className="mt-1.5 text-xs">
+                {profile && profile.location
+                  ? profile.location
+                  : "Việt Nam"}
+              </p>
             </div>
+
             <div>
-              <p className="text-[9px] uppercase tracking-[0.18em] text-[#5F5C56]">
+              <p className="text-[9px] tracking-[0.18em] text-[#5F5C56] uppercase">
                 Trạng thái
               </p>
-              <p className="mt-1.5 text-xs">Đang hoạt động</p>
+
+              <p className="mt-1.5 text-xs">
+                Đang hoạt động
+              </p>
             </div>
           </div>
         </div>
+
         <motion.div
           initial={{ opacity: 0, x: 25 }}
           animate={{ opacity: 1, x: 0 }}
@@ -92,47 +159,61 @@ export default function HeroSection() {
                 <span className="h-2 w-2 rounded-full bg-white/15" />
                 <span className="h-2 w-2 rounded-full bg-white/15" />
               </div>
+
               <span className="font-mono text-[8px] text-[#5F5C56]">
-                khanhhy.workspace
+                {workspaceName}
               </span>
             </div>
+
             <div className="space-y-3 p-4">
               <div className="rounded-xl border border-white/7 bg-black/25 p-4">
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] font-medium">
                     Editing Timeline
                   </span>
+
                   <span className="font-mono text-[8px] text-[#7F96F5]">
                     00:14:28:00
                   </span>
                 </div>
+
                 <div className="mt-5 space-y-2">
                   <div className="flex gap-1">
                     <span className="h-4 w-1/4 rounded bg-white/7" />
                     <span className="h-4 w-1/2 rounded bg-[#5B7CFA]/45" />
                     <span className="h-4 flex-1 rounded bg-white/7" />
                   </div>
+
                   <div className="flex gap-1">
                     <span className="h-3 w-2/3 rounded bg-white/5" />
                     <span className="h-3 flex-1 rounded bg-white/10" />
                   </div>
                 </div>
               </div>
+
               <div className="grid grid-cols-2 gap-3">
                 <div className="rounded-xl border border-white/7 p-4">
-                  <p className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#5F5C56]">
+                  <p className="font-mono text-[8px] tracking-[0.16em] text-[#5F5C56] uppercase">
                     Development
                   </p>
-                  <p className="mt-3 text-xs">Next.js · Spring Boot</p>
+
+                  <p className="mt-3 text-xs">
+                    Next.js · Spring Boot
+                  </p>
                 </div>
+
                 <div className="rounded-xl border border-white/7 p-4">
-                  <p className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#5F5C56]">
+                  <p className="font-mono text-[8px] tracking-[0.16em] text-[#5F5C56] uppercase">
                     Creative
                   </p>
-                  <p className="mt-3 text-xs">Edit · Storytelling</p>
+
+                  <p className="mt-3 text-xs">
+                    Edit · Storytelling
+                  </p>
                 </div>
               </div>
-              <div className="flex items-center justify-between border-t border-white/7 px-1 pt-3 font-mono text-[8px] uppercase tracking-[0.14em] text-[#5F5C56]">
+
+              <div className="flex items-center justify-between border-t border-white/7 px-1 pt-3 font-mono text-[8px] tracking-[0.14em] text-[#5F5C56] uppercase">
                 <span>Editor</span>
                 <span>Developer</span>
                 <span>Driver</span>
