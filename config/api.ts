@@ -18,6 +18,8 @@ export const API_CONFIG = {
       SOCIAL_LINK_BY_ID: (id: string) => `/public/social-link/${id}`,
       VIDEO_PROJECT: "/public/video",
       VIDEO_PROJECT_BY_ID: (id: string) => `/public/video/${id}`,
+      CURRICULUM_PUBLIC: "/public/CV",
+      CURRICULUM_PUBLIC_ID: (id: string) => `/public/CV/${id}`,
     },
 
     USER: {
@@ -35,6 +37,8 @@ export const API_CONFIG = {
       VIDEO_PROJECT: "/user/video",
       VIDEO_PROJECT_USER_BY_ID: (id: string) => `/user/video/${id}`,
       USERPROFILE: "/user/profile",
+      CURRICULUM_USER: "/user/CV",
+      CURRICULUM_USER_ID: (id: string) => `/user/CV/${id}`,
     },
     LOGIN: "/auth/login",
     REGISTER: "/auth/register",

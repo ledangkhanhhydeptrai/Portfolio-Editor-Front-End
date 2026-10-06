@@ -29,6 +29,10 @@ export const navItems: NavItem[] = [
     label: "Kết nối",
     href: "/social-link",
   },
+  {
+    label: "CV",
+    href: "/curriculum",
+  },
 ];
 
 export const skillItems: SkillMenuItemType[] = [
@@ -39,12 +43,7 @@ export const skillItems: SkillMenuItemType[] = [
     category: "VIDEO_EDITING",
     number: "01",
     icon: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        className="h-5 w-5"
-        aria-hidden="true"
-      >
+      <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" aria-hidden="true">
         <rect
           x="3.5"
           y="5.5"
@@ -62,10 +61,7 @@ export const skillItems: SkillMenuItemType[] = [
           strokeLinejoin="round"
         />
 
-        <path
-          d="M8.5 9.5L13 12L8.5 14.5V9.5Z"
-          fill="currentColor"
-        />
+        <path d="M8.5 9.5L13 12L8.5 14.5V9.5Z" fill="currentColor" />
       </svg>
     ),
   },
@@ -77,12 +73,7 @@ export const skillItems: SkillMenuItemType[] = [
     category: "DEVELOPMENT",
     number: "02",
     icon: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        className="h-5 w-5"
-        aria-hidden="true"
-      >
+      <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" aria-hidden="true">
         <path
           d="M8.5 8.5L5 12L8.5 15.5"
           stroke="currentColor"
@@ -99,12 +90,7 @@ export const skillItems: SkillMenuItemType[] = [
           strokeLinejoin="round"
         />
 
-        <path
-          d="M14 5.5L10 18.5"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
+        <path d="M14 5.5L10 18.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
       </svg>
     ),
   },
@@ -116,12 +102,7 @@ export const skillItems: SkillMenuItemType[] = [
     category: "DRIVING",
     number: "03",
     icon: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        className="h-5 w-5"
-        aria-hidden="true"
-      >
+      <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" aria-hidden="true">
         <path
           d="M5.5 15.5L7 10.5C7.3 9.6 8.1 9 9 9H15C15.9 9 16.7 9.6 17 10.5L18.5 15.5"
           stroke="currentColor"
@@ -136,26 +117,11 @@ export const skillItems: SkillMenuItemType[] = [
           strokeLinejoin="round"
         />
 
-        <path
-          d="M7 12.5H17"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
+        <path d="M7 12.5H17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
 
-        <circle
-          cx="7.5"
-          cy="16.5"
-          r="1"
-          fill="currentColor"
-        />
+        <circle cx="7.5" cy="16.5" r="1" fill="currentColor" />
 
-        <circle
-          cx="16.5"
-          cy="16.5"
-          r="1"
-          fill="currentColor"
-        />
+        <circle cx="16.5" cy="16.5" r="1" fill="currentColor" />
       </svg>
     ),
   },

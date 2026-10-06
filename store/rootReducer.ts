@@ -10,6 +10,7 @@ import VideoReducer from "../features/video/videoSlice";
 import ChangePasswordReducer from "../features/auth/change-password/ChangePasswordSlice";
 import ChangePasswordOTPReducer from "../features/auth/change-password-otp/ChangePasswordOTPSlice";
 import ResetPasswordOTPReducer from "../features/auth/reset-password/reset-password-slice";
+import CurriculumVitaeReducer from "../features/CurriculumVitae/CurriculumVitaeSlice";
 const rootReducer = combineReducers({
   profile: ProfileReducer,
   skill: SkillReducer,
@@ -22,5 +23,6 @@ const rootReducer = combineReducers({
   changePassword: ChangePasswordReducer,
   changePasswordOTP: ChangePasswordOTPReducer,
   resetPasswordOTP: ResetPasswordOTPReducer,
+  curriculumVitae: CurriculumVitaeReducer,
 });
 export default rootReducer;
