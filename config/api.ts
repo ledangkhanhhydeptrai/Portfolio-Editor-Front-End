@@ -6,7 +6,7 @@ const DEFAULT_API_URL =
     : "";
 
 export const API_CONFIG = {
-  BASE_URL: API_URL ? API_URL.replace(/\/$/, "") : DEFAULT_API_URL,
+  BASE_URL: API_URL ?  `${API_URL.replace(/\/$/, "")}/api` : DEFAULT_API_URL,
 
   ENDPOINTS: {
     PUBLIC: {
