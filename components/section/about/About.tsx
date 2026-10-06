@@ -23,6 +23,9 @@ import {
   getExperienceRequest,
   getExperienceUserRequest,
 } from "@/features/experience/experienceSlice";
+import { getWorkStylesRequest } from "@/features/work-style/WorkStylesSlice";
+import Loading from "@/components/ui/Loading";
+import ErrorMessage from "@/components/ui/ErrorMessage";
 
 const About: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -30,7 +33,11 @@ const About: React.FC = () => {
   const progress = useScrollProgress();
 
   const { user, authReady } = useAppSelector((state) => state.auth);
-
+  const {
+    data: workStyles,
+    loading: workStyleLoading,
+    error: workStyleError,
+  } = useAppSelector((state) => state.workstyle);
   // =========================
   // PROFILE
   // =========================
@@ -77,7 +84,7 @@ const About: React.FC = () => {
 
     // Public
     dispatch(getProfileRequest());
-
+    dispatch(getWorkStylesRequest());
     dispatch(getSkillRequest());
 
     dispatch(getExperienceRequest());
@@ -121,7 +128,15 @@ const About: React.FC = () => {
         {/* SKILL */}
         <AboutMarquee skills={skills} />
 
-        <AboutWorkStyle />
+        {/* WORK STYLE */}
+
+        {workStyleLoading ? (
+          <Loading />
+        ) : workStyleError ? (
+          <ErrorMessage />
+        ) : (
+          <AboutWorkStyle workStyles={workStyles} />
+        )}
 
         {/* PROFILE */}
         <AboutQuickInfo profile={profile} />

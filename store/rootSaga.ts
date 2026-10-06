@@ -10,6 +10,7 @@ import projectSaga from "@/features/project/projectSaga";
 import skillSaga from "@/features/skill/skillSaga";
 import LinkSaga from "@/features/social-link/socialLinkSaga";
 import videoSaga from "@/features/video/videoSaga";
+import WorkStyleSaga from "@/features/work-style/WorkStylesSaga";
 import { all } from "redux-saga/effects";
 
 export default function* rootSaga() {
@@ -25,6 +26,7 @@ export default function* rootSaga() {
     ChangePasswordSaga(),
     ChangePasswordOTPSaga(),
     ResetPasswordSaga(),
-    CurriculumSaga()
+    CurriculumSaga(),
+    WorkStyleSaga()
   ]);
 }

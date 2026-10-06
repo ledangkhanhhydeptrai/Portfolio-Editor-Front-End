@@ -11,6 +11,7 @@ import ChangePasswordReducer from "../features/auth/change-password/ChangePasswo
 import ChangePasswordOTPReducer from "../features/auth/change-password-otp/ChangePasswordOTPSlice";
 import ResetPasswordOTPReducer from "../features/auth/reset-password/reset-password-slice";
 import CurriculumVitaeReducer from "../features/CurriculumVitae/CurriculumVitaeSlice";
+import WorkStyleReducer from "../features/work-style/WorkStylesSlice";
 const rootReducer = combineReducers({
   profile: ProfileReducer,
   skill: SkillReducer,
@@ -24,5 +25,6 @@ const rootReducer = combineReducers({
   changePasswordOTP: ChangePasswordOTPReducer,
   resetPasswordOTP: ResetPasswordOTPReducer,
   curriculumVitae: CurriculumVitaeReducer,
+  workstyle: WorkStyleReducer,
 });
 export default rootReducer;
