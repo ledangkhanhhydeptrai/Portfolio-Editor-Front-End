@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { WorkStyleProps } from "@/features/work-style/WorkStylesTypes";
 import React from "react";
 
@@ -24,8 +25,31 @@ const AboutWorkStyle: React.FC<AboutWorkStyleProps> = ({ workStyles }) => {
             <h2 className="mt-5 font-['Fraunces'] text-4xl leading-tight font-light tracking-[-0.03em] text-[#F4F3EF]">
               Cách tôi
               <br />
-              <span className="text-[#A09E98]">làm việc.</span>
+              <span className="text-[#A09E98]">làm việc</span>
             </h2>
+
+            {/* VIEW DETAIL BUTTON */}
+
+            <Link
+              href="/work-style"
+              className="group/btn mt-10 inline-flex items-center gap-3 rounded-full border border-white/15 py-2 pr-2 pl-5 text-sm font-medium text-[#F4F3EF] transition-colors duration-300 hover:border-[#8EA5FF]/60 hover:bg-white/5 focus-visible:ring-2 focus-visible:ring-[#8EA5FF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#13151D] focus-visible:outline-none"
+            >
+              Xem tất cả
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#8EA5FF] text-[#13151D] transition-transform duration-300 group-hover/btn:translate-x-0.5">
+                <svg
+                  viewBox="0 0 24 24"
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </span>
+            </Link>
           </div>
 
           {/* RIGHT */}
