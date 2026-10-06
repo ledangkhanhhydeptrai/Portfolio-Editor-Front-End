@@ -1,11 +1,9 @@
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:8080/api";
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 if (!API_URL) {
   throw new Error("NEXT_PUBLIC_API_URL is not configured");
 }
 export const API_CONFIG = {
-  BASE_URL: API_URL ? API_URL.replace(/\/$/, "") : "http://localhost:8080",
+  BASE_URL: API_URL ? API_URL.replace(/\/$/, "") : "",
 
   ENDPOINTS: {
     PUBLIC: {
@@ -53,7 +51,4 @@ export const API_CONFIG = {
     RESET_PASSWORD: "/auth/reset-password",
   },
 } as const;
-console.log(
-  "API_CONFIG.BASE_URL =",
-  API_CONFIG.BASE_URL
-);
+console.log("API_CONFIG.BASE_URL =", API_CONFIG.BASE_URL);
