@@ -30,8 +30,59 @@ const WorkStyleSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    getWorkStyleByIdRequest(state, _action: PayloadAction<string>) {
+      state.loading = true;
+      state.error = null;
+    },
+    getWorkStyleByIdSuccess(state, action: PayloadAction<WorkStyleProps>) {
+      state.loading = false;
+      state.error = null;
+      state.work = action.payload;
+    },
+    getWorkStyleByIdFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    getWorkStylesUserRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    getWorkStylesUserSuccess(state, action: PayloadAction<WorkStyleProps[]>) {
+      state.loading = false;
+      state.error = null;
+      state.data = action.payload;
+    },
+    getWorkStylesUserFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+     getWorkStyleByUserIdRequest(state, _action: PayloadAction<string>) {
+      state.loading = true;
+      state.error = null;
+    },
+    getWorkStyleByUserIdSuccess(state, action: PayloadAction<WorkStyleProps>) {
+      state.loading = false;
+      state.error = null;
+      state.work = action.payload;
+    },
+    getWorkStyleByUserIdFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
-export const { getWorkStylesRequest, getWorkStylesSuccess, getWorkStylesFailure } =
-  WorkStyleSlice.actions;
+export const {
+  getWorkStylesRequest,
+  getWorkStylesSuccess,
+  getWorkStylesFailure,
+  getWorkStyleByIdRequest,
+  getWorkStyleByIdSuccess,
+  getWorkStyleByIdFailure,
+  getWorkStylesUserRequest,
+  getWorkStylesUserSuccess,
+  getWorkStylesUserFailure,
+  getWorkStyleByUserIdRequest,
+  getWorkStyleByUserIdSuccess,
+  getWorkStyleByUserIdFailure
+} = WorkStyleSlice.actions;
 export default WorkStyleSlice.reducer;

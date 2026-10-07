@@ -35,10 +35,10 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
   const dispatch = useAppDispatch();
   const { user, authReady } = useAppSelector((state) => state.auth);
   const username = user ? user.username : null;
-
+  const { data } = useAppSelector((state) => state.curriculumVitae);
   const searchParams = useSearchParams();
   const currentCategory = searchParams.get("category");
-
+  const [desktopCVOpen, setDesktopCVOpen] = React.useState(false);
   // STATES
   const [contactOpen, setContactOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
@@ -52,8 +52,8 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
   // REFS
   const desktopSkillsRef = React.useRef<HTMLDivElement>(null);
   const desktopProjectsRef = React.useRef<HTMLDivElement>(null);
+  const desktopCVRef = React.useRef<HTMLDivElement>(null);
   const accountRef = React.useRef<HTMLDivElement>(null);
-
   // SCROLL
   const progressRef = React.useRef<HTMLSpanElement>(null);
 
@@ -108,6 +108,7 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
       setMobileProjectsOpen(false);
       setDesktopSkillsOpen(false);
       setDesktopProjectsOpen(false);
+      setDesktopCVOpen(false);
       setAccountOpen(false);
     };
     window.addEventListener("keydown", onKeyDown);
@@ -123,6 +124,9 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
       }
       if (desktopProjectsRef.current && !desktopProjectsRef.current.contains(target)) {
         setDesktopProjectsOpen(false);
+      }
+      if (desktopCVRef.current && !desktopCVRef.current.contains(target)) {
+        setDesktopCVOpen(false);
       }
       if (accountRef.current && !accountRef.current.contains(target)) {
         setAccountOpen(false);
@@ -178,7 +182,19 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
     setAccountOpen(false);
     setDesktopProjectsOpen((previous) => !previous);
   };
+  const handleCVOpen = () => {
+    setDesktopSkillsOpen(false);
+    setDesktopProjectsOpen(false);
+    setAccountOpen(false);
+    setDesktopCVOpen(true);
+  };
 
+  const handleCVToggle = () => {
+    setDesktopSkillsOpen(false);
+    setDesktopProjectsOpen(false);
+    setAccountOpen(false);
+    setDesktopCVOpen((previous) => !previous);
+  };
   // ACCOUNT
   const handleAccountToggle = () => {
     setDesktopSkillsOpen(false);
@@ -228,6 +244,7 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
           <div className="hidden min-w-0 flex-1 justify-center lg:flex">
             <div className="flex max-w-full items-center rounded-full border border-white/8 bg-white/3 px-1.5 py-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
               <DesktopNavigation
+                curriculums={data}
                 pathname={pathname}
                 currentCategory={currentCategory}
                 skillsOpen={desktopSkillsOpen}
@@ -240,6 +257,11 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
                 onProjectsOpen={handleProjectsOpen}
                 onProjectsClose={() => setDesktopProjectsOpen(false)}
                 onProjectsToggle={handleProjectsToggle}
+                cvOpen={desktopCVOpen}
+                cvRef={desktopCVRef}
+                onCVOpen={handleCVOpen}
+                onCVClose={() => setDesktopCVOpen(false)}
+                onCVToggle={handleCVToggle}
               />
             </div>
           </div>

@@ -3,6 +3,15 @@ import type { ReactNode } from "react";
 export interface NavItem {
   label: string;
   href: string;
+  children?: CVMenuItemType[];
+}
+
+export interface CVMenuItemType {
+  label: string;
+  description: string;
+  href: string;
+  number: string;
+  icon: ReactNode;
 }
 
 export interface SkillMenuItemType {

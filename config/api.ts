@@ -21,6 +21,9 @@ export const API_CONFIG = {
       CURRICULUM_PUBLIC: "/public/CV",
       CURRICULUM_PUBLIC_ID: (id: string) => `/public/CV/${id}`,
       WORK_STYLES_PUBLIC: "/public/work-style",
+      WORK_STYLES_PUBLIC_ID: (id: string) => `/public/work-style/${id}`,
+      DIRECTION_PUBLIC: "/public/direction",
+      DIRECTION_PUBLIC_ID: (id: string) => `/public/direction/${id}`,
     },
 
     USER: {
@@ -40,6 +43,10 @@ export const API_CONFIG = {
       USERPROFILE: "/user/profile",
       CURRICULUM_USER: "/user/CV",
       CURRICULUM_USER_ID: (id: string) => `/user/CV/${id}`,
+      WORK_STYLES_USER: "/user/work-style",
+      WORK_STYLES_USER_ID: (id: string) => `/user/work-style/${id}`,
+      DIRECTION_USER: "/user/direction",
+      DIRECTION_USER_ID: (id: string) => `/user/direction/${id}`,
     },
     LOGIN: "/auth/login",
     REGISTER: "/auth/register",
