@@ -3,6 +3,7 @@ import ChangePasswordOTPSaga from "@/features/auth/change-password-otp/ChangePas
 import ChangePasswordSaga from "@/features/auth/change-password/ChangePasswordSaga";
 import ResetPasswordSaga from "@/features/auth/reset-password/reset-password-saga";
 import CurriculumSaga from "@/features/CurriculumVitae/CurriculumVitaeSaga";
+import DirectionSaga from "@/features/direction/DirectionSaga";
 import educationSaga from "@/features/education/educationSaga";
 import ExperienceSaga from "@/features/experience/experienceSaga";
 import profileSaga from "@/features/profile/profileSaga";
@@ -27,6 +28,7 @@ export default function* rootSaga() {
     ChangePasswordOTPSaga(),
     ResetPasswordSaga(),
     CurriculumSaga(),
-    WorkStyleSaga()
+    WorkStyleSaga(),
+    DirectionSaga()
   ]);
 }

@@ -26,12 +26,17 @@ import {
 import { getWorkStylesRequest } from "@/features/work-style/WorkStylesSlice";
 import Loading from "@/components/ui/Loading";
 import ErrorMessage from "@/components/ui/ErrorMessage";
+import { getDirectionRequest, getDirectionUserRequest } from "@/features/direction/DirectionSlice";
 
 const About: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const progress = useScrollProgress();
-
+  const {
+    data: DataDirection,
+    loading: LoadingDirection,
+    error: ErrorDirection,
+  } = useAppSelector((state) => state.direction);
   const { user, authReady } = useAppSelector((state) => state.auth);
   const {
     data: workStyles,
@@ -74,14 +79,14 @@ const About: React.FC = () => {
     // Logged in
     if (user) {
       dispatch(getProfileUserRequest());
-
+      dispatch(getDirectionUserRequest());
       dispatch(getSkillUserRequest());
 
       dispatch(getExperienceUserRequest());
 
       return;
     }
-
+    dispatch(getDirectionRequest());
     // Public
     dispatch(getProfileRequest());
     dispatch(getWorkStylesRequest());
@@ -123,8 +128,13 @@ const About: React.FC = () => {
 
         <AboutQuote />
 
-        <AboutDirections />
-
+        {LoadingDirection ? (
+          <Loading />
+        ) : ErrorDirection ? (
+          <ErrorMessage />
+        ) : (
+          <AboutDirections directions={DataDirection} />
+        )}
         {/* SKILL */}
         <AboutMarquee skills={skills} />
 
