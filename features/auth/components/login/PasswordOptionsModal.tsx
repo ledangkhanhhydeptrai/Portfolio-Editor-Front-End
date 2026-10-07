@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { ChevronRight, KeyRound, MailCheck, ShieldCheck, X } from "lucide-react";
+import { ChevronRight, MailCheck, ShieldCheck, X } from "lucide-react";
 
 interface PasswordOptionsModalProps {
   open: boolean;
@@ -44,10 +44,10 @@ const PasswordOptionsModal: React.FC<PasswordOptionsModalProps> = ({ open, onClo
     router.push("/change-password-otp");
   };
 
-  const handleChangePassword = () => {
-    onClose();
-    router.push("/change-password");
-  };
+  // const handleChangePassword = () => {
+  //   onClose();
+  //   router.push("/change-password");
+  // };
 
   return (
     <div className="fixed inset-0 z-100 flex items-end justify-center px-4 pb-4 sm:items-center sm:pb-0">
@@ -130,7 +130,7 @@ const PasswordOptionsModal: React.FC<PasswordOptionsModalProps> = ({ open, onClo
             <ChevronRight className="h-5 w-5 shrink-0 text-white/25 transition duration-200 group-hover:translate-x-0.5 group-hover:text-[#A9B8FF]" />
           </button>
 
-          <button
+          {/* <button
             type="button"
             onClick={handleChangePassword}
             className="group flex w-full items-center gap-4 rounded-2xl border border-white/8 bg-white/3 p-4 text-left transition duration-200 hover:border-emerald-400/40 hover:bg-emerald-400/8 focus-visible:outline-2 focus-visible:outline-emerald-400"
@@ -152,7 +152,7 @@ const PasswordOptionsModal: React.FC<PasswordOptionsModalProps> = ({ open, onClo
             </span>
 
             <ChevronRight className="h-5 w-5 shrink-0 text-white/25 transition duration-200 group-hover:translate-x-0.5 group-hover:text-emerald-300" />
-          </button>
+          </button> */}
         </div>
 
         {/* Footer */}
