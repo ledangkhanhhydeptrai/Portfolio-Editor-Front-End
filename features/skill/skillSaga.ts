@@ -21,7 +21,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 
 function* getSkillFunction() {
   try {
-    const response: ApiResponse<SkillProps[]> = yield call(getSkillAPI);
+    const response: ApiResponse<SkillProps> = yield call(getSkillAPI);
     yield put(getSkillSuccess(response.data));
   } catch (error) {
     const errors = error as AxiosError<ApiResponse<string>>;

@@ -26,7 +26,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 
 function* handleGetProject() {
   try {
-    const response: ApiResponse<ProjectProps[]> = yield call(getProjectAPI);
+    const response: ApiResponse<ProjectProps> = yield call(getProjectAPI);
     yield put(getProjectSuccess(response.data));
   } catch (error) {
     const errors = error as AxiosError<ApiResponse<string>>;

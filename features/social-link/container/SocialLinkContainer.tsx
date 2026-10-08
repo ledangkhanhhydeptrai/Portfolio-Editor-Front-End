@@ -79,7 +79,7 @@ function SocialLinkError({ onRetry }: { onRetry: () => void }) {
 
 export default function SocialLinkContainer() {
   const dispatch = useAppDispatch();
-  const { data, loading, error } = useAppSelector((state) => state.socialLink);
+  const { data, loading, error, social_link } = useAppSelector((state) => state.socialLink);
 
   const fetchAll = React.useCallback(() => {
     dispatch(getLinkUserRequest());
@@ -90,10 +90,12 @@ export default function SocialLinkContainer() {
     fetchAll();
   }, [fetchAll]);
 
-  const socialLinks = React.useMemo(
-    () => [...(data ?? [])].sort((a, b) => a.displayOrder - b.displayOrder),
-    [data],
-  );
+  const socialLinks = React.useMemo(() => {
+    const userVideoList = data ?? [];
+    const publicVideo = social_link ? [social_link] : [];
+
+    return [...userVideoList, ...publicVideo].sort((a, b) => a.displayOrder - b.displayOrder);
+  }, [data, social_link]);
 
   if (loading) return <SocialLinkSkeleton />;
   if (error) return <SocialLinkError onRetry={fetchAll} />;

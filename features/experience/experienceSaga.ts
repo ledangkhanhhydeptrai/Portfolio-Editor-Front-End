@@ -26,7 +26,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 
 function* handleGetExperience() {
   try {
-    const response: ApiResponse<ExperienceProps[]> = yield call(ExperienceAPI);
+    const response: ApiResponse<ExperienceProps> = yield call(ExperienceAPI);
     yield put(getExperienceSuccess(response.data));
   } catch (error) {
     const errors = error as AxiosError<ApiResponse<string>>;

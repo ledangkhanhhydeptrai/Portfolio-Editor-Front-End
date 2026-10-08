@@ -6,9 +6,9 @@ import { requestConfig } from "@/config/requestConfig";
 import { HTTP_STATUS } from "@/constants/api";
 import { AxiosError } from "axios";
 
-export const getAllDirectionAPI = async (): Promise<ApiResponse<DirectionProps[]>> => {
+export const getAllDirectionAPI = async (): Promise<ApiResponse<DirectionProps>> => {
   try {
-    const response = await fetchBaseResponse<DirectionProps[]>(
+    const response = await fetchBaseResponse<DirectionProps>(
       `${API_CONFIG.ENDPOINTS.PUBLIC.DIRECTION_PUBLIC}`,
       requestConfig("GET"),
     );

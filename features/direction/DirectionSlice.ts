@@ -21,10 +21,10 @@ const DirectionSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    getDirectionSuccess(state, action: PayloadAction<DirectionProps[]>) {
+    getDirectionSuccess(state, action: PayloadAction<DirectionProps>) {
       state.loading = false;
       state.error = null;
-      state.data = action.payload;
+      state.direction = action.payload;
     },
     getDirectionFailure(state, action: PayloadAction<string>) {
       state.loading = false;
@@ -43,7 +43,7 @@ const DirectionSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    getDirectionIdRequest(state,_action:PayloadAction<string>) {
+    getDirectionIdRequest(state, _action: PayloadAction<string>) {
       state.loading = true;
       state.error = null;
     },
@@ -56,7 +56,7 @@ const DirectionSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-     getDirectionUserIdRequest(state,_action:PayloadAction<string>) {
+    getDirectionUserIdRequest(state, _action: PayloadAction<string>) {
       state.loading = true;
       state.error = null;
     },
@@ -83,6 +83,6 @@ export const {
   getDirectionIdFailure,
   getDirectionUserIdRequest,
   getDirectionUserIdSuccess,
-  getDirectionUserIdFailure
+  getDirectionUserIdFailure,
 } = DirectionSlice.actions;
 export default DirectionSlice.reducer;

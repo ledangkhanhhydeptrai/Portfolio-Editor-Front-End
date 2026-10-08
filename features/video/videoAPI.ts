@@ -6,9 +6,9 @@ import { requestConfig } from "@/config/requestConfig";
 import { AxiosError } from "axios";
 import { HTTP_STATUS } from "@/constants/api";
 
-export const getVideoAPI = async (): Promise<ApiResponse<VideoProject[]>> => {
+export const getVideoAPI = async (): Promise<ApiResponse<VideoProject>> => {
   try {
-    const response = await fetchBaseResponse<VideoProject[]>(
+    const response = await fetchBaseResponse<VideoProject>(
       `${API_CONFIG.ENDPOINTS.PUBLIC.VIDEO_PROJECT}`,
       requestConfig("GET"),
     );

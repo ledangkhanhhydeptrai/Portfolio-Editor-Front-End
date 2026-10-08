@@ -21,10 +21,10 @@ const SocialLinkSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    getLinkSuccess(state, action: PayloadAction<SocialLinkProps[]>) {
+    getLinkSuccess(state, action: PayloadAction<SocialLinkProps>) {
       state.loading = false;
       state.error = null;
-      state.data = action.payload;
+      state.social_link = action.payload;
     },
     getLinkFailure(state, action: PayloadAction<string>) {
       state.loading = false;
@@ -83,6 +83,6 @@ export const {
   getLinkIdFailure,
   getLinkUserIdRequest,
   getLinkUserIdSuccess,
-  getLinkUserIdFailure
+  getLinkUserIdFailure,
 } = SocialLinkSlice.actions;
 export default SocialLinkSlice.reducer;

@@ -21,10 +21,10 @@ const videoSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    getVideoSuccess(state, action: PayloadAction<VideoProject[]>) {
+    getVideoSuccess(state, action: PayloadAction<VideoProject>) {
       state.loading = false;
       state.error = null;
-      state.data = action.payload;
+      state.video = action.payload;
     },
     getVideoFailure(state, action: PayloadAction<string>) {
       state.loading = false;

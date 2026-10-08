@@ -21,10 +21,10 @@ const WorkStyleSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    getWorkStylesSuccess(state, action: PayloadAction<WorkStyleProps[]>) {
+    getWorkStylesSuccess(state, action: PayloadAction<WorkStyleProps>) {
       state.loading = false;
       state.error = null;
-      state.data = action.payload;
+      state.work = action.payload;
     },
     getWorkStylesFailure(state, action: PayloadAction<string>) {
       state.loading = false;
@@ -56,7 +56,7 @@ const WorkStyleSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-     getWorkStyleByUserIdRequest(state, _action: PayloadAction<string>) {
+    getWorkStyleByUserIdRequest(state, _action: PayloadAction<string>) {
       state.loading = true;
       state.error = null;
     },
@@ -83,6 +83,6 @@ export const {
   getWorkStylesUserFailure,
   getWorkStyleByUserIdRequest,
   getWorkStyleByUserIdSuccess,
-  getWorkStyleByUserIdFailure
+  getWorkStyleByUserIdFailure,
 } = WorkStyleSlice.actions;
 export default WorkStyleSlice.reducer;

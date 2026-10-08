@@ -6,9 +6,9 @@ import { AxiosError } from "axios";
 import { HTTP_STATUS } from "@/constants/api";
 import { requestConfig } from "@/config/requestConfig";
 
-export const getProjectAPI = async (): Promise<ApiResponse<ProjectProps[]>> => {
+export const getProjectAPI = async (): Promise<ApiResponse<ProjectProps>> => {
   try {
-    const response = await fetchBaseResponse<ProjectProps[]>(
+    const response = await fetchBaseResponse<ProjectProps>(
       `${API_CONFIG.ENDPOINTS.PUBLIC.PROJECTS}`,
       requestConfig("GET"),
     );

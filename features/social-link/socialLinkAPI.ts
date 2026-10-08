@@ -6,9 +6,9 @@ import { requestConfig } from "@/config/requestConfig";
 import { HTTP_STATUS } from "@/constants/api";
 import { AxiosError } from "axios";
 
-export const getAllSocialLink = async (): Promise<ApiResponse<SocialLinkProps[]>> => {
+export const getAllSocialLink = async (): Promise<ApiResponse<SocialLinkProps>> => {
   try {
-    const response = await fetchBaseResponse<SocialLinkProps[]>(
+    const response = await fetchBaseResponse<SocialLinkProps>(
       `${API_CONFIG.ENDPOINTS.PUBLIC.SOCIAL_LINKS}`,
       requestConfig("GET"),
     );

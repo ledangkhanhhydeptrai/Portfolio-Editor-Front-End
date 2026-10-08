@@ -20,9 +20,7 @@ const PROJECT_CATEGORIES = ["DEVELOPMENT", "VIDEO_EDITING", "DRIVING"] as const;
 
 type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];
 
-const isValidCategory = (
-  category: string | null
-): category is ProjectCategory => {
+const isValidCategory = (category: string | null): category is ProjectCategory => {
   if (!category) {
     return false;
   }
@@ -35,13 +33,11 @@ const ProjectContainer: React.FC = () => {
 
   const searchParams = useSearchParams();
 
-  const { data, loading, error } = useAppSelector((state) => state.project);
+  const { data, loading, error, project } = useAppSelector((state) => state.project);
 
   const categoryParam = searchParams.get("category");
 
-  const selectedCategory: ProjectCategory | null = isValidCategory(
-    categoryParam
-  )
+  const selectedCategory: ProjectCategory | null = isValidCategory(categoryParam)
     ? categoryParam
     : null;
 
@@ -65,26 +61,22 @@ const ProjectContainer: React.FC = () => {
   if (error) {
     return <ErrorMessage />;
   }
-
   // =====================================================
   // DATA
   // =====================================================
 
-  const projects = [...(data ?? [])].sort(
-    (a, b) => a.displayOrder - b.displayOrder
-  );
+  const projects = [...(data ?? [])].sort((a, b) => a.displayOrder - b.displayOrder);
 
-  const developmentProjects = projects.filter(
-    (project) => project.category === "DEVELOPMENT"
-  );
+  if (project !== null && project !== undefined) {
+    projects.push(project);
+  }
+  projects.sort((a, b) => a.displayOrder - b.displayOrder);
 
-  const videoProjects = projects.filter(
-    (project) => project.category === "VIDEO_EDITING"
-  );
+  const developmentProjects = projects.filter((project) => project.category === "DEVELOPMENT");
 
-  const drivingProjects = projects.filter(
-    (project) => project.category === "DRIVING"
-  );
+  const videoProjects = projects.filter((project) => project.category === "VIDEO_EDITING");
+
+  const drivingProjects = projects.filter((project) => project.category === "DRIVING");
 
   const visibleProjects = selectedCategory
     ? projects.filter((project) => project.category === selectedCategory)
@@ -163,24 +155,24 @@ const ProjectContainer: React.FC = () => {
         <div className="absolute -top-70 left-1/2 h-150 w-200 -translate-x-1/2 rounded-full bg-indigo-400/12 blur-[180px]" />
 
         <div
-          className="absolute -left-40 top-40 h-130 w-130 rounded-full bg-indigo-400/12 blur-[160px]"
+          className="absolute top-40 -left-40 h-130 w-130 rounded-full bg-indigo-400/12 blur-[160px]"
           style={{
-            animation: "projectGlow 12s ease-in-out infinite"
+            animation: "projectGlow 12s ease-in-out infinite",
           }}
         />
 
         <div
-          className="absolute -right-40 top-180 h-130 w-130 rounded-full bg-violet-400/10 blur-[160px]"
+          className="absolute top-180 -right-40 h-130 w-130 rounded-full bg-violet-400/10 blur-[160px]"
           style={{
-            animation: "projectGlow 14s ease-in-out infinite reverse"
+            animation: "projectGlow 14s ease-in-out infinite reverse",
           }}
         />
 
-        <div className="absolute left-1/2 top-150 h-100 w-180 -translate-x-1/2 rounded-full bg-white/3 blur-[150px]" />
+        <div className="absolute top-150 left-1/2 h-100 w-180 -translate-x-1/2 rounded-full bg-white/3 blur-[150px]" />
 
         <div className="absolute -bottom-50 left-1/4 h-130 w-130 rounded-full bg-blue-400/7 blur-[160px]" />
 
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.065)_1px,transparent_0)] bg-size-[30px_30px] mask-[radial-gradient(ellipse_80%_75%_at_50%_20%,#000_20%,transparent_85%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.065)_1px,transparent_0)] mask-[radial-gradient(ellipse_80%_75%_at_50%_20%,#000_20%,transparent_85%)] bg-size-[30px_30px]" />
 
         <div className="absolute inset-x-0 top-0 h-100 bg-linear-to-b from-white/3 to-transparent" />
       </div>
@@ -217,11 +209,11 @@ const ProjectContainer: React.FC = () => {
         {/* FOOTER */}
 
         <div className="mt-32 flex flex-col gap-3 border-t border-white/12 pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-slate-500">
+          <span className="font-mono text-[8px] tracking-[0.2em] text-slate-500 uppercase">
             End of selected work
           </span>
 
-          <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-slate-500">
+          <span className="font-mono text-[8px] tracking-[0.2em] text-slate-500 uppercase">
             Development · Video · Driving
           </span>
         </div>

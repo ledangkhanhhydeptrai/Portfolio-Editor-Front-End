@@ -21,7 +21,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 
 function* handleGetVideoProject() {
   try {
-    const response: ApiResponse<VideoProject[]> = yield call(getVideoAPI);
+    const response: ApiResponse<VideoProject> = yield call(getVideoAPI);
     yield put(getVideoSuccess(response.data));
   } catch (error) {
     const errors = error as AxiosError<ApiResponse<string>>;

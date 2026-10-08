@@ -6,9 +6,9 @@ import { AxiosError } from "axios";
 import { HTTP_STATUS } from "@/constants/api";
 import { requestConfig } from "@/config/requestConfig";
 
-export const ExperienceAPI = async (): Promise<ApiResponse<ExperienceProps[]>> => {
+export const ExperienceAPI = async (): Promise<ApiResponse<ExperienceProps>> => {
   try {
-    const response = await fetchBaseResponse<ExperienceProps[]>(
+    const response = await fetchBaseResponse<ExperienceProps>(
       `${API_CONFIG.ENDPOINTS.PUBLIC.EXPERIENCES}`,
       requestConfig("GET"),
     );

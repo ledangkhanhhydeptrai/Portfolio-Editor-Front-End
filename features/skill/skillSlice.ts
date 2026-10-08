@@ -38,10 +38,10 @@ const SkillSlice = createSlice({
       state.error = null;
     },
 
-    getSkillSuccess(state, action: PayloadAction<SkillProps[]>) {
+    getSkillSuccess(state, action: PayloadAction<SkillProps>) {
       state.loading = false;
       state.error = null;
-      state.data = action.payload;
+      state.skill = action.payload;
     },
 
     getSkillFailure(state, action: PayloadAction<string>) {

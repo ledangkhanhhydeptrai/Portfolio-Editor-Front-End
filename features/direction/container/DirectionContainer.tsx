@@ -18,8 +18,14 @@ function handleSpotlight(e: React.MouseEvent<HTMLElement>) {
 
 const DirectionContainer: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { data, loading, error } = useAppSelector((state) => state.direction);
+  const { data, loading, error, direction } = useAppSelector((state) => state.direction);
   const { user, authReady } = useAppSelector((state) => state.auth);
+  const directions = React.useMemo(() => {
+    const userVideoList = data ?? [];
+    const publicVideo = direction ? [direction] : [];
+
+    return [...userVideoList, ...publicVideo].sort((a, b) => a.displayOrder - b.displayOrder);
+  }, [data, direction]);
   React.useEffect(() => {
     if (!authReady) return;
     if (user) dispatch(getDirectionUserRequest());
@@ -29,7 +35,7 @@ const DirectionContainer: React.FC = () => {
   if (loading) return <Loading />;
   if (error) return <ErrorMessage />;
 
-  const totalSkills = data?.reduce((sum, d) => sum + (d.skills?.length ?? 0), 0) ?? 0;
+  const totalSkills = data.reduce((sum, d) => sum + (d.skills.length ?? 0), 0) ?? 0;
 
   return (
     <section className="relative w-full overflow-hidden bg-[#0B0B0D] px-6 py-24 md:px-10 lg:px-16">
@@ -104,7 +110,7 @@ const DirectionContainer: React.FC = () => {
 
         {/* ============ DANH SÁCH ============ */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {data.map((direction, index) => (
+          {directions.map((direction, index) => (
             <article
               key={direction.id}
               onMouseMove={handleSpotlight}

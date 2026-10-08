@@ -19,7 +19,7 @@ import ExperienceFooter from "../components/ExperienceFooter";
 const ExperienceContainer: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const { data, loading, error } = useAppSelector((state) => state.experience);
+  const { data, loading, error, experience } = useAppSelector((state) => state.experience);
 
   /* =====================================================
      FETCH
@@ -48,6 +48,10 @@ const ExperienceContainer: React.FC = () => {
 
   const experiences = [...(data ?? [])].sort((a, b) => a.displayOrder - b.displayOrder);
 
+  if (experience !== null && experience !== undefined) {
+    experiences.push(experience);
+  }
+  experiences.sort((a, b) => a.displayOrder - b.displayOrder);
   const internshipCount = experiences.filter((experience) => {
     const position = experience.position.toLowerCase();
 

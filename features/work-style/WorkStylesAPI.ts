@@ -6,9 +6,9 @@ import { requestConfig } from "@/config/requestConfig";
 import { HTTP_STATUS } from "@/constants/api";
 import { AxiosError } from "axios";
 
-export const getAllStyles = async (): Promise<ApiResponse<WorkStyleProps[]>> => {
+export const getAllStyles = async (): Promise<ApiResponse<WorkStyleProps | null>> => {
   try {
-    const response = await fetchBaseResponse<WorkStyleProps[]>(
+    const response = await fetchBaseResponse<WorkStyleProps>(
       `${API_CONFIG.ENDPOINTS.PUBLIC.WORK_STYLES_PUBLIC}`,
       requestConfig("GET"),
     );
