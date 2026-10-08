@@ -23,10 +23,10 @@ const ExperienceSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    getExperienceSuccess(state, action: PayloadAction<ExperienceProps[]>) {
+    getExperienceSuccess(state, action: PayloadAction<ExperienceProps>) {
       state.loading = false;
       state.error = null;
-      state.data = action.payload;
+      state.experience = action.payload;
     },
     getExperienceFailure(state, action: PayloadAction<string>) {
       state.loading = false;

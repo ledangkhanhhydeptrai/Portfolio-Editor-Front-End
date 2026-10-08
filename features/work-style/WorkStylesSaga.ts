@@ -26,7 +26,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 
 function* handleGetAllWorkStyles() {
   try {
-    const response: ApiResponse<WorkStyleProps[]> = yield call(getAllStyles);
+    const response: ApiResponse<WorkStyleProps> = yield call(getAllStyles);
     yield put(getWorkStylesSuccess(response.data));
   } catch (error) {
     const errors = error as AxiosError<ApiResponse<string>>;

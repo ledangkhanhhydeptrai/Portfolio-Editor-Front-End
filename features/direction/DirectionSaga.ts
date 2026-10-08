@@ -1,14 +1,32 @@
 import { ApiResponse } from "@/response/ApiResponse";
 import { DirectionProps } from "./DirectionTypes";
 import { call, put, takeLatest } from "redux-saga/effects";
-import { getAllDirectionAPI, getAllDirectionUserAPI, getDirectionByIdAPI, getDirectionByUserIdAPI } from "./DirectionAPI";
-import { getDirectionFailure, getDirectionIdFailure, getDirectionIdRequest, getDirectionIdSuccess, getDirectionRequest, getDirectionSuccess, getDirectionUserFailure, getDirectionUserIdFailure, getDirectionUserIdRequest, getDirectionUserIdSuccess, getDirectionUserRequest, getDirectionUserSuccess } from "./DirectionSlice";
+import {
+  getAllDirectionAPI,
+  getAllDirectionUserAPI,
+  getDirectionByIdAPI,
+  getDirectionByUserIdAPI,
+} from "./DirectionAPI";
+import {
+  getDirectionFailure,
+  getDirectionIdFailure,
+  getDirectionIdRequest,
+  getDirectionIdSuccess,
+  getDirectionRequest,
+  getDirectionSuccess,
+  getDirectionUserFailure,
+  getDirectionUserIdFailure,
+  getDirectionUserIdRequest,
+  getDirectionUserIdSuccess,
+  getDirectionUserRequest,
+  getDirectionUserSuccess,
+} from "./DirectionSlice";
 import { AxiosError } from "axios";
 import { PayloadAction } from "@reduxjs/toolkit";
 
 function* handleGetAllDirection() {
   try {
-    const response: ApiResponse<DirectionProps[]> = yield call(getAllDirectionAPI);
+    const response: ApiResponse<DirectionProps> = yield call(getAllDirectionAPI);
     yield put(getDirectionSuccess(response.data));
   } catch (error) {
     const errors = error as AxiosError<ApiResponse<string>>;
@@ -18,9 +36,9 @@ function* handleGetAllDirection() {
     yield put(getDirectionFailure(message));
   }
 }
-function* handleGetDirectionById(action:PayloadAction<string>) {
+function* handleGetDirectionById(action: PayloadAction<string>) {
   try {
-    const response: ApiResponse<DirectionProps> = yield call(getDirectionByIdAPI,action.payload);
+    const response: ApiResponse<DirectionProps> = yield call(getDirectionByIdAPI, action.payload);
     yield put(getDirectionIdSuccess(response.data));
   } catch (error) {
     const errors = error as AxiosError<ApiResponse<string>>;
@@ -42,9 +60,12 @@ function* handleGetAllUserDirection() {
     yield put(getDirectionUserFailure(message));
   }
 }
-function* handleGetDirectionByUserId(action:PayloadAction<string>) {
+function* handleGetDirectionByUserId(action: PayloadAction<string>) {
   try {
-    const response: ApiResponse<DirectionProps> = yield call(getDirectionByUserIdAPI,action.payload);
+    const response: ApiResponse<DirectionProps> = yield call(
+      getDirectionByUserIdAPI,
+      action.payload,
+    );
     yield put(getDirectionUserIdSuccess(response.data));
   } catch (error) {
     const errors = error as AxiosError<ApiResponse<string>>;
@@ -54,9 +75,9 @@ function* handleGetDirectionByUserId(action:PayloadAction<string>) {
     yield put(getDirectionUserIdFailure(message));
   }
 }
-export default function* DirectionSaga(){
-  yield takeLatest(getDirectionRequest.type,handleGetAllDirection);
-  yield takeLatest(getDirectionUserRequest.type,handleGetAllUserDirection);
-  yield takeLatest(getDirectionIdRequest.type,handleGetDirectionById);
-  yield takeLatest(getDirectionUserIdRequest.type,handleGetDirectionByUserId);
+export default function* DirectionSaga() {
+  yield takeLatest(getDirectionRequest.type, handleGetAllDirection);
+  yield takeLatest(getDirectionUserRequest.type, handleGetAllUserDirection);
+  yield takeLatest(getDirectionIdRequest.type, handleGetDirectionById);
+  yield takeLatest(getDirectionUserIdRequest.type, handleGetDirectionByUserId);
 }

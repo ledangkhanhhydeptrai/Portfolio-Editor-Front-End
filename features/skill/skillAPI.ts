@@ -6,9 +6,9 @@ import { AxiosError } from "axios";
 import { HTTP_STATUS } from "@/constants/api";
 import { requestConfig } from "@/config/requestConfig";
 
-export const getSkillAPI = async (): Promise<ApiResponse<SkillProps[]>> => {
+export const getSkillAPI = async (): Promise<ApiResponse<SkillProps>> => {
   try {
-    const response = await fetchBaseResponse<SkillProps[]>(
+    const response = await fetchBaseResponse<SkillProps>(
       `${API_CONFIG.ENDPOINTS.PUBLIC.SKILLS}`,
       requestConfig("GET"),
     );

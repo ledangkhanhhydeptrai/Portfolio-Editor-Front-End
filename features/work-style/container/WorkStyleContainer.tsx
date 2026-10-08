@@ -35,8 +35,14 @@ function handleSpotlight(e: React.MouseEvent<HTMLElement>) {
 
 export default function WorkStyleContainer() {
   const dispatch = useAppDispatch();
-  const { data, loading, error } = useAppSelector((state) => state.workstyle);
+  const { data, loading, error, work } = useAppSelector((state) => state.workstyle);
   const { user, authReady } = useAppSelector((state) => state.auth);
+  const workStyles = React.useMemo(() => {
+    const userVideoList = data ?? [];
+    const publicVideo = work ? [work] : [];
+
+    return [...userVideoList, ...publicVideo].sort((a, b) => a.displayOrder - b.displayOrder);
+  }, [work, data]);
   React.useEffect(() => {
     if (!authReady) {
       return;
@@ -50,8 +56,6 @@ export default function WorkStyleContainer() {
 
   if (loading) return <Loading />;
   if (error) return <ErrorMessage />;
-
-  const workStyles = [...data].sort((a, b) => a.displayOrder - b.displayOrder);
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#0F111A] px-6 pt-28 pb-24 text-[#ECEAE4] lg:px-10 lg:pt-36">

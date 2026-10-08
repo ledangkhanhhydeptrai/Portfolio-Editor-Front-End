@@ -21,10 +21,10 @@ const ProjectSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    getProjectSuccess(state, action: PayloadAction<ProjectProps[]>) {
+    getProjectSuccess(state, action: PayloadAction<ProjectProps>) {
       state.loading = false;
       state.error = null;
-      state.data = action.payload;
+      state.project = action.payload;
     },
     getProjectFailure(state, action: PayloadAction<string>) {
       state.loading = false;

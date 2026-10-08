@@ -26,7 +26,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 
 function* handleGetSocialLink() {
   try {
-    const response: ApiResponse<SocialLinkProps[]> = yield call(getAllSocialLink);
+    const response: ApiResponse<SocialLinkProps> = yield call(getAllSocialLink);
     yield put(getLinkSuccess(response.data));
   } catch (error) {
     const errors = error as AxiosError<ApiResponse<string>>;
