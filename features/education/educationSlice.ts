@@ -23,10 +23,10 @@ const EducationSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    getEducationSuccess(state, action: PayloadAction<EducationProps[]>) {
+    getEducationSuccess(state, action: PayloadAction<EducationProps>) {
       state.loading = false;
       state.error = null;
-      state.data = action.payload;
+      state.data = [action.payload];
     },
     getEducationFailure(state, action: PayloadAction<string>) {
       state.loading = false;
@@ -85,6 +85,6 @@ export const {
   getEducationIdFailure,
   getEducationUserIdRequest,
   getEducationUserIdSuccess,
-  getEducationUserIdFailure
+  getEducationUserIdFailure,
 } = EducationSlice.actions;
 export default EducationSlice.reducer;

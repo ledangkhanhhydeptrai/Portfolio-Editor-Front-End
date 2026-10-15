@@ -84,13 +84,7 @@ const SkillContainer: React.FC = () => {
   // DATA
   // =====================================================
 
-  let skills: SkillProps[] = [];
-
-  if (data !== null && data !== undefined) {
-    skills = [...data].sort((a, b) => a.displayOrder - b.displayOrder);
-  } else {
-    skills = [];
-  }
+  const skills: SkillProps[] = [...data].sort((a, b) => a.displayOrder - b.displayOrder);
   // =====================================================
   // FILTER
   //

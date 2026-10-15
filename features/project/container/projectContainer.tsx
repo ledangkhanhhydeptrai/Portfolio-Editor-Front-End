@@ -65,12 +65,13 @@ const ProjectContainer: React.FC = () => {
   // DATA
   // =====================================================
 
-  const projects = [...(data ?? [])].sort((a, b) => a.displayOrder - b.displayOrder);
+  const projectMap = new Map((data ?? []).map((item) => [item.id, item]));
 
   if (project !== null && project !== undefined) {
-    projects.push(project);
+    projectMap.set(project.id, project);
   }
-  projects.sort((a, b) => a.displayOrder - b.displayOrder);
+
+  const projects = Array.from(projectMap.values()).sort((a, b) => a.displayOrder - b.displayOrder);
 
   const developmentProjects = projects.filter((project) => project.category === "DEVELOPMENT");
 

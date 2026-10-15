@@ -2,108 +2,110 @@ import { DirectionProps } from "@/features/direction/DirectionTypes";
 import Link from "next/link";
 import React from "react";
 
-
-
 interface AboutDirectionsProps {
   directions: DirectionProps[];
 }
 
+/**
+ * direction.icon có thể là URL ảnh (vd: https://.../1179120.png) hoặc ReactNode/emoji.
+ * Trước đây URL bị in ra dạng chữ nên tràn khỏi khung -> giờ render bằng <img>.
+ */
+const DirectionIcon = ({ icon, title }: { icon: unknown; title: string }) => {
+  if (typeof icon === "string" && (icon.startsWith("http") || icon.startsWith("/"))) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src={icon} alt={title} className="h-7 w-7 object-contain" loading="lazy" />
+    );
+  }
+  return <>{icon as React.ReactNode}</>;
+};
+
 const AboutDirections: React.FC<AboutDirectionsProps> = ({ directions }) => {
   return (
     <section className="relative border-b border-white/10">
-      <div className="pointer-events-none absolute top-1/2 left-1/2 h-100 w-200 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#718CFF]/7 blur-[160px]" />
+      <div className="pointer-events-none absolute top-1/2 left-1/2 h-[400px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#718CFF]/10 blur-[160px]" />
 
-      <div className="relative mx-auto w-full max-w-375 px-6 py-20 lg:px-10 lg:py-24 xl:px-14">
-        <div className="flex flex-col gap-5 border-b border-white/10 pb-8 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <div className="flex items-center gap-3">
-              <span className="text-2.25 font-mono text-[#8EA5FF]">02</span>
+      <div className="relative mx-auto w-full max-w-[1500px] px-6 py-20 lg:px-10 lg:py-24 xl:px-14">
+        {/* Header: tiêu đề bên trái, mô tả + nút gom về bên phải */}
+        <div className="flex flex-col gap-6 border-b border-white/10 pb-10 md:flex-row md:items-end md:justify-between">
+          <h2 className="font-['Fraunces'] text-4xl font-light tracking-[-0.03em] text-[#F4F3EF] sm:text-5xl">
+            Ba hướng.
+            <span className="block text-[#A09E98] sm:inline"> Một con người.</span>
+          </h2>
 
-              <span className="h-px w-8 bg-white/15" />
-            </div>
+          <div className="flex max-w-md flex-col gap-4 md:items-end md:text-right">
+            <p className="text-sm leading-6 text-[#A3A19B]">
+              Mỗi lĩnh vực cho tôi một góc nhìn khác nhau trong cách giải quyết vấn đề và tạo ra sản
+              phẩm.
+            </p>
 
-            <h2 className="mt-5 font-['Fraunces'] text-4xl font-light tracking-[-0.03em] text-[#F4F3EF]">
-              Ba hướng.
-              <span className="text-[#A09E98]"> Một con người.</span>
-            </h2>
+            <Link
+              href="/direction"
+              className="group inline-flex w-fit items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-sm font-medium text-[#D5D3CC] transition-all duration-300 hover:border-[#8EA5FF]/50 hover:bg-[#8EA5FF]/10 hover:text-white"
+            >
+              Xem tất cả
+              <span className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                ↗
+              </span>
+            </Link>
           </div>
-
-          <p className="max-w-sm text-xs leading-5 text-[#96948E]">
-            Mỗi lĩnh vực cho tôi một góc nhìn khác nhau trong cách giải quyết vấn đề và tạo ra sản
-            phẩm.
-          </p>
-          <Link
-            href="/direction"
-            className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 font-mono text-[9px] tracking-[0.12em] text-[#AAA8A1] uppercase transition-all duration-300 hover:border-[#8EA5FF]/40 hover:bg-[#8EA5FF]/10 hover:text-[#9BADFF]"
-          >
-            <span>Xem tất cả</span>
-
-            <span className="text-sm transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">
-              ↗
-            </span>
-          </Link>
         </div>
 
         {directions.length === 0 ? (
-          <div className="bg-white2 mt-6 flex min-h-60 items-center justify-center rounded-2xl border border-dashed border-white/10">
+          <div className="mt-10 flex min-h-60 items-center justify-center rounded-2xl border border-dashed border-white/15 bg-white/[0.02]">
             <div className="text-center">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-[#8EA5FF]">
-                ↗
-              </div>
-
-              <h3 className="mt-4 font-['Fraunces'] text-xl text-[#F4F3EF]">Chưa có hướng đi</h3>
-
-              <p className="mt-2 text-xs leading-5 text-[#96948E]">
+              <h3 className="font-['Fraunces'] text-xl text-[#F4F3EF]">Chưa có hướng đi</h3>
+              <p className="mt-2 text-sm leading-6 text-[#96948E]">
                 Hiện chưa có dữ liệu chuyên môn để hiển thị.
               </p>
             </div>
           </div>
         ) : (
-          <div className="mt-6 grid gap-4 lg:grid-cols-3">
-            {directions.map((direction, index) => (
+          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {directions.map((direction) => (
               <article
                 key={direction.id}
-                className="group relative overflow-hidden rounded-2xl border border-white/10 bg-[#1B1E29]/75 p-7 shadow-[0_15px_45px_rgba(0,0,0,0.12)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-[#8EA5FF]/30 hover:bg-[#20232F]"
+                className="group relative flex flex-col rounded-2xl border border-white/10 bg-[#1B1E29]/80 p-7 backdrop-blur-md transition-colors duration-300 hover:border-[#8EA5FF]/40 hover:bg-[#20232F]"
               >
-                <div className="flex items-center justify-between">
-                  <span className="text-2.25 font-mono text-[#8EA5FF]">
-                    {String(index + 1).padStart(2, "0")} / {direction.code.toUpperCase()}
-                  </span>
+                {/* Icon + mã lĩnh vực */}
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/5 text-xl text-[#9BADFF]">
+                    <DirectionIcon icon={direction.icon} title={direction.title} />
+                  </div>
 
-                  <span className="text-xl text-[#777A84] transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-[#9BADFF]">
-                    ↗
+                  <span className="rounded-md border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-[#8EA5FF]">
+                    {direction.code.toUpperCase()}
                   </span>
                 </div>
 
-                <div className="mt-12 flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-[#9BADFF]">
-                  {direction.icon}
-                </div>
-
-                <h3 className="mt-6 font-['Fraunces'] text-2xl text-[#F4F3EF]">
+                <h3 className="mt-7 font-['Fraunces'] text-2xl leading-snug text-[#F4F3EF]">
                   {direction.title}
                 </h3>
 
-                <p className="mt-4 text-xs leading-6 text-[#999791]">{direction.description}</p>
+                <p className="mt-3 line-clamp-5 text-sm leading-7 text-[#A3A19B]">
+                  {direction.description}
+                </p>
 
-                <div className="mt-7 flex flex-wrap gap-2">
+                {/* Kỹ năng */}
+                <div className="mt-6 flex flex-wrap gap-2">
                   {direction.skills.map((skill) => (
                     <span
                       key={skill.id}
-                      className="rounded-md border border-white/10 bg-white/5 px-2.5 py-1 font-mono text-[8px] text-[#AAA8A1]"
+                      className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-[#C4C2BB]"
                     >
                       {skill.name}
                     </span>
                   ))}
                 </div>
 
-                <div className="mt-7 border-t border-white/10 pt-5">
+                {/* mt-auto: luôn đẩy link xuống đáy, các card cao bằng nhau */}
+                <div className="mt-auto pt-7">
                   <Link
                     href={`/direction/${direction.id}`}
-                    className="group inline-flex items-center gap-2 font-mono text-[9px] tracking-[0.12em] text-[#8EA5FF] uppercase transition-colors duration-300 hover:text-[#B4C2FF]"
+                    className="group/link inline-flex items-center gap-2 border-t border-white/10 pt-5 text-sm font-medium text-[#8EA5FF] transition-colors duration-300 hover:text-[#B4C2FF] w-full"
                   >
-                    <span>Xem chi tiết</span>
-
-                    <span className="text-sm transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">
+                    Xem chi tiết
+                    <span className="transition-transform duration-300 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5">
                       ↗
                     </span>
                   </Link>

@@ -24,7 +24,7 @@ const SocialLinkSlice = createSlice({
     getLinkSuccess(state, action: PayloadAction<SocialLinkProps>) {
       state.loading = false;
       state.error = null;
-      state.social_link = action.payload;
+      state.data = [action.payload];
     },
     getLinkFailure(state, action: PayloadAction<string>) {
       state.loading = false;

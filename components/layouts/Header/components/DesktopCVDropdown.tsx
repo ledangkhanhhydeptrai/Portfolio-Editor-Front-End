@@ -2,7 +2,7 @@
 
 import React from "react";
 import NavDropdown from "./Navdropdown";
-import { CurriculumProps } from "@/features/CurriculumVitae/CurriculumVitaeTypes";
+import type { CurriculumProps } from "@/features/CurriculumVitae/CurriculumVitaeTypes";
 
 interface DesktopCVDropdownProps {
   pathname: string;
@@ -23,7 +23,20 @@ const DesktopCVDropdown: React.FC<DesktopCVDropdownProps> = ({
   onToggle,
   curriculums,
 }) => {
-  const cvActive = pathname === "/curriculum" || pathname.startsWith("/curriculum/");
+  const cvActive =
+    pathname === "/curriculum" ||
+    pathname.startsWith("/curriculum/");
+
+  const curriculumItems = Array.isArray(curriculums)
+    ? curriculums.map((cv) => ({
+        label: cv.title,
+        description: cv.isPrimary
+          ? "CV chính"
+          : "Curriculum Vitae",
+        href: `/curriculum/${cv.id}`,
+        active: pathname === `/curriculum/${cv.id}`,
+      }))
+    : [];
 
   return (
     <NavDropdown
@@ -34,12 +47,7 @@ const DesktopCVDropdown: React.FC<DesktopCVDropdownProps> = ({
       onOpen={onOpen}
       onClose={onClose}
       onToggle={onToggle}
-      items={curriculums.map((cv) => ({
-        label: cv.title,
-        description: cv.isPrimary ? "CV chính" : "Curriculum Vitae",
-        href: `/curriculum/${cv.id}`,
-        active: pathname === `/curriculum/${cv.id}`,
-      }))}
+      items={curriculumItems}
       footer={{
         label: "Xem CV",
         href: "/curriculum",

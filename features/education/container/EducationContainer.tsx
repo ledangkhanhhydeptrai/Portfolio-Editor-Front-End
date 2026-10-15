@@ -18,11 +18,14 @@ const EducationContainer: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const { data, loading, error } = useAppSelector((state) => state.education);
-
+  const { data: user, authReady } = useAppSelector((state) => state.auth);
   React.useEffect(() => {
-    dispatch(getEducationUserRequest());
     dispatch(getEducationRequest());
-  }, [dispatch]);
+
+    if (authReady && user) {
+      dispatch(getEducationUserRequest());
+    }
+  }, [dispatch, authReady, user]);
 
   if (loading) {
     return <Loading />;
@@ -32,8 +35,9 @@ const EducationContainer: React.FC = () => {
     return <ErrorMessage />;
   }
 
-  const educations = [...(data ?? [])].sort((a, b) => a.displayOrder - b.displayOrder);
-
+  const educations = (Array.isArray(data) ? data : []).sort(
+    (a, b) => a.displayOrder - b.displayOrder,
+  );
   return (
     <section className="relative min-h-screen overflow-hidden bg-[#1B1E29] px-6 py-24 text-[#F0EFEA] lg:px-10">
       <EducationBackground />
