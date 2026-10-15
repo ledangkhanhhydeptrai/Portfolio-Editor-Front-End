@@ -95,7 +95,7 @@ export default function DirectionContainerById() {
       </div>
 
       {/* pt-28 chừa chỗ cho navbar fixed để nút Quay lại không bị che */}
-      <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col px-6 pt-28 pb-16 md:px-10 lg:px-16">
+      <div className="relative flex min-h-screen flex-col px-6 pt-28 pb-16 md:px-10 lg:px-16">
         {/* Nút quay lại */}
         <div
           className="dir-motion mb-10"

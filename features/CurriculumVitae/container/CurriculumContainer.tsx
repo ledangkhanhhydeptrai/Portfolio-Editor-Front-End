@@ -9,6 +9,7 @@ import { getCurriculumRequest, getCurriculumUserRequest } from "../CurriculumVit
 
 import Loading from "@/components/ui/Loading";
 import ErrorMessage from "@/components/ui/ErrorMessage";
+import { CurriculumProps } from "../CurriculumVitaeTypes";
 
 /**
  * Hai trang giấy xếp chồng vẽ bằng CSS
@@ -73,13 +74,22 @@ export default function CurriculumContainer() {
   } = useAppSelector((state) => state.curriculumVitae);
 
   React.useEffect(() => {
-    dispatch(getCurriculumUserRequest());
+    if (authUser) {
+      dispatch(getCurriculumUserRequest());
+    }
 
     dispatch(getCurriculumRequest());
-  }, [dispatch]);
+  }, [dispatch, authUser]);
 
-  const curriculums = authUser ? userCurriculums : data;
-
+  const curriculums: CurriculumProps[] = authUser
+    ? Array.isArray(userCurriculums)
+      ? userCurriculums
+      : []
+    : Array.isArray(data)
+      ? data
+      : data !== null && typeof data === "object"
+        ? [data as CurriculumProps]
+        : [];
   /*
    * ============================================================
    * LOADING AUTH

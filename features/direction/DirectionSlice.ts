@@ -24,7 +24,7 @@ const DirectionSlice = createSlice({
     getDirectionSuccess(state, action: PayloadAction<DirectionProps>) {
       state.loading = false;
       state.error = null;
-      state.direction = action.payload;
+      state.data = [action.payload];
     },
     getDirectionFailure(state, action: PayloadAction<string>) {
       state.loading = false;
