@@ -26,7 +26,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 
 function* handleGetEducation() {
   try {
-    const response: ApiResponse<EducationProps[]> = yield call(getAllEducation);
+    const response: ApiResponse<EducationProps> = yield call(getAllEducation);
     yield put(getEducationSuccess(response.data));
   } catch (error) {
     const errors = error as AxiosError<ApiResponse<string>>;
