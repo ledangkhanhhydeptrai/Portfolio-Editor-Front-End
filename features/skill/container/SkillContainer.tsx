@@ -48,7 +48,7 @@ const SkillContainer: React.FC = () => {
   const searchParams = useSearchParams();
 
   const { data, loading, error } = useAppSelector((state) => state.skill);
-
+  const { user: authUser, authReady } = useAppSelector((state) => state.auth);
   // =====================================================
   // CATEGORY FROM URL
   // =====================================================
@@ -64,9 +64,14 @@ const SkillContainer: React.FC = () => {
   // =====================================================
 
   React.useEffect(() => {
-    dispatch(getSkillUserRequest());
+    if (!authReady) {
+      return;
+    }
+    if (authUser) {
+      dispatch(getSkillUserRequest());
+    }
     dispatch(getSkillRequest());
-  }, [dispatch]);
+  }, [dispatch, authReady, authUser]);
 
   // =====================================================
   // STATE

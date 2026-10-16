@@ -34,6 +34,7 @@ const ProjectContainer: React.FC = () => {
   const searchParams = useSearchParams();
 
   const { data, loading, error, project } = useAppSelector((state) => state.project);
+  const { user: authUser, authReady } = useAppSelector((state) => state.auth);
 
   const categoryParam = searchParams.get("category");
 
@@ -46,9 +47,14 @@ const ProjectContainer: React.FC = () => {
   // =====================================================
 
   React.useEffect(() => {
-    dispatch(getProjectUserRequest());
+    if (!authReady) {
+      return;
+    }
+    if (authUser) {
+      dispatch(getProjectUserRequest());
+    }
     dispatch(getProjectRequest());
-  }, [dispatch]);
+  }, [dispatch, authReady, authUser]);
 
   // =====================================================
   // STATE

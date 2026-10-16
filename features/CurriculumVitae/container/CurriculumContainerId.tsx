@@ -48,14 +48,15 @@ const CurriculumContainerId: React.FC = () => {
   const id = params.id;
 
   const { curriculum, loading, error } = useAppSelector((state) => state.curriculumVitae);
-
+  const { user: authUser, authReady } = useAppSelector((state) => state.auth);
   React.useEffect(() => {
     if (typeof id !== "string") {
       return;
     }
-    dispatch(getCurriculumUserIdRequest(id));
+    if (!authReady) return;
+    if (authUser) dispatch(getCurriculumUserIdRequest(id));
     dispatch(getCurriculumIdRequest(id));
-  }, [dispatch, id]);
+  }, [dispatch, id, authReady, authUser]);
 
   if (loading) {
     return <Loading />;
@@ -90,7 +91,7 @@ const CurriculumContainerId: React.FC = () => {
   return (
     // pt-20 chừa chỗ cho navbar cố định phía trên. Nếu navbar không fixed thì bỏ pt-20.
     <main className="flex min-h-dvh flex-col bg-[#101114] bg-[radial-gradient(ellipse_55%_45%_at_15%_0%,rgba(124,140,255,0.14),transparent)] pt-20 text-white lg:h-dvh">
-      <div className="mx-auto grid w-full max-w-6xl gap-8 px-4 py-6 md:px-8 lg:min-h-0 lg:flex-1 lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-12 lg:py-8">
+      <div className="grid gap-8 px-4 py-6 md:px-8 lg:min-h-0 lg:flex-1 lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-12 lg:py-8">
         {/* ============ TRÁI: thông tin ============ */}
         <aside className="flex flex-col lg:min-h-0 lg:overflow-y-auto">
           <button

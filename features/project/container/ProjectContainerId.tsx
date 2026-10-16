@@ -17,16 +17,17 @@ const ProjectContainerId: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const { project, loading, error } = useAppSelector((state) => state.project);
-
+  const { user: authUser, authReady } = useAppSelector((state) => state.auth);
   const id = params.id;
 
   React.useEffect(() => {
     if (typeof id !== "string") {
       return;
     }
-    dispatch(getProjectUserIdRequest(id));
+    if (!authReady) return;
+    if (authUser) dispatch(getProjectUserIdRequest(id));
     dispatch(getProjectIdRequest(id));
-  }, [dispatch, id]);
+  }, [dispatch, id, authReady, authUser]);
 
   const formatCategory = (category: string) => {
     switch (category) {
