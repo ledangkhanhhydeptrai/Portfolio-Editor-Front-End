@@ -8,12 +8,6 @@ const HeaderStatus: React.FC = () => {
 
         <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
       </span>
-
-      <div>
-        <p className="text-[9px] font-medium text-[#B5B3AD]">Sẵn sàng</p>
-
-        <p className="font-mono text-[7px] text-[#5c584f]">nhận cơ hội mới</p>
-      </div>
     </div>
   );
 };
