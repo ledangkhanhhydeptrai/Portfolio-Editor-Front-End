@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 
 interface AccountDropdownProps {
   username: string;
@@ -17,7 +16,6 @@ const AccountDropdown: React.FC<AccountDropdownProps> = ({
   open,
   accountRef,
   onToggle,
-  onClose,
   onLogout,
 }) => {
   const firstLetter = username ? username.charAt(0).toUpperCase() : "U";
@@ -78,44 +76,12 @@ const AccountDropdown: React.FC<AccountDropdownProps> = ({
               <div className="min-w-0">
                 <p className="truncate text-sm font-semibold text-[#F2F0EA]">{username}</p>
 
-                <p className="mt-0.5 text-[11px] text-[#7E7B73]">Portfolio account</p>
+                <p className="mt-0.5 text-[11px] text-[#7E7B73]">Tài khoản Portfolio</p>
               </div>
             </div>
           </div>
 
           <div className="pt-1.5">
-            <Link
-              href="/profile"
-              role="menuitem"
-              onClick={onClose}
-              className="group flex h-10 w-full items-center gap-3 rounded-xl px-3 text-sm text-[#D6D3CB] transition-colors hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-[#7C93FF]"
-            >
-              <svg
-                viewBox="0 0 20 20"
-                fill="none"
-                aria-hidden="true"
-                className="h-4 w-4 shrink-0 text-[#9BADFF]"
-              >
-                <circle cx="10" cy="6.5" r="3" stroke="currentColor" strokeWidth="1.5" />
-
-                <path
-                  d="M4.5 16C4.9 12.9 6.8 11.5 10 11.5C13.2 11.5 15.1 12.9 15.5 16"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-              </svg>
-
-              <span>Profile</span>
-
-              <span
-                aria-hidden="true"
-                className="ml-auto text-xs text-white/25 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-white/50"
-              >
-                →
-              </span>
-            </Link>
-
             <div className="my-1 h-px bg-white/6" />
 
             <button
