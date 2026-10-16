@@ -98,7 +98,7 @@ export default function WorkStyleContainer() {
         />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-5xl">
+      <div className="relative z-10">
         {/* ============ HEADER ============ */}
         <header
           className="ws-motion flex flex-col gap-8 md:flex-row md:items-end md:justify-between"

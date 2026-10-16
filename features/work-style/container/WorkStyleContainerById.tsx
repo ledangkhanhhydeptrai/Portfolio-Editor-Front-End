@@ -82,7 +82,7 @@ export default function WorkStyleContainerById() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,#020617_100%)]" />
       </div>
 
-      <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col px-6 pt-28 pb-12 lg:px-10">
+      <div className="relative flex min-h-screen flex-col px-6 pt-28 pb-12 lg:px-10">
         {/* Thanh trên: Quay lại + tiến độ */}
         <div
           className="ws-motion mb-10 flex flex-wrap items-center justify-between gap-4"

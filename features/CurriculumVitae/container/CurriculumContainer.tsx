@@ -149,7 +149,7 @@ export default function CurriculumContainer() {
       id="curriculum"
       className="bg-[#101114] px-6 py-24 text-white md:px-12 lg:px-20 lg:py-32"
     >
-      <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-16">
+      <div className="grid gap-14 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-16">
         {/* =====================================================
             LEFT
         ===================================================== */}
