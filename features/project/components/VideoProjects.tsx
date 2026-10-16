@@ -1,157 +1,141 @@
 import React from "react";
 import Image from "next/image";
+import { Play } from "lucide-react";
 
 import type { ProjectProps } from "../projectTypes";
 
 import ProjectLinks from "./ProjectLinks";
+import ProjectDetailLink from "./ProjectDetailLink";
 import ProjectImagePlaceholder from "./ProjectImagePlaceholder";
 
 interface VideoProjectsProps {
   projects: ProjectProps[];
 }
 
+/* ------------------------------------------------------------------
+   Khung hình video: ảnh thumbnail + thanh timeline mảnh ở đáy.
+   Khi rê chuột, "playhead" chạy dọc timeline như đang phát clip.
+   Đây là điểm nhấn duy nhất của section, mọi thứ còn lại giữ tối giản.
+------------------------------------------------------------------- */
+const Frame: React.FC<{ project: ProjectProps; sizes: string }> = ({ project, sizes }) => (
+  <div className="relative aspect-video overflow-hidden bg-[#0B0B10]">
+    {project.thumbnailUrl ? (
+      <Image
+        src={project.thumbnailUrl}
+        alt={project.title}
+        fill
+        sizes={sizes}
+        className="object-cover"
+      />
+    ) : (
+      <ProjectImagePlaceholder />
+    )}
+
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black/60 to-transparent" />
+
+    {/* Nút phát */}
+    <span className="pointer-events-none absolute bottom-4 left-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-[#0B0B10] opacity-0 transition-opacity duration-200 group-focus-within/card:opacity-100 group-hover/card:opacity-100">
+      <Play size={16} fill="currentColor" className="translate-x-px" />
+    </span>
+
+    {project.featured && (
+      <span className="absolute top-3 left-3 rounded-md bg-black/55 px-2.5 py-1 text-xs font-medium text-violet-100 backdrop-blur-sm">
+        Nổi bật
+      </span>
+    )}
+
+    {/* Timeline */}
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-0.75 bg-white/15">
+      <div className="h-full w-0 bg-violet-400 transition-[width] duration-2500 ease-linear group-hover/card:w-full motion-reduce:transition-none" />
+    </div>
+  </div>
+);
+
 const VideoProjects: React.FC<VideoProjectsProps> = ({ projects }) => {
+  const lead = projects.find((p) => p.featured) ?? projects[0];
+  const rest = lead ? projects.filter((p) => p.id !== lead.id) : [];
+
   return (
     <section id="video-projects" className="mt-32 scroll-mt-24">
-      {/* =========================================
-          HEADER
-      ========================================= */}
-
-      <div className="mb-10 flex flex-col gap-5 border-b border-white/7 pb-6 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-violet-300">
-              02 / Dựng video
-            </span>
-
-            <span className="h-px w-10 bg-violet-400/40" />
-          </div>
-
-          <h2 className="mt-3 text-2xl font-semibold tracking-[-0.03em] text-[#F0EFEA]">
+      {/* Header */}
+      <header className="mb-10 flex items-end justify-between gap-6">
+        <div className="max-w-xl">
+          <h2 className="text-3xl font-semibold tracking-[-0.03em] text-[#F0EFEA]">
             Dự án dựng video
           </h2>
-
-          <p className="mt-2 text-xs leading-6 text-slate-500">
-            Nội dung video ngắn, video sản phẩm và những sản phẩm tập trung vào
-            kể chuyện bằng hình ảnh.
+          <p className="mt-3 text-sm leading-7 text-slate-400">
+            Video ngắn, video sản phẩm và những bản dựng tập trung vào kể chuyện bằng hình ảnh.
           </p>
         </div>
 
-        <span className="font-mono text-xs text-slate-600">
-          {String(projects.length).padStart(2, "0")}
-        </span>
-      </div>
+        {projects.length > 0 && (
+          <p className="shrink-0 text-sm text-slate-500">{projects.length} dự án</p>
+        )}
+      </header>
 
-      {/* =========================================
-          HAS DATA
-      ========================================= */}
+      {lead ? (
+        <div className="space-y-5">
+          {/* Dự án chính: bố cục ngang, ảnh lớn */}
+          <article className="group/card relative grid overflow-hidden rounded-2xl bg-white/3 ring-1 ring-white/8 transition-colors duration-300 hover:ring-violet-400/40 lg:grid-cols-5">
+            <div className="lg:col-span-3">
+              <Frame project={lead} sizes="(max-width: 1024px) 100vw, 60vw" />
+            </div>
 
-      {projects.length > 0 ? (
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-          {projects.map((project, index) => (
-            <article
-              key={project.id}
-              style={{
-                animation: `projectFadeUp 0.6s cubic-bezier(0.16,1,0.3,1) ${
-                  index * 0.08
-                }s both`
-              }}
-              className="group overflow-hidden rounded-2xl border border-violet-400/10 bg-white/3 transition-all duration-500 hover:-translate-y-1 hover:border-violet-400/25 hover:bg-white/4"
-            >
-              {/* IMAGE */}
+            <div className="flex flex-col justify-center gap-4 p-6 sm:p-8 lg:col-span-2">
+              <h3 className="text-2xl font-semibold tracking-[-0.02em] text-[#F0EFEA]">
+                {lead.title}
+              </h3>
+              <p className="text-sm leading-7 text-slate-400">{lead.description}</p>
 
-              <div className="relative aspect-video overflow-hidden bg-[#0B0B10]">
-                {project.thumbnailUrl ? (
-                  <Image
-                    src={project.thumbnailUrl}
-                    alt={project.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                  />
-                ) : (
-                  <ProjectImagePlaceholder />
-                )}
-
-                <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-[#07070c]/80 via-transparent to-transparent" />
-
-                {project.featured && (
-                  <span className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full border border-violet-400/15 bg-black/40 px-3 py-1.5 backdrop-blur-md">
-                    <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
-
-                    <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-violet-200">
-                      Nổi bật
-                    </span>
-                  </span>
-                )}
+              <div className="mt-2 flex flex-wrap items-center gap-3">
+                <ProjectDetailLink id={lead.id} accent="violet" />
+                <div className="relative z-10">
+                  <ProjectLinks demoUrl={lead.demoUrl} githubUrl={null} />
+                </div>
               </div>
+            </div>
+          </article>
 
-              {/* CONTENT */}
+          {/* Các dự án còn lại */}
+          {rest.length > 0 && (
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+              {rest.map((project) => (
+                <article
+                  key={project.id}
+                  className="group/card relative flex flex-col overflow-hidden rounded-xl bg-white/3 ring-1 ring-white/8 transition-colors duration-300 hover:ring-violet-400/40"
+                >
+                  <Frame project={project} sizes="(max-width: 768px) 100vw, 50vw" />
 
-              <div className="p-6">
-                <p className="font-mono text-[8px] uppercase tracking-[0.18em] text-violet-300/70">
-                  Dựng video
-                </p>
+                  <div className="flex flex-1 flex-col gap-3 p-5">
+                    <h3 className="text-lg font-semibold text-[#F0EFEA]">{project.title}</h3>
+                    <p className="line-clamp-3 text-sm leading-6 text-slate-400">
+                      {project.description}
+                    </p>
 
-                <h3 className="mt-3 text-lg font-semibold text-[#F0EFEA]">
-                  {project.title}
-                </h3>
-
-                <p className="mt-3 text-xs leading-6 text-slate-500">
-                  {project.description}
-                </p>
-
-                <ProjectLinks
-                  demoUrl={project.demoUrl}
-                  githubUrl={null}
-                />
-              </div>
-            </article>
-          ))}
+                    <div className="mt-auto flex flex-wrap items-center gap-3 pt-3">
+                      <ProjectDetailLink id={project.id} accent="violet" />
+                      <div className="relative z-10">
+                        <ProjectLinks demoUrl={project.demoUrl} githubUrl={null} />
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
         </div>
       ) : (
-        /* =====================================
-           COMING SOON
-        ===================================== */
-
-        <div className="relative overflow-hidden rounded-3xl border border-violet-400/10 bg-violet-400/3 px-8 py-16 sm:px-10">
-          <div className="pointer-events-none absolute -right-20 -top-20 h-70 w-70 rounded-full bg-violet-500/8 blur-[110px]" />
-
-          <div className="pointer-events-none absolute bottom-0 right-10 font-mono text-[150px] font-bold leading-none text-white/2">
-            02
-          </div>
-
-          <div className="relative max-w-xl">
-            <div className="flex items-center gap-3">
-              <span
-                className="h-2 w-2 rounded-full bg-violet-400"
-                style={{
-                  animation: "projectPulse 2s ease-in-out infinite"
-                }}
-              />
-
-              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-violet-300">
-                Portfolio đang được cập nhật
-              </span>
+        /* Trạng thái trống */
+        <div className="rounded-2xl border border-dashed border-white/12 px-8 py-14 sm:px-12">
+          <div className="max-w-md">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-violet-400/10 text-violet-300">
+              <Play size={18} className="translate-x-px" />
             </div>
-
-            <h3 className="mt-6 text-2xl font-semibold tracking-[-0.03em] text-[#F0EFEA] sm:text-3xl">
-              Sản phẩm video sắp được cập nhật.
-            </h3>
-
-            <p className="mt-5 text-sm leading-7 text-slate-500">
-              Các sản phẩm dựng video sẽ được cập nhật tại đây, bao gồm video
-              ngắn, video sản phẩm và các bài dựng tập trung vào kể chuyện bằng
-              hình ảnh.
+            <h3 className="mt-5 text-xl font-semibold text-[#F0EFEA]">Chưa có video nào</h3>
+            <p className="mt-2 text-sm leading-7 text-slate-400">
+              Các dự án dựng video sẽ xuất hiện ở đây ngay khi được thêm vào. Bạn có thể quay lại
+              sau hoặc xem các dự án khác trong phần trên.
             </p>
-
-            <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-violet-400/15 bg-violet-400/5 px-4 py-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
-
-              <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-violet-200">
-                Sắp ra mắt
-              </span>
-            </div>
           </div>
         </div>
       )}

@@ -18,7 +18,7 @@ import ExperienceFooter from "../components/ExperienceFooter";
 
 const ExperienceContainer: React.FC = () => {
   const dispatch = useAppDispatch();
-
+  const { user: authUser, authReady } = useAppSelector((state) => state.auth);
   const { data, loading, error, experience } = useAppSelector((state) => state.experience);
 
   /* =====================================================
@@ -26,9 +26,10 @@ const ExperienceContainer: React.FC = () => {
   ===================================================== */
 
   React.useEffect(() => {
-    dispatch(getExperienceUserRequest());
+    if (!authReady) return;
+    if (authUser) dispatch(getExperienceUserRequest());
     dispatch(getExperienceRequest());
-  }, [dispatch]);
+  }, [dispatch, authReady, authUser]);
 
   /* =====================================================
      STATE

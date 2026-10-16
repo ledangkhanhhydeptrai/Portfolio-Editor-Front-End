@@ -31,14 +31,15 @@ export default function SocialLinkContainerById() {
 
   const [copied, setCopied] = React.useState(false);
   const copyTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-
+  const { user: authUser, authReady } = useAppSelector((state) => state.auth);
   const id = params.id;
 
   React.useEffect(() => {
     if (typeof id !== "string") return;
-    dispatch(getLinkUserIdRequest(id));
+    if (!authReady) return;
+    if (authUser) dispatch(getLinkUserIdRequest(id));
     dispatch(getLinkIdRequest(id));
-  }, [dispatch, id]);
+  }, [dispatch, id, authReady, authUser]);
 
   React.useEffect(() => {
     return () => {

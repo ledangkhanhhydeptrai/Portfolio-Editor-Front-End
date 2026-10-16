@@ -80,11 +80,12 @@ function SocialLinkError({ onRetry }: { onRetry: () => void }) {
 export default function SocialLinkContainer() {
   const dispatch = useAppDispatch();
   const { data, loading, error, social_link } = useAppSelector((state) => state.socialLink);
-
+  const { user: authUser, authReady } = useAppSelector((state) => state.auth);
   const fetchAll = React.useCallback(() => {
-    dispatch(getLinkUserRequest());
+    if (!authReady) return;
+    if (authUser) dispatch(getLinkUserRequest());
     dispatch(getLinkRequest());
-  }, [dispatch]);
+  }, [dispatch, authReady, authUser]);
 
   React.useEffect(() => {
     fetchAll();

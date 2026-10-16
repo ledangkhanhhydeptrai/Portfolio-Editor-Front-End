@@ -17,16 +17,17 @@ const SkillIdContainer: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const { skill, loading, error } = useAppSelector((state) => state.skill);
-
+  const { user: authUser, authReady } = useAppSelector((state) => state.auth);
   const id = params.id;
 
   React.useEffect(() => {
     if (typeof id !== "string") {
       return;
     }
-    dispatch(getSkillUserIdRequest(id));
+    if (!authReady) return;
+    if (authUser) dispatch(getSkillUserIdRequest(id));
     dispatch(getSkillIdRequest(id));
-  }, [dispatch, id]);
+  }, [dispatch, id, authReady, authUser]);
 
   const formatCategory = (category: string) => {
     switch (category) {

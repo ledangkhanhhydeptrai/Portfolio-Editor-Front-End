@@ -65,12 +65,13 @@ const ExperienceIdContainer: React.FC = () => {
 
   // Hiệu ứng "vẽ" đường timeline đúng một lần khi trang hiện ra
   const [drawn, setDrawn] = React.useState(false);
-
+  const { user: authUser, authReady } = useAppSelector((state) => state.auth);
   React.useEffect(() => {
     if (typeof id !== "string") return;
-    dispatch(getExperienceUserIdRequest(id));
+    if (!authReady) return;
+    if (authUser) dispatch(getExperienceUserIdRequest(id));
     dispatch(getExperienceIdRequest(id));
-  }, [dispatch, id]);
+  }, [dispatch, id, authReady, authUser]);
 
   React.useEffect(() => {
     if (!experience) return;
@@ -121,7 +122,7 @@ const ExperienceIdContainer: React.FC = () => {
         className="pointer-events-none absolute -top-64 left-1/2 h-130 w-225 -translate-x-1/2 rounded-full bg-[#5B6CFF]/10 blur-[160px]"
       />
 
-      <div className="relative z-10 mx-auto w-full max-w-6xl">
+      <div className="relative z-10 w-full">
         {/* ===== Điều hướng ===== */}
         <nav className="mb-12 sm:mb-16">
           <button

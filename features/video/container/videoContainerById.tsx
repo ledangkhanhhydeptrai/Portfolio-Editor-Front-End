@@ -19,7 +19,7 @@ const VideoContainerById: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const { video, loading, error } = useAppSelector((state) => state.video);
-
+  const { user: authUser, authReady } = useAppSelector((state) => state.auth);
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const copyTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const [copied, setCopied] = React.useState(false);
@@ -28,9 +28,10 @@ const VideoContainerById: React.FC = () => {
 
   React.useEffect(() => {
     if (typeof id !== "string") return;
-    dispatch(getVideoRequestUserById(id));
+    if (!authReady) return;
+    if (authUser) dispatch(getVideoRequestUserById(id));
     dispatch(getVideoRequestById(id));
-  }, [dispatch, id]);
+  }, [dispatch, id, authReady, authUser]);
 
   React.useEffect(() => {
     return () => {
@@ -104,7 +105,7 @@ const VideoContainerById: React.FC = () => {
         <div className="absolute inset-0 bg-linear-to-b from-[#14161F]/30 via-[#14161F]/70 to-[#14161F]" />
       </div>
 
-      <main className="relative z-10 mx-auto w-full max-w-7xl px-5 pt-24 pb-24 sm:px-8 lg:pt-28">
+      <main className="relative z-10 w-full px-5 pt-24 pb-24 sm:px-8 lg:pt-28">
         {/* Back */}
         <button
           type="button"
