@@ -6,7 +6,6 @@ import { useSearchParams } from "next/navigation";
 
 import HeaderAnimations from "./HeaderAnimations";
 import HeaderBrand from "./HeaderBrand";
-import HeaderStatus from "./HeaderStatus";
 import DesktopNavigation from "./DesktopNavigation";
 import MobileMenu from "./MobileMenu";
 
@@ -242,7 +241,7 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
 
           {/* DESKTOP NAV: chiếm phần trống ở giữa, co lại khi hết chỗ */}
           <div className="hidden min-w-0 flex-1 justify-center lg:flex">
-            <div className="flex max-w-full items-center rounded-full border border-white/8 bg-white/3 px-1.5 py-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+            <div className="flex max-w-full items-center">
               <DesktopNavigation
                 curriculums={data}
                 pathname={pathname}
@@ -268,11 +267,6 @@ const HeaderContent: React.FC<HeaderContentProps> = ({ pathname }) => {
 
           {/* RIGHT SIDE */}
           <div className="relative z-10 ml-auto flex shrink-0 items-center gap-2 lg:ml-0">
-            {/* Status chỉ hiện khi màn đủ rộng */}
-            <div className="hidden 2xl:block">
-              <HeaderStatus />
-            </div>
-
             {/* Divider ngăn nhóm điều hướng và nhóm tài khoản */}
             <span aria-hidden="true" className="mx-1 hidden h-5 w-px bg-white/10 lg:block" />
 

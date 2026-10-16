@@ -53,7 +53,7 @@ const NavDropdown: React.FC<NavDropdownProps> = ({
       >
         <span>{label}</span>
 
-        <svg
+        {/* <svg
           viewBox="0 0 20 20"
           fill="none"
           aria-hidden="true"
@@ -68,7 +68,7 @@ const NavDropdown: React.FC<NavDropdownProps> = ({
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-        </svg>
+        </svg> */}
       </button>
 
       {open && (
