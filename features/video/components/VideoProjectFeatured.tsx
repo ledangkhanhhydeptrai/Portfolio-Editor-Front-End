@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 
 import type { VideoProject } from "../videoTypes";
 
@@ -29,32 +28,32 @@ const VideoProjectFeatured: React.FC<VideoProjectFeaturedProps> = ({
 }) => {
   const categoryLabel =
     project.category === "PRODUCT_VIDEO" ? "Product Video" : project.category.replaceAll("_", " ");
-
+  const [isPortrait, setIsPortrait] = React.useState(false);
   const canNavigate = total > 1;
+  const playableUrl = project.videoUrl.replace(
+    "/video/upload/",
+    "/video/upload/f_mp4,vc_h264,ac_aac/",
+  );
 
   return (
     <article className="flex h-full min-h-0 flex-col overflow-hidden rounded-[28px] bg-white/6 p-1.5 shadow-[0_40px_100px_-30px_rgba(0,0,0,0.8)] ring-1 ring-white/12 backdrop-blur sm:p-2">
       {/* Video: chiếm toàn bộ chiều cao còn lại, phần thừa được lấp bằng ảnh bìa mờ */}
-      <div className="relative aspect-video min-h-0 overflow-hidden rounded-[22px] bg-black sm:rounded-[20px] lg:aspect-auto lg:flex-1">
-        <Image
-          src={project.thumbnailUrl}
-          alt=""
-          aria-hidden
-          fill
-          sizes="(min-width: 1024px) 70vw, 100vw"
-          className="scale-110 object-cover opacity-40 blur-2xl"
-        />
+      <div className="relative flex min-h-0 items-center justify-center overflow-hidden rounded-[22px] bg-black lg:flex-1">
         <video
           key={project.id}
           controls
           playsInline
+          muted={autoPlay}
           autoPlay={autoPlay}
-          preload="metadata"
+          preload="auto"
           poster={project.thumbnailUrl}
-          className="relative h-full w-full object-contain"
+          onLoadedMetadata={(e) => {
+            const v = e.currentTarget;
+            setIsPortrait(v.videoHeight > v.videoWidth);
+          }}
+          className={isPortrait ? "h-full object-contain" : "h-full w-full object-contain"}
         >
-          <source src={project.videoUrl} type="video/mp4" />
-          Trình duyệt của bạn không hỗ trợ video.
+          <source src={playableUrl} type="video/mp4" />
         </video>
       </div>
 
