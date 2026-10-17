@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
@@ -13,6 +12,17 @@ import ErrorMessage from "@/components/ui/ErrorMessage";
 const focusRing =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9BADFF]";
 
+// Cloudinary tự chuyển về H.264 + AAC, 30fps, tối đa 1280px chiều cao, nén thông minh
+const CLOUDINARY_TRANSFORM = "f_mp4,vc_h264,ac_aac,q_auto,fps_30,c_limit,h_1280";
+
+// Bật: Cloudinary chuyển video sang H.264 để mọi trình duyệt đều xem được hình.
+const USE_CLOUDINARY_TRANSFORM = true;
+
+const toPlayableUrl = (url: string) =>
+  USE_CLOUDINARY_TRANSFORM && url.includes("/video/upload/")
+    ? url.replace("/video/upload/", `/video/upload/${CLOUDINARY_TRANSFORM}/`)
+    : url;
+
 const VideoContainerById: React.FC = () => {
   const params = useParams();
   const router = useRouter();
@@ -23,6 +33,9 @@ const VideoContainerById: React.FC = () => {
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const copyTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const [copied, setCopied] = React.useState(false);
+  // Lưu id của video đã đo là video dọc (9:16). Đổi video thì id khác nên tự về "ngang",
+  // không cần effect để reset.
+  const [portraitId, setPortraitId] = React.useState<string | null>(null);
 
   const id = params.id;
 
@@ -53,6 +66,13 @@ const VideoContainerById: React.FC = () => {
   const handleFullscreen = () => {
     videoRef.current?.requestFullscreen?.();
   };
+
+  const handleLoadedMetadata = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const v = e.currentTarget;
+    setPortraitId(v.videoHeight > v.videoWidth ? (video?.id ?? null) : null);
+  };
+
+  const isPortrait = !!video && portraitId === video.id;
 
   if (loading) return <Loading />;
   if (error) return <ErrorMessage />;
@@ -89,72 +109,59 @@ const VideoContainerById: React.FC = () => {
         @media (prefers-reduced-motion: reduce) { .vc-rise { animation: none; } }
       `}</style>
 
-      {/* Ambient glow lấy màu từ chính thumbnail */}
+      {/* Ambient glow: dùng gradient thay cho ảnh blur để không tốn GPU khi video đang phát */}
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[85vh] overflow-hidden"
         aria-hidden
-      >
-        <Image
-          src={video.thumbnailUrl}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="scale-125 object-cover opacity-35 blur-3xl saturate-150"
-        />
-        <div className="absolute inset-0 bg-linear-to-b from-[#14161F]/30 via-[#14161F]/70 to-[#14161F]" />
-      </div>
+        className="pointer-events-none absolute inset-x-0 top-0 h-[75vh] bg-[radial-gradient(60%_60%_at_50%_0%,rgba(113,140,255,0.22),transparent)]"
+      />
 
       <main className="relative z-10 w-full px-5 pt-24 pb-24 sm:px-8 lg:pt-28">
         {/* Back */}
         <button
           type="button"
           onClick={() => router.back()}
-          className={`group mb-8 inline-flex items-center gap-2.5 rounded-full bg-white/6 py-2 pr-5 pl-3 text-sm text-white/70 ring-1 ring-white/10 backdrop-blur transition hover:bg-white/10 hover:text-white ${focusRing}`}
+          className={`group mb-8 inline-flex items-center gap-2.5 rounded-full bg-white/8 py-2 pr-5 pl-3 text-sm text-white/70 ring-1 ring-white/10 transition hover:bg-white/12 hover:text-white ${focusRing}`}
         >
           <span className="transition-transform group-hover:-translate-x-0.5">←</span>
           Quay lại
         </button>
 
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.75fr)_minmax(0,1fr)] lg:items-start lg:gap-14">
+        <div
+          className={`grid gap-10 lg:items-start lg:gap-14 ${
+            isPortrait
+              ? "lg:grid-cols-[minmax(0,460px)_minmax(0,1fr)]"
+              : "lg:grid-cols-[minmax(0,1.75fr)_minmax(0,1fr)]"
+          }`}
+        >
           {/* ───────── Trái: video + thanh thao tác ───────── */}
           <div>
-            <div className="relative">
-              {/* Vệt sáng dưới player */}
+            {/* Khung viền: bo ngoài 28px = bo trong 20px + padding 8px */}
+            <div className="relative rounded-[28px] bg-white/6 p-1.5 shadow-[0_40px_100px_-30px_rgba(0,0,0,0.8)] ring-1 ring-white/12 sm:p-2">
               <div
-                aria-hidden
-                className="absolute inset-x-8 top-1/2 -bottom-6 rounded-[3rem] bg-[#718CFF]/25 blur-3xl"
-              />
-
-              {/* Khung viền: bo ngoài 28px = bo trong 20px + padding 8px */}
-              <div className="relative rounded-[28px] bg-white/6 p-1.5 shadow-[0_40px_100px_-30px_rgba(0,0,0,0.8)] ring-1 ring-white/12 backdrop-blur sm:p-2">
-                <div className="relative aspect-video overflow-hidden rounded-[22px] bg-black sm:rounded-[20px]">
-                  {/* Nền mờ lấp khoảng đen khi video không đúng tỉ lệ 16:9 */}
-                  <Image
-                    src={video.thumbnailUrl}
-                    alt=""
-                    aria-hidden
-                    fill
-                    sizes="(min-width: 1280px) 760px, 100vw"
-                    className="scale-110 object-cover opacity-40 blur-2xl"
-                  />
-                  <video
-                    ref={videoRef}
-                    key={video.id}
-                    controls
-                    preload="metadata"
-                    poster={video.thumbnailUrl}
-                    className="relative h-full w-full object-contain"
-                  >
-                    <source src={video.videoUrl} type="video/mp4" />
-                    Trình duyệt của bạn không hỗ trợ video.
-                  </video>
-                </div>
+                className={`relative mx-auto overflow-hidden rounded-[22px] bg-black sm:rounded-[20px] ${
+                  isPortrait
+                    ? "aspect-9/16 h-[min(80vh,760px)] max-w-full"
+                    : "aspect-video w-full"
+                }`}
+              >
+                <video
+                  ref={videoRef}
+                  key={video.id}
+                  controls
+                  playsInline
+                  preload="auto"
+                  poster={video.thumbnailUrl}
+                  onLoadedMetadata={handleLoadedMetadata}
+                  className="h-full w-full object-contain"
+                >
+                  <source src={toPlayableUrl(video.videoUrl)} type="video/mp4" />
+                  Trình duyệt của bạn không hỗ trợ video.
+                </video>
               </div>
             </div>
 
             {/* Thanh thao tác */}
-            <div className="relative mt-8 flex flex-wrap items-center gap-3 rounded-2xl bg-white/4 p-3 ring-1 ring-white/10 backdrop-blur">
+            <div className="relative mt-8 flex flex-wrap items-center gap-3 rounded-2xl bg-white/5 p-3 ring-1 ring-white/10">
               <button
                 type="button"
                 onClick={handleCopyLink}
@@ -236,10 +243,10 @@ const VideoContainerById: React.FC = () => {
         </div>
 
         {/* ───────── Cuối trang ───────── */}
-        <div className="relative mt-20 overflow-hidden rounded-3xl bg-white/4 p-8 ring-1 ring-white/10 backdrop-blur sm:p-10">
+        <div className="relative mt-20 overflow-hidden rounded-3xl bg-white/5 p-8 ring-1 ring-white/10 sm:p-10">
           <div
             aria-hidden
-            className="pointer-events-none absolute -top-24 -right-16 h-64 w-64 rounded-full bg-[#718CFF]/20 blur-3xl"
+            className="pointer-events-none absolute -top-24 -right-16 h-64 w-64 rounded-full bg-[#718CFF]/15 blur-2xl"
           />
           <div className="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -279,7 +286,7 @@ interface StatTileProps {
 
 const StatTile: React.FC<StatTileProps> = ({ icon, label, value, className = "" }) => (
   <div
-    className={`rounded-2xl bg-white/4 p-4 ring-1 ring-white/10 backdrop-blur transition hover:bg-white/6 ${className}`}
+    className={`rounded-2xl bg-white/5 p-4 ring-1 ring-white/10 transition hover:bg-white/8 ${className}`}
   >
     <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#9BADFF]/12 text-[#AAB8FF]">
       {icon}

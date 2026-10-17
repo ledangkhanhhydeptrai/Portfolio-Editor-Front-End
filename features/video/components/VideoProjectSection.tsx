@@ -18,7 +18,13 @@ const focusRing =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9BADFF]";
 
 /** Bố cục chia TRÁI (giới thiệu + danh sách) / PHẢI (trình phát). */
-const VideoProjectSection: React.FC<VideoProjectSectionProps> = ({ videos }) => {
+const VideoProjectSection: React.FC<VideoProjectSectionProps> = ({ videos: rawVideos }) => {
+  // Lọc trùng theo id (giữ phần tử đầu tiên) để không bị lỗi "two children with the same key"
+  const videos = React.useMemo(
+    () => Array.from(new Map(rawVideos.map((v) => [v.id, v])).values()),
+    [rawVideos],
+  );
+
   const [activeId, setActiveId] = React.useState<VideoProject["id"] | null>(null);
   const [userPicked, setUserPicked] = React.useState(false);
 
@@ -72,7 +78,7 @@ const VideoProjectSection: React.FC<VideoProjectSectionProps> = ({ videos }) => 
         @media (prefers-reduced-motion: reduce) { .vs-fade { animation: none; } }
       `}</style>
 
-      {/* Nền ambient: đổi màu theo video đang chọn */}
+      {/* Nền ambient: đổi màu theo video đang chọn (blur nhẹ hơn để video phát mượt) */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 overflow-hidden mask-[linear-gradient(to_bottom,black_30%,transparent)]"
@@ -83,7 +89,7 @@ const VideoProjectSection: React.FC<VideoProjectSectionProps> = ({ videos }) => 
           alt=""
           fill
           sizes="100vw"
-          className="vs-fade scale-125 object-cover opacity-30 blur-3xl saturate-150"
+          className="vs-fade scale-125 object-cover opacity-30 blur-2xl saturate-150"
         />
       </div>
 
@@ -99,7 +105,7 @@ const VideoProjectSection: React.FC<VideoProjectSectionProps> = ({ videos }) => 
           </p>
 
           {/* Bảng danh sách phát */}
-          <div className="mt-6 flex min-h-0 flex-1 flex-col rounded-3xl bg-white/4 p-3 ring-1 ring-white/10 backdrop-blur">
+          <div className="mt-6 flex min-h-0 flex-1 flex-col rounded-3xl bg-white/5 p-3 ring-1 ring-white/10">
             <div className="flex items-center justify-between px-2 pt-1 pb-3">
               <span className="text-sm font-medium text-white/80">Danh sách phát</span>
               <span className="rounded-full bg-white/8 px-2.5 py-1 text-xs text-white/60">
@@ -139,7 +145,7 @@ const VideoProjectSection: React.FC<VideoProjectSectionProps> = ({ videos }) => 
         <div className="relative min-h-0 min-w-0 lg:h-full">
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-10 top-1/3 -bottom-6 rounded-[3rem] bg-[#718CFF]/15 blur-3xl"
+            className="pointer-events-none absolute inset-x-10 top-1/3 -bottom-6 rounded-[3rem] bg-[#718CFF]/12 blur-2xl"
           />
 
           <div className="relative lg:h-full">
